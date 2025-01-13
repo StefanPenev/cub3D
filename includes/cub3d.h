@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/13 13:31:58 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/13 15:55:56 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,31 @@
 # include "../libft/libft.h"
 # include <X11/X.h>
 # include <X11/keysym.h>
+# include <fcntl.h>
 # include <mlx.h>
 # include <stdio.h>
+# include <unistd.h>
 
-typedef struct s_mlx
+# define WALL '1'
+# define EMPTY '0'
+# define NORTH 'N'
+# define SOUTH 'S'
+# define EAST 'E'
+# define WEST 'W'
+
+typedef struct s_map
 {
-	void		*mlx;
-	void		*win;
-}				t_mlx;
+	char	**full_map;
+	size_t		rows;
+	size_t		columns;
+	// size_t		keys;
+	// size_t		exit;
+	// size_t		players;
+}			t_map;
+
+typedef struct s_ctrl
+{
+	t_map	map;
+}			t_ctrl;
 
 #endif
