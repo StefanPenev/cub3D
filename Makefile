@@ -1,7 +1,7 @@
 NAME = cub3D
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes
+CFLAGS = -Wall -Wextra -Werror -I./includes -I$(MLX_DIR)
 LDFLAGS_LINUX = -L minilibx-linux -lmlx -lX11 -lXext -lm
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
@@ -25,7 +25,7 @@ $(NAME): $(OBJS) $(LIBFT) $(MLX)
 	@echo "${COLOR_GREEN}Project compiled successfully.${COLOR_RESET}"
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -c $< -o $@ > /dev/null 2>&1
+	@$(CC) $(CFLAGS) -c $< -o $@ 
 
 $(LIBFT):
 	@make -C libft/ > /dev/null 2>&1
