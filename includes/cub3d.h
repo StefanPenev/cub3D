@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/13 15:55:56 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/15 14:36:08 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,24 @@
 # define EAST 'E'
 # define WEST 'W'
 
+typedef struct s_pos
+{
+	size_t	x;
+	size_t	y;
+
+}			t_pos;
+
 typedef struct s_map
 {
 	char	**full_map;
-	size_t		rows;
-	size_t		columns;
-	// size_t		keys;
-	// size_t		exit;
-	// size_t		players;
+	size_t	rows;
+	size_t	columns;
+	size_t players_count;
+	t_pos	*players_positions;
+	// size_t	n_position;
+	// size_t	s_position;
+	// size_t	e_position;
+	// size_t	w_position;
 }			t_map;
 
 typedef struct s_ctrl

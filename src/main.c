@@ -3,25 +3,26 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/14 12:17:33 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/15 14:42:06 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-void	free_map(char **map)
+void	free_map(char **map, size_t rows)
 {
-	int	i;
+	size_t	i;
 
 	i = 0;
 	if (!map)
 		return ;
-	while (map[i])
+	while (i < rows)
 	{
-		free(map[i]);
+		if (map[i])
+			free(map[i]);
 		i++;
 	}
 	free(map);
@@ -31,7 +32,7 @@ void	game_cleanup(t_ctrl *ctrl)
 {
 	if (ctrl->map.full_map)
 	{
-		free_map(ctrl->map.full_map);
+		free_map(ctrl->map.full_map, ctrl->map.rows);
 	}
 	free(ctrl);
 	ctrl = NULL;
@@ -108,6 +109,7 @@ char	*read_map(char *filename, t_ctrl *ctrl)
 		ctrl->map.rows++;
 	}
 	close(file_id);
+	printf("DEBUG: number of rows: %zu\n", ctrl->map.rows);
 	return (map_tmp);
 }
 
@@ -148,7 +150,7 @@ void	explore_map(t_ctrl *ctrl)
 		{
 			new_line = malloc(ctrl->map.columns + 1);
 			ft_memcpy(new_line, ctrl->map.full_map[i], len);
-			ft_memset(new_line + len, WALL, ctrl->map.columns + len);
+			ft_memset(new_line + len, WALL, ctrl->map.columns - len);
 			new_line[ctrl->map.columns] = '\0';
 			free(ctrl->map.full_map[i]);
 			ctrl->map.full_map[i] = new_line;
@@ -166,6 +168,238 @@ void	explore_map(t_ctrl *ctrl)
 	}
 }
 
+void	check_valid_characters(t_ctrl *ctrl)
+{
+	size_t	i;
+	size_t	j;
+	char	c;
+	int		player_found;
+	int count = 0;
+
+	player_found = 0;
+	i = 0;
+	j = 0;
+	while (i < ctrl->map.rows)
+	{
+		while (j < ctrl->map.columns)
+		{
+			c = ctrl->map.full_map[i][j];
+			if (!(c == WALL || c == EMPTY || c == NORTH || c == SOUTH
+					|| c == EAST || c == WEST || c == ' '))
+			{
+				printf("Invalid input:\nMap contains invalid characters.\n");
+				game_cleanup(ctrl);
+				exit(1);
+			}
+			else if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
+			{
+				ctrl->map.players_count++;
+				player_found = 1;
+			}
+			j++;
+		}
+		j = 0;
+		i++;
+	}
+	if (ctrl->map.players_count == 0)
+	{
+		{
+			printf("Invalid input:\nPlayer position not found.\n");
+			game_cleanup(ctrl);
+			exit(1);
+		}
+	}
+	else
+	{
+		ctrl->map.players_positions = malloc(ctrl->map.players_count
+				* sizeof(t_pos));
+		i = 0;
+		j = 0;
+		while (i < ctrl->map.rows)
+		{
+			while (j < ctrl->map.columns)
+			{
+				c = ctrl->map.full_map[i][j];
+				if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
+				{
+                ctrl->map.players_positions[count].x = i;
+                ctrl->map.players_positions[count].y = j;
+				count++;
+				}
+				j++;
+			}
+			j = 0;
+			i++;
+		}
+	}
+}
+
+void	check_map_closed(t_ctrl *ctrl)
+{
+	size_t	i;
+	size_t	j;
+
+	i = 0;
+	j = 0;
+	while (j < ctrl->map.columns)
+	{
+		if (ctrl->map.full_map[0][j] != WALL && ctrl->map.full_map[0][j] != ' ')
+		{
+			printf("Invalid input:\nMap must be closed by walls at the top.\n");
+			game_cleanup(ctrl);
+			exit(1);
+		}
+		if (ctrl->map.full_map[ctrl->map.rows - 1][j] != WALL
+			&& ctrl->map.full_map[ctrl->map.rows - 1][j] != ' ')
+		{
+			printf("Invalid input:\nMap must be closed by walls at the bottom.\n");
+			game_cleanup(ctrl);
+			exit(1);
+		}
+		j++;
+	}
+	while (i < ctrl->map.rows)
+	{
+		if (ctrl->map.full_map[i][0] != WALL && ctrl->map.full_map[i][0] != ' ')
+		{
+			printf("Invalid input:\nMap must be closed by walls on the left.\n");
+			game_cleanup(ctrl);
+			exit(1);
+		}
+		if (ctrl->map.full_map[i][ctrl->map.columns - 1] != WALL
+			&& ctrl->map.full_map[i][ctrl->map.columns - 1] != ' ')
+		{
+			printf("Invalid input:\nMap must be closed by walls on the right.\n");
+			game_cleanup(ctrl);
+			exit(1);
+		}
+		i++;
+	}
+}
+
+char	**create_map_copy(t_ctrl *ctrl)
+{
+	char	**copy;
+	size_t	i;
+
+	i = 0;
+	copy = malloc(ctrl->map.rows * sizeof(char *));
+	while (i < ctrl->map.rows)
+	{
+		copy[i] = malloc(ctrl->map.columns + 1);
+		if (!copy[i])
+		{
+			perror("Error allocating memory for map row copy");
+			exit(1);
+		}
+		ft_strlcpy(copy[i], ctrl->map.full_map[i], ctrl->map.columns + 1);
+		i++;
+	}
+	return (copy);
+}
+
+void	flood_fill(char **map, size_t x, size_t y, t_ctrl *ctrl,
+		int *has_free_way)
+{
+	// 	// Check if out of map boundaries
+	if (x >= ctrl->map.rows || y >= ctrl->map.columns)
+		return ;
+	// 	// If it's a wall or already visited cell, do nothing
+	if (map[x][y] == WALL || map[x][y] == 'F')
+		return ;
+	// 	// Check for free paths
+	if (map[x][y] == EMPTY)
+		*has_free_way = 1;
+	// 	// Mark the current cell as visited
+	map[x][y] = 'F';
+	// 		// Recursively check adjacent cells
+	flood_fill(map, x + 1, y, ctrl, has_free_way); // Down
+	flood_fill(map, x - 1, y, ctrl, has_free_way); // Up
+	flood_fill(map, x, y + 1, ctrl, has_free_way); // Right
+	flood_fill(map, x, y - 1, ctrl, has_free_way); // Left
+}
+
+// void	flood_fill(char **map, size_t x, size_t y, t_ctrl *ctrl,
+// 		int *has_free_way)
+// {
+// 	// Check if out of map boundaries
+// 	if (x >= ctrl->map.rows || y >= ctrl->map.columns || map[x][y] == '\0')
+// 	{
+// 		printf("Invalid input:\nMap must be closed by walls.\n");
+// 		exit(1);
+// 	}
+// 	// If it's a wall or already visited cell, do nothing
+// 	if (map[x][y] == WALL || map[x][y] == 'F')
+// 		return ;
+// 	// Check for free paths
+// 	if (*has_free_way == 0)
+// 	{
+// 		if ((x > 0 && map[x - 1][y] != WALL && map[x - 1][y] != 'F')
+// 			||                   // up
+// 			(x < ctrl->map.rows - 1 && map[x + 1][y] != WALL && map[x
+// 				+ 1][y] != 'F') ||  // down
+// 			(y > 0 && map[x][y - 1] != WALL && map[x][y - 1] != 'F')
+// 				||                   // left
+// 			(y < ctrl->map.columns - 1 && map[x][y + 1] != WALL && map[x][y
+// 				+ 1] != 'F')) // right
+// 		{
+// 			*has_free_way = 1; // At least one free path found
+// 		}
+// 	}
+// 	// Mark the current cell as visited
+// 	map[x][y] = 'F';
+// 		// Recursively check adjacent cells
+// 	if (x > 0)
+// 		flood_fill(map, x - 1, y, ctrl, has_free_way); // Вверх
+// 	if (x < ctrl->map.rows - 1)
+// 		flood_fill(map, x + 1, y, ctrl, has_free_way); // Вниз
+// 	if (y > 0)
+// 		flood_fill(map, x, y - 1, ctrl, has_free_way); // Влево
+// 	if (y < ctrl->map.columns - 1)
+// 		flood_fill(map, x, y + 1, ctrl, has_free_way); // Вправо
+// }
+
+void	check_map_valid(t_ctrl *ctrl)
+{
+	char	**map_copy;
+	size_t	x;
+	size_t	y;
+	int		has_free_way;
+	size_t	count;
+
+	count = 0;
+	while (count < ctrl->map.players_count)
+	{
+		x = ctrl->map.players_positions[count].x;
+		y = ctrl->map.players_positions[count].y;
+		has_free_way = 0;
+		map_copy = create_map_copy(ctrl);
+		flood_fill(map_copy, x, y, ctrl, &has_free_way);
+		free_map(map_copy, ctrl->map.rows);
+		if (!has_free_way)
+		{
+			printf("Invalid input:\nPlayer has no space to move.\n");
+			exit(1);
+		}
+		count++;
+	}
+	// printf("Map is valid and player has at least one free way to move.\n");
+}
+
+// void	check_map_valid(t_ctrl *ctrl)
+// {
+// 	char	**map_copy;
+// 	size_t	x;
+// 	size_t	y;
+
+// 	x = ctrl->map.position.x;
+// 	y = ctrl->map.position.y;
+// 	map_copy = create_map_copy(ctrl);
+// 	flood_fill(map_copy, x, y, ctrl);
+// 	free_map(map_copy, ctrl->map.rows);
+// 	printf("Map is valid and player has space to move.\n");
+// }
+
 void	parse_map(char *filename, t_ctrl *ctrl)
 {
 	char	*map_str;
@@ -181,6 +415,9 @@ void	parse_map(char *filename, t_ctrl *ctrl)
 		exit(1);
 	}
 	explore_map(ctrl);
+	check_valid_characters(ctrl);
+	check_map_closed(ctrl);
+	check_map_valid(ctrl);
 	// while (ctrl->map.full_map[i] != NULL)
 	// {
 	//     new_str = ft_strjoin(ctrl->map.full_map[i], "\n");
@@ -203,6 +440,10 @@ int	main(int argc, char **argv)
 	ctrl->map.full_map = NULL;
 	ctrl->map.rows = 0;
 	ctrl->map.columns = 0;
+	ctrl->map.players_count = 0;
+	// ctrl->map.s_position = 0;
+	// ctrl->map.e_position = 0;
+	// ctrl->map.w_position = 0;
 	check_args(argc, argv);
 	parse_map(argv[1], ctrl);
 	for (int i = 0; ctrl->map.full_map[i] != NULL; i++)
