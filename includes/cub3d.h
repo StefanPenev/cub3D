@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/15 16:57:57 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/16 15:05:27 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@
 # define EAST 'E'
 # define WEST 'W'
 
+# define KEY_W 119
+# define KEY_A 97
+# define KEY_S 115
+# define KEY_D 100
+# define KEY_ESC 65307
+
 # define WIDTH 800
 # define HEIGHT 600
 
@@ -41,25 +47,35 @@ typedef struct s_pos
 typedef struct s_map
 {
 	char	**full_map;
+	int		has_free_way;
 	size_t	rows;
 	size_t	columns;
-	size_t players_count;
+	size_t	players_count;
 	t_pos	*players_positions;
-	// size_t	n_position;
-	// size_t	s_position;
-	// size_t	e_position;
-	// size_t	w_position;
 }			t_map;
-
-typedef struct s_ctrl
-{
-	t_map	map;
-}			t_ctrl;
 
 typedef struct s_game
 {
 	void	*mlx;
 	void	*win;
 }			t_game;
+
+typedef struct s_ctrl
+{
+	t_map	map;
+	t_game	game;
+}			t_ctrl;
+
+void		free_map(char **map, size_t rows);
+void		game_cleanup(t_ctrl *ctrl);
+void		clean_exit(char *str, t_ctrl *ctrl);
+void		check_args(int argc, char *argv[], t_ctrl *ctrl);
+void		check_valid_characters(t_ctrl *ctrl);
+void		check_map_closed(t_ctrl *ctrl);
+void		check_map_valid(t_ctrl *ctrl);
+void		parse_map(char *filename, t_ctrl *ctrl);
+void		find_biggest_line(t_ctrl *ctrl);
+char		*merge_map_arr(t_ctrl *ctrl, char *line_tmp, char *map_tmp);
+int			hook_keypress(int keycode, t_ctrl *ctrl);
 
 #endif

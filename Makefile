@@ -7,8 +7,15 @@ LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 MLX_DIR = minilibx-linux
 MLX = $(MLX_DIR)/libmlx.a
+SRC_DIR = src
 
-SRCS = src/main.c
+SRCS += $(SRC_DIR)/main.c \
+	    $(SRC_DIR)/game_cleanup.c \
+		$(SRC_DIR)/error_checks.c \
+		$(SRC_DIR)/parse_map.c \
+		$(SRC_DIR)/flood_fill.c \
+		$(SRC_DIR)/map_utils.c \
+		$(SRC_DIR)/hook_event.c \
 
 OBJS = $(SRCS:.c=.o)
 
