@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/15 14:36:08 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/15 16:57:57 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 # define SOUTH 'S'
 # define EAST 'E'
 # define WEST 'W'
+
+# define WIDTH 800
+# define HEIGHT 600
 
 typedef struct s_pos
 {
@@ -52,5 +55,11 @@ typedef struct s_ctrl
 {
 	t_map	map;
 }			t_ctrl;
+
+typedef struct s_game
+{
+	void	*mlx;
+	void	*win;
+}			t_game;
 
 #endif

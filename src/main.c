@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/15 14:42:06 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/16 11:29:34 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,10 +173,10 @@ void	check_valid_characters(t_ctrl *ctrl)
 	size_t	i;
 	size_t	j;
 	char	c;
-	int		player_found;
+	//int		player_found;
 	int count = 0;
 
-	player_found = 0;
+	//player_found = 0;
 	i = 0;
 	j = 0;
 	while (i < ctrl->map.rows)
@@ -194,7 +194,7 @@ void	check_valid_characters(t_ctrl *ctrl)
 			else if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
 			{
 				ctrl->map.players_count++;
-				player_found = 1;
+				//player_found = 1;
 			}
 			j++;
 		}
@@ -427,9 +427,26 @@ void	parse_map(char *filename, t_ctrl *ctrl)
 	// }
 }
 
+void	init_game_window(t_game	*game)
+{
+	printf("insode init_game_window");
+	game->mlx = mlx_init();
+	if (!game->mlx)
+	{
+		return ;
+	}
+	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "cub3D");
+	if (!game->win)
+	{
+		free(game->mlx);
+		return ;
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_ctrl	*ctrl;
+	//t_game	*game;
 
 	ctrl = malloc(sizeof(t_ctrl));
 	if (!ctrl)
@@ -451,5 +468,12 @@ int	main(int argc, char **argv)
 		printf("%s\n", ctrl->map.full_map[i]);
 	}
 	printf("SUCCESS\n");
+	// game = malloc(sizeof(t_game));
+	// if (!game)
+	// 	return (EXIT_FAILURE);
+	// game->mlx = NULL;
+	// game->win = NULL;
+	// init_game_window(game);
+	// mlx_loop(game->mlx);
 	return (0);
 }
