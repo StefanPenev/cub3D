@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/16 15:05:27 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:39:43 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ typedef struct s_game
 {
 	void	*mlx;
 	void	*win;
+	void	*img;
+	char	*img_data;
+	int		bpp;
+	int		size_line;
+	int		endian;
 }			t_game;
 
 typedef struct s_ctrl

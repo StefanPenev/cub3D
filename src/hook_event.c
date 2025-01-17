@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   hook_event.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 15:04:51 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/16 15:08:03 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/16 17:23:31 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,17 +68,17 @@ int	hook_esc(int keycode, t_ctrl *ctrl)
 // 	}
 // }
 
-int	hook_keypress(int keycode, t_ctrl *ctrl)
-{
-	if (keycode == KEY_W)
-		move_viewpoint(ctrl, 0, -1);
-	else if (keycode == KEY_S)
-		move_viewpoint(ctrl, 0, 1);
-	else if (keycode == KEY_A)
-		move_viewpoint(ctrl, -1, 0);
-	else if (keycode == KEY_D)
-		move_viewpoint(ctrl, 1, 0);
-	else if (keycode == KEY_ESC)
-		hook_esc(keycode, ctrl);
-	return (0);
-}
+// int	hook_keypress(int keycode, t_ctrl *ctrl)
+// {
+// 	if (keycode == KEY_W)
+// 		move_viewpoint(ctrl, 0, -1);
+// 	else if (keycode == KEY_S)
+// 		move_viewpoint(ctrl, 0, 1);
+// 	else if (keycode == KEY_A)
+// 		move_viewpoint(ctrl, -1, 0);
+// 	else if (keycode == KEY_D)
+// 		move_viewpoint(ctrl, 1, 0);
+// 	else if (keycode == KEY_ESC)
+// 		hook_esc(keycode, ctrl);
+// 	return (0);
+// }

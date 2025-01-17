@@ -3,36 +3,82 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/16 15:04:20 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/17 08:57:02 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
+//Only for test purposes
+void	draw_red_square(t_game *game, int x, int y, int size)
+{
+	int	i;
+	int	j;
+	int	color;
+	int	pixel_x;
+	int	pixel_y;
+	int	pixel_index;
+
+	color = 0xFF0000;
+	i = 0;
+	while (i < size)
+	{
+		j = 0;
+		while (j < size)
+		{
+			pixel_x = x + i;
+			pixel_y = y + j;
+			if (pixel_x >= 0 && pixel_y >= 0)
+			{
+				pixel_index = pixel_y * game->size_line
+					+ (pixel_x * (game->bpp / 8));
+				*(int *)(game->img_data + pixel_index) = color;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 void	init_game_window(t_game *game)
 {
-	printf("insode init_game_window");
 	game->mlx = mlx_init();
 	if (!game->mlx)
 	{
-		return ;
+		printf("Error: MLX initialization failed.\n");
+		exit(1);
 	}
 	game->win = mlx_new_window(game->mlx, WIDTH, HEIGHT, "cub3D");
 	if (!game->win)
 	{
+		printf("Error: Window creation failed.\n");
 		free(game->mlx);
-		return ;
+		exit(1);
 	}
+	game->img = mlx_new_image(game->mlx, 800, 600);
+	game->img_data = mlx_get_data_addr(game->img, &game->bpp,
+			&game->size_line, &game->endian);
+	draw_red_square(game, 100, 100, 50);
+	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
+}
+
+int	close_window(t_game	*game)
+{
+	mlx_destroy_image(game->mlx, game->img);
+	mlx_destroy_window(game->mlx, game->win);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+	exit(0);
 }
 
 int	main(int argc, char **argv)
 {
 	t_ctrl	*ctrl;
+	t_game	*game;
 
-	// t_game	*game;
 	ctrl = malloc(sizeof(t_ctrl));
 	if (!ctrl)
 	{
@@ -55,13 +101,14 @@ int	main(int argc, char **argv)
 	printf("SUCCESS\n");
 	// DEBUG
 	game_cleanup(ctrl);
-	// game = malloc(sizeof(t_game));
-	// if (!game)
-	// 	return (EXIT_FAILURE);
-	// game->mlx = NULL;
-	// game->win = NULL;
-	mlx_hook(ctrl->game.win, 2, 1L << 0, hook_keypress, ctrl);
-	// init_game_window(game);
-	// mlx_loop(game->mlx);
+	game = malloc(sizeof(t_game));
+	if (!game)
+		return (EXIT_FAILURE);
+	game->mlx = NULL;
+	game->win = NULL;
+	init_game_window(game);
+	//mlx_hook(ctrl->game.win, 2, 1L << 0, hook_keypress, ctrl);
+	mlx_hook(game->win, 17, 0, close_window, game);
+	mlx_loop(game->mlx);
 	return (0);
 }
