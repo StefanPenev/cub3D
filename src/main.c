@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/17 08:57:02 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/17 09:53:37 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,25 +59,40 @@ void	init_game_window(t_game *game)
 		exit(1);
 	}
 	game->img = mlx_new_image(game->mlx, 800, 600);
+	if (!game->img)
+	{
+		printf("Error: Image creation failed.\n");
+		mlx_destroy_window(game->mlx, game->win);
+		free(game->mlx);
+		exit(1);
+	}
 	game->img_data = mlx_get_data_addr(game->img, &game->bpp,
 			&game->size_line, &game->endian);
+	if (!game->img_data)
+	{
+		printf("Error: Image data not initialized.\n");
+		mlx_destroy_image(game->mlx, game->img);
+		mlx_destroy_window(game->mlx, game->win);
+		free(game->mlx);
+		exit(1);
+	}
 	draw_red_square(game, 100, 100, 50);
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
-int	close_window(t_game	*game)
+int	close_window(void)
 {
-	mlx_destroy_image(game->mlx, game->img);
-	mlx_destroy_window(game->mlx, game->win);
-	mlx_destroy_display(game->mlx);
-	free(game->mlx);
+	// mlx_destroy_image(game->mlx, game->img);
+	// mlx_destroy_window(game->mlx, game->win);
+	// mlx_destroy_display(game->mlx);
+	//free(game->mlx);
 	exit(0);
 }
 
 int	main(int argc, char **argv)
 {
 	t_ctrl	*ctrl;
-	t_game	*game;
+	//t_game	*game;
 
 	ctrl = malloc(sizeof(t_ctrl));
 	if (!ctrl)
@@ -100,15 +115,13 @@ int	main(int argc, char **argv)
 	}
 	printf("SUCCESS\n");
 	// DEBUG
-	game_cleanup(ctrl);
-	game = malloc(sizeof(t_game));
-	if (!game)
+	ctrl->game = malloc(sizeof(t_game));
+	if (!ctrl->game)
 		return (EXIT_FAILURE);
-	game->mlx = NULL;
-	game->win = NULL;
-	init_game_window(game);
-	//mlx_hook(ctrl->game.win, 2, 1L << 0, hook_keypress, ctrl);
-	mlx_hook(game->win, 17, 0, close_window, game);
-	mlx_loop(game->mlx);
+	init_game_window(ctrl->game);
+	mlx_hook(ctrl->game->win, 2, 1L << 0, hook_keypress, ctrl);
+	mlx_hook(ctrl->game->win, 17, 0, close_window, ctrl);
+	mlx_loop(ctrl->game->mlx);
+	game_cleanup(ctrl);
 	return (0);
 }

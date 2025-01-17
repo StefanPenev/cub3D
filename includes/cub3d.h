@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/16 17:39:43 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/17 09:48:33 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_game
 typedef struct s_ctrl
 {
 	t_map	map;
-	t_game	game;
+	t_game	*game;
 }			t_ctrl;
 
 void		free_map(char **map, size_t rows);
