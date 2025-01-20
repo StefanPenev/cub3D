@@ -6,40 +6,27 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/17 09:53:37 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/20 09:49:13 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-//Only for test purposes
-void	draw_red_square(t_game *game, int x, int y, int size)
+void	load_texture(t_game *game, t_texture *texture, char *path)
 {
-	int	i;
-	int	j;
-	int	color;
-	int	pixel_x;
-	int	pixel_y;
-	int	pixel_index;
-
-	color = 0xFF0000;
-	i = 0;
-	while (i < size)
+	texture->img = mlx_xpm_file_to_image(game->mlx, path, &(int){TEX_WIDTH},
+			&(int){TEX_HEIGHT});
+	if (!texture->img)
 	{
-		j = 0;
-		while (j < size)
-		{
-			pixel_x = x + i;
-			pixel_y = y + j;
-			if (pixel_x >= 0 && pixel_y >= 0)
-			{
-				pixel_index = pixel_y * game->size_line
-					+ (pixel_x * (game->bpp / 8));
-				*(int *)(game->img_data + pixel_index) = color;
-			}
-			j++;
-		}
-		i++;
+		printf("Error: Failed to load texture at %s\n", path);
+		exit(EXIT_FAILURE);
+	}
+	texture->addr = mlx_get_data_addr(texture->img, &texture->bits_per_pixel,
+			&texture->line_length, &texture->endian);
+	if (!texture->addr)
+	{
+		printf("Error: Failed to get texture data at %s\n", path);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -76,8 +63,27 @@ void	init_game_window(t_game *game)
 		free(game->mlx);
 		exit(1);
 	}
-	draw_red_square(game, 100, 100, 50);
+	game->ceiling_color = CEILING_COLOR;
+	game->floor_color = FLOOR_COLOR;
+
+	load_texture(game, &game->north_texture, "textures/north_wall.xpm");
+    load_texture(game, &game->south_texture, "textures/south_wall.xpm");
+    load_texture(game, &game->east_texture,  "textures/east_wall.xpm");
+    load_texture(game, &game->west_texture,  "textures/west_wall.xpm");
+
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
+}
+
+void	cleanup_textures(t_game *game)
+{
+	if (game->north_texture.img)
+		mlx_destroy_image(game->mlx, game->north_texture.img);
+	if (game->south_texture.img)
+		mlx_destroy_image(game->mlx, game->south_texture.img);
+	if (game->east_texture.img)
+		mlx_destroy_image(game->mlx, game->east_texture.img);
+	if (game->west_texture.img)
+		mlx_destroy_image(game->mlx, game->west_texture.img);
 }
 
 int	close_window(void)
@@ -89,10 +95,24 @@ int	close_window(void)
 	exit(0);
 }
 
+int	init_ctrl(t_ctrl *ctrl)
+{
+	ctrl->map.full_map = NULL;
+	ctrl->map.players_positions = NULL;
+	ctrl->map.rows = 0;
+	ctrl->map.columns = 0;
+	ctrl->map.players_count = 0;
+	ctrl->map.has_free_way = 0;
+	ctrl->game = malloc(sizeof(t_game));
+	if (!ctrl->game)
+		return (1);
+	init_game_window(ctrl->game);
+	return (0);
+}
+
 int	main(int argc, char **argv)
 {
 	t_ctrl	*ctrl;
-	//t_game	*game;
 
 	ctrl = malloc(sizeof(t_ctrl));
 	if (!ctrl)
@@ -100,12 +120,7 @@ int	main(int argc, char **argv)
 		printf("Error: Memory allocation failed.\n");
 		return (1);
 	}
-	ctrl->map.full_map = NULL;
-	ctrl->map.players_positions = NULL;
-	ctrl->map.rows = 0;
-	ctrl->map.columns = 0;
-	ctrl->map.players_count = 0;
-	ctrl->map.has_free_way = 0;
+	init_ctrl(ctrl);
 	check_args(argc, argv, ctrl);
 	parse_map(argv[1], ctrl);
 	// DEBUG
@@ -115,11 +130,19 @@ int	main(int argc, char **argv)
 	}
 	printf("SUCCESS\n");
 	// DEBUG
-	ctrl->game = malloc(sizeof(t_game));
-	if (!ctrl->game)
-		return (EXIT_FAILURE);
-	init_game_window(ctrl->game);
-	mlx_hook(ctrl->game->win, 2, 1L << 0, hook_keypress, ctrl);
+
+	//float player_start_x = 224.0f;
+    //float player_start_y = 480.0f;
+	float player_start_x = 96.0f;
+    float player_start_y = 160.0f;
+    float player_start_angle = M_PI / 2;
+
+    init_player(&ctrl->game->player, player_start_x, player_start_y, player_start_angle);
+
+	mlx_loop_hook(ctrl->game->mlx, draw_loop, ctrl);
+	//mlx_hook(ctrl->game->win, 2, 1L << 0, hook_keypress, ctrl);
+	mlx_hook(ctrl->game->win, 2, 1L << 0, key_press, ctrl);
+    mlx_hook(ctrl->game->win, 3, 1L << 1, key_release, ctrl);
 	mlx_hook(ctrl->game->win, 17, 0, close_window, ctrl);
 	mlx_loop(ctrl->game->mlx);
 	game_cleanup(ctrl);
