@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:31:18 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/16 14:38:13 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/20 13:55:31 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,23 +54,40 @@ void	flood_fill(char **map, size_t x, size_t y, t_ctrl *ctrl)
 	flood_fill(map, x, y - 1, ctrl); // Left
 }
 
+// void	check_map_valid(t_ctrl *ctrl)
+// {
+// 	char	**map_copy;
+// 	size_t	x;
+// 	size_t	y;
+// 	size_t	count;
+
+// 	count = 0;
+// 	while (count < ctrl->map.players_count)
+// 	{
+// 		x = ctrl->map.players_positions[count].x;
+// 		y = ctrl->map.players_positions[count].y;
+// 		map_copy = create_map_copy(ctrl);
+// 		flood_fill(map_copy, x, y, ctrl);
+// 		free_map(map_copy, ctrl->map.rows);
+// 		if (ctrl->map.has_free_way == 0)
+// 			clean_exit("Invalid input:\nPlayer has no space to move.\n", ctrl);
+// 		count++;
+// 	}
+// }
+
 void	check_map_valid(t_ctrl *ctrl)
 {
 	char	**map_copy;
 	size_t	x;
 	size_t	y;
-	size_t	count;
 
-	count = 0;
-	while (count < ctrl->map.players_count)
-	{
-		x = ctrl->map.players_positions[count].x;
-		y = ctrl->map.players_positions[count].y;
+		x = ctrl->map.player_position.x;
+		y = ctrl->map.player_position.y;
 		map_copy = create_map_copy(ctrl);
 		flood_fill(map_copy, x, y, ctrl);
 		free_map(map_copy, ctrl->map.rows);
 		if (ctrl->map.has_free_way == 0)
 			clean_exit("Invalid input:\nPlayer has no space to move.\n", ctrl);
-		count++;
-	}
+
 }
+

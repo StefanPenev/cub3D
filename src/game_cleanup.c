@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/16 14:39:59 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/20 13:57:38 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	game_cleanup(t_ctrl *ctrl)
 	{
 		free_map(ctrl->map.full_map, ctrl->map.rows);
 	}
-	free(ctrl->map.players_positions);
+	//free(ctrl->map.players_positions);
 	free(ctrl);
 	ctrl = NULL;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/20 09:49:13 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:34:20 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ void	init_game_window(t_game *game)
 		free(game->mlx);
 		exit(1);
 	}
-	game->img_data = mlx_get_data_addr(game->img, &game->bpp,
-			&game->size_line, &game->endian);
+	game->img_data = mlx_get_data_addr(game->img, &game->bpp, &game->size_line,
+			&game->endian);
 	if (!game->img_data)
 	{
 		printf("Error: Image data not initialized.\n");
@@ -63,14 +63,12 @@ void	init_game_window(t_game *game)
 		free(game->mlx);
 		exit(1);
 	}
-	game->ceiling_color = CEILING_COLOR;
-	game->floor_color = FLOOR_COLOR;
-
+	// game->ceiling_color = CEILING_COLOR;
+	// game->floor_color = FLOOR_COLOR;
 	load_texture(game, &game->north_texture, "textures/north_wall.xpm");
-    load_texture(game, &game->south_texture, "textures/south_wall.xpm");
-    load_texture(game, &game->east_texture,  "textures/east_wall.xpm");
-    load_texture(game, &game->west_texture,  "textures/west_wall.xpm");
-
+	load_texture(game, &game->south_texture, "textures/south_wall.xpm");
+	load_texture(game, &game->east_texture, "textures/east_wall.xpm");
+	load_texture(game, &game->west_texture, "textures/west_wall.xpm");
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 
@@ -91,14 +89,30 @@ int	close_window(void)
 	// mlx_destroy_image(game->mlx, game->img);
 	// mlx_destroy_window(game->mlx, game->win);
 	// mlx_destroy_display(game->mlx);
-	//free(game->mlx);
+	// free(game->mlx);
 	exit(0);
 }
 
+// int	init_ctrl(t_ctrl *ctrl)
+// {
+// 	ctrl->map.full_map = NULL;
+// 	ctrl->map.players_positions = NULL;
+// 	ctrl->map.rows = 0;
+// 	ctrl->map.columns = 0;
+// 	ctrl->map.players_count = 0;
+// 	ctrl->map.has_free_way = 0;
+// 	ctrl->game = malloc(sizeof(t_game));
+// 	if (!ctrl->game)
+// 		return (1);
+// 	init_game_window(ctrl->game);
+// 	return (0);
+// }
 int	init_ctrl(t_ctrl *ctrl)
 {
 	ctrl->map.full_map = NULL;
-	ctrl->map.players_positions = NULL;
+	ctrl->map.player_position.x = 0;
+	ctrl->map.player_position.y = 0;
+	ctrl->map.orientation = '\0';
 	ctrl->map.rows = 0;
 	ctrl->map.columns = 0;
 	ctrl->map.players_count = 0;
@@ -106,6 +120,10 @@ int	init_ctrl(t_ctrl *ctrl)
 	ctrl->game = malloc(sizeof(t_game));
 	if (!ctrl->game)
 		return (1);
+	ctrl->game->north_texture.path = NULL;
+	ctrl->game->south_texture.path = NULL;
+	ctrl->game->east_texture.path = NULL;
+	ctrl->game->west_texture.path = NULL;
 	init_game_window(ctrl->game);
 	return (0);
 }
@@ -113,6 +131,9 @@ int	init_ctrl(t_ctrl *ctrl)
 int	main(int argc, char **argv)
 {
 	t_ctrl	*ctrl;
+	float	player_start_x;
+	float	player_start_y;
+	float	player_start_angle;
 
 	ctrl = malloc(sizeof(t_ctrl));
 	if (!ctrl)
@@ -130,19 +151,17 @@ int	main(int argc, char **argv)
 	}
 	printf("SUCCESS\n");
 	// DEBUG
-
-	//float player_start_x = 224.0f;
-    //float player_start_y = 480.0f;
-	float player_start_x = 96.0f;
-    float player_start_y = 160.0f;
-    float player_start_angle = M_PI / 2;
-
-    init_player(&ctrl->game->player, player_start_x, player_start_y, player_start_angle);
-
+	// float player_start_x = 224.0f;
+	// float player_start_y = 480.0f;
+	player_start_x = 96.0f;
+	player_start_y = 160.0f;
+	player_start_angle = M_PI / 2;
+	init_player(&ctrl->game->player, player_start_x, player_start_y,
+		player_start_angle);
 	mlx_loop_hook(ctrl->game->mlx, draw_loop, ctrl);
-	//mlx_hook(ctrl->game->win, 2, 1L << 0, hook_keypress, ctrl);
+	// mlx_hook(ctrl->game->win, 2, 1L << 0, hook_keypress, ctrl);
 	mlx_hook(ctrl->game->win, 2, 1L << 0, key_press, ctrl);
-    mlx_hook(ctrl->game->win, 3, 1L << 1, key_release, ctrl);
+	mlx_hook(ctrl->game->win, 3, 1L << 1, key_release, ctrl);
 	mlx_hook(ctrl->game->win, 17, 0, close_window, ctrl);
 	mlx_loop(ctrl->game->mlx);
 	game_cleanup(ctrl);

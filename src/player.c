@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:59 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/20 10:44:03 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/20 13:40:29 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+
+void	hook_esc(t_ctrl *ctrl)
+{
+	game_cleanup(ctrl);
+	exit(0);
+}
 
 // Initialize player with default values
 void	init_player(t_player *player, float start_x, float start_y,
@@ -19,12 +25,10 @@ void	init_player(t_player *player, float start_x, float start_y,
 	player->x = start_x;
 	player->y = start_y;
 	player->angle = start_angle;
-
 	player->key_up = false;
 	player->key_down = false;
 	player->key_right = false;
 	player->key_left = false;
-
 	player->left_rotate = false;
 	player->right_rotate = false;
 }
@@ -49,6 +53,8 @@ int	key_press(int keycode, t_ctrl *ctrl)
 		player->left_rotate = true;
 	if (keycode == KEY_RIGHT)
 		player->right_rotate = true;
+	if (keycode == KEY_ESC)
+		hook_esc(ctrl);
 	return (0);
 }
 
@@ -121,7 +127,6 @@ void	update_player_angle(t_player *player, double delta_time)
 		player->angle += 2 * M_PI;
 }
 
-
 void	apply_movement(float *new_x, float *new_y, t_player *player,
 		float move_speed, float cos_angle, float sin_angle)
 {
@@ -155,9 +160,7 @@ void	update_player_position(t_player *player, float move_speed, t_map *map,
 
 	new_x = player->x;
 	new_y = player->y;
-
 	apply_movement(&new_x, &new_y, player, move_speed, cos_angle, sin_angle);
-
 	if (is_valid_position(new_x, new_y, map))
 	{
 		player->x = new_x;
@@ -175,6 +178,5 @@ void	move_player(t_player *player, double delta_time, t_map *map)
 	move_speed = 100.0f * delta_time;
 	cos_angle = cos(player->angle);
 	sin_angle = sin(player->angle);
-
 	update_player_position(player, move_speed, map, cos_angle, sin_angle);
 }

@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:52:25 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/16 14:27:55 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/20 13:57:27 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,16 +28,44 @@ void	check_args(int argc, char *argv[], t_ctrl *ctrl)
 			ctrl);
 }
 
+// void	find_players_pos(t_ctrl *ctrl, size_t i, size_t j)
+// {
+// 	char	c;
+// 	int		count;
+
+// 	count = 0;
+// 	i = 0;
+// 	j = 0;
+// 	ctrl->map.players_positions = malloc(ctrl->map.players_count
+// 			* sizeof(t_pos));
+// 	while (i < ctrl->map.rows)
+// 	{
+// 		while (j < ctrl->map.columns)
+// 		{
+// 			c = ctrl->map.full_map[i][j];
+// 			if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
+// 			{
+// 				ctrl->map.players_positions[count].x = i;
+// 				ctrl->map.players_positions[count].y = j;
+// 				count++;
+// 			}
+// 			j++;
+// 		}
+// 		j = 0;
+// 		i++;
+// 	}
+// }
+
 void	find_players_pos(t_ctrl *ctrl, size_t i, size_t j)
 {
 	char	c;
-	int		count;
+	// int		count;
 
-	count = 0;
+	// count = 0;
 	i = 0;
 	j = 0;
-	ctrl->map.players_positions = malloc(ctrl->map.players_count
-			* sizeof(t_pos));
+	// ctrl->map.players_positions = malloc(ctrl->map.players_count
+	// 		* sizeof(t_pos));
 	while (i < ctrl->map.rows)
 	{
 		while (j < ctrl->map.columns)
@@ -45,9 +73,9 @@ void	find_players_pos(t_ctrl *ctrl, size_t i, size_t j)
 			c = ctrl->map.full_map[i][j];
 			if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
 			{
-				ctrl->map.players_positions[count].x = i;
-				ctrl->map.players_positions[count].y = j;
-				count++;
+				ctrl->map.player_position.x = i;
+				ctrl->map.player_position.y = j;
+				ctrl->map.orientation = c;
 			}
 			j++;
 		}

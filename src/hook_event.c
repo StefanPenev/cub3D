@@ -3,21 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   hook_event.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 15:04:51 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/17 09:08:35 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/20 13:40:32 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-int	hook_esc(t_ctrl *ctrl)
-{
-	game_cleanup(ctrl);
-	exit(0);
-	return (0);
-}
+// int	hook_esc(t_ctrl *ctrl)
+// {
+// 	game_cleanup(ctrl);
+// 	exit(0);
+// 	return (0);
+// }
 
 // int	conditions(t_ctrl *ctrl, char tile)
 // {
@@ -65,19 +65,19 @@ int	hook_esc(t_ctrl *ctrl)
 // 	}
 // }
 
-int	hook_keypress(int keycode, t_ctrl *ctrl)
-{
-	// if (keycode == KEY_W)
-	// 	move_viewpoint(ctrl, 0, -1);
-	// else if (keycode == KEY_S)
-	// 	move_viewpoint(ctrl, 0, 1);
-	// else if (keycode == KEY_A)
-	// 	move_viewpoint(ctrl, -1, 0);
-	// else if (keycode == KEY_D)
-	// 	move_viewpoint(ctrl, 1, 0);
-	// else if (keycode == KEY_ESC)
-	// 	hook_esc(keycode, ctrl);
-	if (keycode == KEY_ESC)
-		hook_esc(ctrl);
-	return (0);
-}
+// int	hook_keypress(int keycode, t_ctrl *ctrl)
+// {
+// 	// if (keycode == KEY_W)
+// 	// 	move_viewpoint(ctrl, 0, -1);
+// 	// else if (keycode == KEY_S)
+// 	// 	move_viewpoint(ctrl, 0, 1);
+// 	// else if (keycode == KEY_A)
+// 	// 	move_viewpoint(ctrl, -1, 0);
+// 	// else if (keycode == KEY_D)
+// 	// 	move_viewpoint(ctrl, 1, 0);
+// 	// else if (keycode == KEY_ESC)
+// 	// 	hook_esc(keycode, ctrl);
+// 	if (keycode == KEY_ESC)
+// 		hook_esc(ctrl);
+// 	return (0);
+// }
