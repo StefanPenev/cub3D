@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/21 10:00:32 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/21 16:29:59 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,89 +57,91 @@
 
 typedef struct s_pos
 {
-	size_t			x;
-	size_t			y;
+	size_t		x;
+	size_t		y;
 
-}					t_pos;
+}				t_pos;
 
 typedef struct s_map
 {
-	char			**full_map;
-	int				has_free_way;
-	size_t			rows;
-	size_t			columns;
-	size_t			players_count;
-	// t_pos	*players_positions;
-	t_pos			player_position;
-	char			orientation;
-}					t_map;
+	char		**full_map;
+	int			has_free_way;
+	int			textures_defined;
+	int			colors_defined;
+	int			map_started;
+	size_t		rows;
+	size_t		columns;
+	size_t		players_count;
+	t_pos		player_position;
+	char		orientation;
+}				t_map;
 
 typedef struct s_player
 {
-	float			x;
-	float			y;
-	float			angle;
-	bool			key_up;
-	bool			key_down;
-	bool			key_left;
-	bool			key_right;
-	bool			left_rotate;
-	bool			right_rotate;
-}					t_player;
+	float		x;
+	float		y;
+	float		angle;
+	bool		key_up;
+	bool		key_down;
+	bool		key_left;
+	bool		key_right;
+	bool		left_rotate;
+	bool		right_rotate;
+}				t_player;
 
 typedef struct s_texture
 {
-	void			*img;
-	char			*addr;
-	int				bits_per_pixel;
-	int				line_length;
-	int				endian;
-	char			*path;
-}					t_texture;
+	void		*img;
+	char		*addr;
+	int			bits_per_pixel;
+	int			line_length;
+	int			endian;
+	char		*path;
+}				t_texture;
 
 typedef struct s_game
 {
-	void			*mlx;
-	void			*win;
-	void			*img;
-	char			*img_data;
-	int				bpp;
-	int				size_line;
-	int				endian;
-	unsigned int	ceiling_color; //anna
-	unsigned int	floor_color; //anna
-	int				debug;
-	t_player		player;
-	t_texture		north_texture;
-	t_texture		south_texture;
-	t_texture		east_texture;
-	t_texture		west_texture;
-}					t_game;
+	void		*mlx;
+	void		*win;
+	void		*img;
+	char		*img_data;
+	int			bpp;
+	int			size_line;
+	int			endian;
+	unsigned int ceiling_color; // anna
+	unsigned int floor_color;   // anna
+	int			debug;
+	t_player	player;
+	t_texture	north_texture;
+	t_texture	south_texture;
+	t_texture	east_texture;
+	t_texture	west_texture;
+}				t_game;
 
 typedef struct s_ctrl
 {
-	t_map			map;
-	t_game			*game;
-}					t_ctrl;
+	t_map		map;
+	t_game		*game;
+}				t_ctrl;
 
-void				free_map(char **map, size_t rows);
-void				game_cleanup(t_ctrl *ctrl);
-void				clean_exit(char *str, t_ctrl *ctrl);
-void				check_args(int argc, char *argv[], t_ctrl *ctrl);
-void				check_valid_characters(t_ctrl *ctrl);
-void				check_map_closed(t_ctrl *ctrl);
-void				check_map_valid(t_ctrl *ctrl);
-void				parse_map(char *filename, t_ctrl *ctrl);
-void				find_biggest_line(t_ctrl *ctrl);
-char				*merge_map_arr(t_ctrl *ctrl, char *line_tmp, char *map_tmp);
-int					hook_keypress(int keycode, t_ctrl *ctrl);
-int					draw_loop(t_ctrl *ctrl);
-int					key_release(int keycode, t_ctrl *ctrl);
-int					key_press(int keycode, t_ctrl *ctrl);
-void				init_player(t_player *player, float start_x, float start_y,
-						float start_angle);
-void				move_player(t_player *player, double delta_time,
-						t_map *map);
-char				*trim_trailing_whitespace(char *str);
+void			free_map(char **map, size_t rows);
+void			game_cleanup(t_ctrl *ctrl);
+void			clean_exit(char *str, t_ctrl *ctrl);
+void			check_args(int argc, char *argv[], t_ctrl *ctrl);
+void			check_valid_characters(t_ctrl *ctrl);
+void			check_map_closed(t_ctrl *ctrl);
+void			check_map_valid(t_ctrl *ctrl);
+void			parse_map(char *filename, t_ctrl *ctrl);
+void			find_biggest_line(t_ctrl *ctrl);
+char			*merge_map_arr(t_ctrl *ctrl, char *line_tmp, char *map_tmp);
+int				hook_keypress(int keycode, t_ctrl *ctrl);
+int				draw_loop(t_ctrl *ctrl);
+int				key_release(int keycode, t_ctrl *ctrl);
+int				key_press(int keycode, t_ctrl *ctrl);
+void			init_player(t_player *player, float start_x, float start_y,
+					float start_angle);
+void			move_player(t_player *player, double delta_time, t_map *map);
+char			*trim_trailing_whitespace(char *str);
+int				ft_isspace(int c);
 
 #endif

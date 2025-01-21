@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/20 13:57:38 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/21 16:20:03 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,31 @@ void	game_cleanup(t_ctrl *ctrl)
 	{
 		free_map(ctrl->map.full_map, ctrl->map.rows);
 	}
-	//free(ctrl->map.players_positions);
+	if (ctrl->game->north_texture.path)
+	{
+		free(ctrl->game->north_texture.path);
+		printf("DEBUG: North texture path WAS FREED\n");
+	}
+	if (ctrl->game->south_texture.path)
+	{
+		free(ctrl->game->south_texture.path);
+		printf("DEBUG: South texture path WAS FREED\n");
+	}
+	if (ctrl->game->west_texture.path)
+	{
+		free(ctrl->game->west_texture.path);
+		printf("DEBUG: West texture path WAS FREED\n");
+	}
+	if (ctrl->game->east_texture.path)
+	{
+		free(ctrl->game->east_texture.path);
+		printf("DEBUG: East texture path WAS FREED\n");
+	}
+	free(ctrl->game);
+	ctrl->game = NULL;
 	free(ctrl);
 	ctrl = NULL;
+
 }
 
 void	clean_exit(char *str, t_ctrl *ctrl)

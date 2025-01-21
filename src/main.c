@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/20 21:35:12 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/21 14:39:39 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,12 +68,11 @@ void	init_game_window(t_game *game)
 
 void	load_all_textures(t_game *game)
 {
-    load_texture(game, &game->north_texture, game->north_texture.path);
-    load_texture(game, &game->south_texture, game->south_texture.path);
-    load_texture(game, &game->east_texture,  game->east_texture.path);
-    load_texture(game, &game->west_texture,  game->west_texture.path);
+	load_texture(game, &game->north_texture, game->north_texture.path);
+	load_texture(game, &game->south_texture, game->south_texture.path);
+	load_texture(game, &game->east_texture, game->east_texture.path);
+	load_texture(game, &game->west_texture, game->west_texture.path);
 }
-
 
 void	cleanup_textures(t_game *game)
 {
@@ -96,20 +95,6 @@ int	close_window(void)
 	exit(0);
 }
 
-// int	init_ctrl(t_ctrl *ctrl)
-// {
-// 	ctrl->map.full_map = NULL;
-// 	ctrl->map.players_positions = NULL;
-// 	ctrl->map.rows = 0;
-// 	ctrl->map.columns = 0;
-// 	ctrl->map.players_count = 0;
-// 	ctrl->map.has_free_way = 0;
-// 	ctrl->game = malloc(sizeof(t_game));
-// 	if (!ctrl->game)
-// 		return (1);
-// 	init_game_window(ctrl->game);
-// 	return (0);
-// }
 int	init_ctrl(t_ctrl *ctrl)
 {
 	ctrl->map.full_map = NULL;
@@ -120,6 +105,9 @@ int	init_ctrl(t_ctrl *ctrl)
 	ctrl->map.columns = 0;
 	ctrl->map.players_count = 0;
 	ctrl->map.has_free_way = 0;
+	ctrl->map.textures_defined = 0;
+	ctrl->map.colors_defined = 0;
+	ctrl->map.map_started = 0;
 	ctrl->game = malloc(sizeof(t_game));
 	if (!ctrl->game)
 		return (1);
@@ -127,6 +115,9 @@ int	init_ctrl(t_ctrl *ctrl)
 	ctrl->game->south_texture.path = NULL;
 	ctrl->game->east_texture.path = NULL;
 	ctrl->game->west_texture.path = NULL;
+	ctrl->game->east_texture.path = NULL;
+	ctrl->game->floor_color = 0xFFFFFFFF;
+	ctrl->game->ceiling_color = 0xFFFFFFFF;
 	return (0);
 }
 
@@ -154,7 +145,6 @@ int	main(int argc, char **argv)
 	}
 	printf("SUCCESS\n");
 	// DEBUG
-
 	init_game_window(ctrl->game);
 	load_all_textures(ctrl->game);
 	// float player_start_x = 224.0f;
