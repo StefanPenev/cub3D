@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/20 16:34:20 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/20 21:35:12 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,17 @@ void	init_game_window(t_game *game)
 		free(game->mlx);
 		exit(1);
 	}
-	// game->ceiling_color = CEILING_COLOR;
-	// game->floor_color = FLOOR_COLOR;
-	load_texture(game, &game->north_texture, "textures/north_wall.xpm");
-	load_texture(game, &game->south_texture, "textures/south_wall.xpm");
-	load_texture(game, &game->east_texture, "textures/east_wall.xpm");
-	load_texture(game, &game->west_texture, "textures/west_wall.xpm");
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
+
+void	load_all_textures(t_game *game)
+{
+    load_texture(game, &game->north_texture, game->north_texture.path);
+    load_texture(game, &game->south_texture, game->south_texture.path);
+    load_texture(game, &game->east_texture,  game->east_texture.path);
+    load_texture(game, &game->west_texture,  game->west_texture.path);
+}
+
 
 void	cleanup_textures(t_game *game)
 {
@@ -124,7 +127,6 @@ int	init_ctrl(t_ctrl *ctrl)
 	ctrl->game->south_texture.path = NULL;
 	ctrl->game->east_texture.path = NULL;
 	ctrl->game->west_texture.path = NULL;
-	init_game_window(ctrl->game);
 	return (0);
 }
 
@@ -141,7 +143,8 @@ int	main(int argc, char **argv)
 		printf("Error: Memory allocation failed.\n");
 		return (1);
 	}
-	init_ctrl(ctrl);
+	if (init_ctrl(ctrl) != 0)
+		return (1);
 	check_args(argc, argv, ctrl);
 	parse_map(argv[1], ctrl);
 	// DEBUG
@@ -151,6 +154,9 @@ int	main(int argc, char **argv)
 	}
 	printf("SUCCESS\n");
 	// DEBUG
+
+	init_game_window(ctrl->game);
+	load_all_textures(ctrl->game);
 	// float player_start_x = 224.0f;
 	// float player_start_y = 480.0f;
 	player_start_x = 96.0f;
@@ -159,7 +165,6 @@ int	main(int argc, char **argv)
 	init_player(&ctrl->game->player, player_start_x, player_start_y,
 		player_start_angle);
 	mlx_loop_hook(ctrl->game->mlx, draw_loop, ctrl);
-	// mlx_hook(ctrl->game->win, 2, 1L << 0, hook_keypress, ctrl);
 	mlx_hook(ctrl->game->win, 2, 1L << 0, key_press, ctrl);
 	mlx_hook(ctrl->game->win, 3, 1L << 1, key_release, ctrl);
 	mlx_hook(ctrl->game->win, 17, 0, close_window, ctrl);

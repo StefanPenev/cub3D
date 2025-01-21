@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/20 16:36:33 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:00:32 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ typedef struct s_texture
 	int				bits_per_pixel;
 	int				line_length;
 	int				endian;
-	char *path; // anna
+	char			*path;
 }					t_texture;
 
 typedef struct s_game
@@ -140,5 +140,6 @@ void				init_player(t_player *player, float start_x, float start_y,
 						float start_angle);
 void				move_player(t_player *player, double delta_time,
 						t_map *map);
+char				*trim_trailing_whitespace(char *str);
 
 #endif

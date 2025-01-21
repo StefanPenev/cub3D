@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:30:11 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/20 16:59:50 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/21 10:02:10 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
+#include <ctype.h>
 
 static bool	all_textures_defined(t_ctrl *ctrl)
 {
@@ -64,6 +65,7 @@ void	keep_textures_path(int file_id, t_ctrl *ctrl)
 					ctrl);
 			}
 		}
+		trim_trailing_whitespace(line_tmp);
 		if (ft_strncmp("NO ", line_tmp, 3) == 0)
 			ctrl->game->north_texture.path = ft_strdup(line_tmp + 3);
 		else if (ft_strncmp("SO ", line_tmp, 3) == 0)
@@ -183,7 +185,7 @@ void	define_FC_colors(int file_id, t_ctrl *ctrl)
 		}
 		else
 		{
-			free(line_tmp);
+			//free(line_tmp);
 			continue ;
 		}
 		free(line_tmp);
@@ -242,7 +244,7 @@ char	*read_map(char *filename, t_ctrl *ctrl)
 			}
 			ctrl->map.rows++;
 		}
-		free(line_tmp);
+		//free(line_tmp);
 	}
 	close(file_id);
 	printf("DEBUG: number of rows: %zu\n", ctrl->map.rows);
