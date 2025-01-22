@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/22 11:23:02 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 20:39:18 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,7 +297,7 @@ int	draw_loop(t_ctrl *ctrl)
 
 	delta_time = compute_delta_time();
 	clear_image(ctrl->game);
-	move_player(&ctrl->game->player, delta_time, &ctrl->map);
+	move_player(ctrl, delta_time);
 	if (ctrl->game->debug)
 		draw_debug(ctrl);
 	else

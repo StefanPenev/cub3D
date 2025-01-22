@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 19:01:37 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 21:54:26 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,25 @@ void	clean_exit(char *str, t_ctrl *ctrl)
 	exit(1);
 }
 
+void	cleanup_textures(t_game *game)
+{
+	if (game->north_texture.img)
+		mlx_destroy_image(game->mlx, game->north_texture.img);
+	if (game->south_texture.img)
+		mlx_destroy_image(game->mlx, game->south_texture.img);
+	if (game->east_texture.img)
+		mlx_destroy_image(game->mlx, game->east_texture.img);
+	if (game->west_texture.img)
+		mlx_destroy_image(game->mlx, game->west_texture.img);
+	if (game->img)
+		mlx_destroy_image(game->mlx, game->img);
+}
+
 int	close_window(t_ctrl *ctrl)
 {
 	if (!ctrl)
 		exit(EXIT_FAILURE);
+	cleanup_textures(ctrl->game);
 	if (ctrl->game->mlx && ctrl->game->win)
 		mlx_destroy_window(ctrl->game->mlx, ctrl->game->win);
 	if (ctrl->game->mlx)

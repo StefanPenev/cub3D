@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 18:59:05 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 21:54:34 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,9 +136,7 @@ int				hook_keypress(int keycode, t_ctrl *ctrl);
 int				draw_loop(t_ctrl *ctrl);
 int				key_release(int keycode, t_ctrl *ctrl);
 int				key_press(int keycode, t_ctrl *ctrl);
-void			init_player(t_player *player, float start_x, float start_y,
-					float orientation);
-void			move_player(t_player *player, double delta_time, t_map *map);
+void			move_player(t_ctrl *ctrl, double delta_time);
 char			*trim_trailing_whitespace(char *str);
 int				ft_isspace(int c);
 void			draw_debug(t_ctrl *ctrl);
@@ -148,5 +146,13 @@ bool			touch(size_t grid_x, size_t grid_y, t_map *map);
 void			init_player(t_player *player, float start_x, float start_y,
 					float orientation);
 int				close_window(t_ctrl *ctrl);
+bool			in_map_bounds(float x, float y, t_map *map);
 
+/* ************************************************************************** */
+/*              		           init.c                                     */
+/* ************************************************************************** */
+int				init_ctrl(t_ctrl *ctrl);
+void			init_game_window(t_game *game);
+void			init_player(t_player *player, float start_x, float start_y,
+					float orientation);
 #endif
