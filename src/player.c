@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:59 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/22 10:02:08 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 11:21:10 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,8 @@ int	is_valid_position(float x, float y, t_map *map)
 	grid_x = (int)(x / TILE_SIZE);
 	grid_y = (int)(y / TILE_SIZE);
 	tile = map->full_map[grid_y][grid_x];
-	return (tile == '0' || tile == 'W');
+	return (tile == '0' || tile == 'W' || tile == 'N'
+		|| tile == 'S' || tile == 'E');
 }
 
 void	update_player_angle(t_player *player, double delta_time)

@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 10:04:53 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 11:21:59 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	init_game_window(t_game *game)
 		free(game->mlx);
 		exit(1);
 	}
+	game->debug = 0;
 	mlx_put_image_to_window(game->mlx, game->win, game->img, 0, 0);
 }
 

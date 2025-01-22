@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:52:25 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 10:00:22 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 11:12:42 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ void	find_players_pos(t_ctrl *ctrl, size_t i, size_t j)
 			c = ctrl->map.full_map[i][j];
 			if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
 			{
-				ctrl->map.player_position.x = (i * TILE_SIZE) + (TILE_SIZE / 2);
-				ctrl->map.player_position.y = (j * TILE_SIZE) + (TILE_SIZE / 2);
+				ctrl->map.player_position.x = (j * TILE_SIZE) + (TILE_SIZE / 2);
+				ctrl->map.player_position.y = (i * TILE_SIZE) + (TILE_SIZE / 2);
 				if (c == 'N')
 					ctrl->map.player_position.orientation = 3 * M_PI / 2;
 				else if (c == 'S')

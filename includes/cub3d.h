@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 10:02:46 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 11:36:21 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,5 +141,9 @@ void			init_player(t_player *player, float start_x, float start_y,
 void			move_player(t_player *player, double delta_time, t_map *map);
 char			*trim_trailing_whitespace(char *str);
 int				ft_isspace(int c);
+void			draw_debug(t_ctrl *ctrl);
+void			draw_square(int x, int y, int size, int color, t_game *game);
+void			normalize_angle(float *angle);
+bool			touch(size_t grid_x, size_t grid_y, t_map *map);
 
 #endif

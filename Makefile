@@ -19,6 +19,7 @@ SRCS += $(SRC_DIR)/main.c \
 		$(SRC_DIR)/raycaster.c \
 		$(SRC_DIR)/player.c \
 		$(SRC_DIR)/utils.c \
+		$(SRC_DIR)/debug.c \
 
 OBJS = $(SRCS:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/20 11:23:42 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 11:23:02 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -290,18 +290,23 @@ static void	handle_rays(t_ctrl *ctrl, float start_angle, float angle_step)
 
 int	draw_loop(t_ctrl *ctrl)
 {
-	double	delta_time;
 	float	fov;
 	float	start_angle;
 	float	angle_step;
+	double	delta_time;
 
 	delta_time = compute_delta_time();
 	clear_image(ctrl->game);
 	move_player(&ctrl->game->player, delta_time, &ctrl->map);
-	fov = M_PI / 3.0f;
-	start_angle = ctrl->game->player.angle - (fov / 2.0f);
-	angle_step = fov / WIDTH;
-	handle_rays(ctrl, start_angle, angle_step);
+	if (ctrl->game->debug)
+		draw_debug(ctrl);
+	else
+	{
+		fov = M_PI / 3.0f;
+		start_angle = ctrl->game->player.angle - (fov / 2.0f);
+		angle_step = fov / WIDTH;
+		handle_rays(ctrl, start_angle, angle_step);
+	}
 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
 		ctrl->game->img, 0, 0);
 	return (0);
