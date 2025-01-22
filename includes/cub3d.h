@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 13:55:33 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/22 18:59:05 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,5 +145,8 @@ void			draw_debug(t_ctrl *ctrl);
 void			draw_square(int x, int y, int size, int color, t_game *game);
 void			normalize_angle(float *angle);
 bool			touch(size_t grid_x, size_t grid_y, t_map *map);
+void			init_player(t_player *player, float start_x, float start_y,
+					float orientation);
+int				close_window(t_ctrl *ctrl);
 
 #endif

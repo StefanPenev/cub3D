@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_cleanup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 14:22:37 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/22 19:01:37 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,4 +68,20 @@ void	clean_exit(char *str, t_ctrl *ctrl)
 	}
 	game_cleanup(ctrl);
 	exit(1);
+}
+
+int	close_window(t_ctrl *ctrl)
+{
+	if (!ctrl)
+		exit(EXIT_FAILURE);
+	if (ctrl->game->mlx && ctrl->game->win)
+		mlx_destroy_window(ctrl->game->mlx, ctrl->game->win);
+	if (ctrl->game->mlx)
+	{
+		mlx_destroy_display(ctrl->game->mlx);
+		mlx_loop_end(ctrl->game->mlx);
+		free(ctrl->game->mlx);
+	}
+	game_cleanup(ctrl);
+	exit(EXIT_SUCCESS);
 }

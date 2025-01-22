@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:59 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/22 11:21:10 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 18:56:47 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,8 @@
 
 void	hook_esc(t_ctrl *ctrl)
 {
-	game_cleanup(ctrl);
+	close_window(ctrl);
 	exit(0);
-}
-
-// Initialize player with default values
-void	init_player(t_player *player, float start_x, float start_y, float orientation)
-{
-	player->x = start_x;
-	player->y = start_y;
-	player->angle = orientation;
-	player->key_up = false;
-	player->key_down = false;
-	player->key_right = false;
-	player->key_left = false;
-	player->left_rotate = false;
-	player->right_rotate = false;
 }
 
 // Handle key press events

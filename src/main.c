@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 13:58:00 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/22 19:00:55 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,6 @@ void	cleanup_textures(t_game *game)
 		mlx_destroy_image(game->mlx, game->west_texture.img);
 }
 
-int	close_window(void)
-{
-	// mlx_destroy_image(game->mlx, game->img);
-	// mlx_destroy_window(game->mlx, game->win);
-	// mlx_destroy_display(game->mlx);
-	// free(game->mlx);
-	exit(0);
-}
-
 int	init_ctrl(t_ctrl *ctrl)
 {
 	ctrl->map.full_map = NULL;
@@ -125,9 +116,6 @@ int	init_ctrl(t_ctrl *ctrl)
 int	main(int argc, char **argv)
 {
 	t_ctrl	*ctrl;
-	// float	player_start_x;
-	// float	player_start_y;
-	// float	player_start_angle;
 
 	ctrl = malloc(sizeof(t_ctrl));
 	if (!ctrl)
@@ -148,11 +136,6 @@ int	main(int argc, char **argv)
 	// DEBUG
 	init_game_window(ctrl->game);
 	load_all_textures(ctrl->game);
-	// float player_start_x = 224.0f;
-	// float player_start_y = 480.0f;
-	// player_start_x = 96.0f;
-	// player_start_y = 160.0f;
-	// player_start_angle = M_PI / 2;
 	init_player(&ctrl->game->player, ctrl->map.player_position.x,
 		ctrl->map.player_position.y, ctrl->map.player_position.orientation);
 	mlx_loop_hook(ctrl->game->mlx, draw_loop, ctrl);
