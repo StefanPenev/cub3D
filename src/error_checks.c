@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_checks.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:52:25 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 11:12:42 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 14:18:18 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,62 +28,37 @@ void	check_args(int argc, char *argv[], t_ctrl *ctrl)
 			ctrl);
 }
 
-// void	find_players_pos(t_ctrl *ctrl, size_t i, size_t j)
-// {
-// 	char	c;
-// 	int		count;
-
-// 	count = 0;
-// 	i = 0;
-// 	j = 0;
-// 	ctrl->map.players_positions = malloc(ctrl->map.players_count
-// 			* sizeof(t_pos));
-// 	while (i < ctrl->map.rows)
-// 	{
-// 		while (j < ctrl->map.columns)
-// 		{
-// 			c = ctrl->map.full_map[i][j];
-// 			if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
-// 			{
-// 				ctrl->map.players_positions[count].x = i;
-// 				ctrl->map.players_positions[count].y = j;
-// 				count++;
-// 			}
-// 			j++;
-// 		}
-// 		j = 0;
-// 		i++;
-// 	}
-// }
-
-void	find_players_pos(t_ctrl *ctrl, size_t i, size_t j)
+void	save_position(t_ctrl *ctrl, size_t i, size_t j, char c)
 {
-	char	c;
-	// int		count;
+	ctrl->map.player_index.x = i;
+	ctrl->map.player_index.y = j;
+	ctrl->map.player_position.x = (j * TILE_SIZE) + (TILE_SIZE / 2);
+	ctrl->map.player_position.y = (i * TILE_SIZE) + (TILE_SIZE / 2);
+	if (c == 'N')
+		ctrl->map.player_position.orientation = 3 * M_PI / 2;
+	else if (c == 'S')
+		ctrl->map.player_position.orientation = M_PI / 2;
+	else if (c == 'E')
+		ctrl->map.player_position.orientation = 0;
+	else if (c == 'W')
+		ctrl->map.player_position.orientation = M_PI;
+}
 
-	// count = 0;
+void	find_players_pos(t_ctrl *ctrl)
+{
+	size_t	i;
+	size_t	j;
+	char	c;
+
 	i = 0;
 	j = 0;
-	// ctrl->map.players_positions = malloc(ctrl->map.players_count
-	// 		* sizeof(t_pos));
 	while (i < ctrl->map.rows)
 	{
 		while (j < ctrl->map.columns)
 		{
 			c = ctrl->map.full_map[i][j];
 			if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
-			{
-				ctrl->map.player_position.x = (j * TILE_SIZE) + (TILE_SIZE / 2);
-				ctrl->map.player_position.y = (i * TILE_SIZE) + (TILE_SIZE / 2);
-				if (c == 'N')
-					ctrl->map.player_position.orientation = 3 * M_PI / 2;
-				else if (c == 'S')
-					ctrl->map.player_position.orientation = M_PI / 2;
-				else if (c == 'E')
-					ctrl->map.player_position.orientation = 0;
-				else if (c == 'W')
-					ctrl->map.player_position.orientation = M_PI;
-			}
+				save_position(ctrl, i, j, c);
 			j++;
 		}
 		j = 0;
@@ -114,10 +89,10 @@ void	check_valid_characters(t_ctrl *ctrl)
 		}
 		i++;
 	}
-	if (ctrl->map.players_count == 0)
-		clean_exit("Invalid input:\nPlayer position not found.\n", ctrl);
+	if (ctrl->map.players_count != 1)
+		clean_exit("Invalid input:\nSingle player position expected.\n", ctrl);
 	else
-		find_players_pos(ctrl, i, j);
+		find_players_pos(ctrl);
 }
 
 void	check_map_closed(t_ctrl *ctrl)
@@ -130,7 +105,7 @@ void	check_map_closed(t_ctrl *ctrl)
 		if (ctrl->map.full_map[0][i] != WALL)
 			clean_exit("Invalid input:\nMap must be closed by walls.\n", ctrl);
 		if (ctrl->map.full_map[ctrl->map.rows - 1][i] != WALL)
-			clean_exit("Invalid input:\nMap must be closed by wall.\n", ctrl);
+			clean_exit("Invalid input:\nMap must be closed by walls.\n", ctrl);
 		i++;
 	}
 	i = 0;

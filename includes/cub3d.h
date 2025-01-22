@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 11:36:21 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 13:55:33 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ typedef struct s_map
 	size_t		columns;
 	size_t		players_count;
 	t_pos		player_position;
-	//char		orientation;
+	t_pos		player_index;
 }				t_map;
 
 typedef struct s_player

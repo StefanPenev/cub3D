@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 11:21:59 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/22 13:58:00 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ int	init_ctrl(t_ctrl *ctrl)
 	ctrl->map.full_map = NULL;
 	ctrl->map.player_position.x = 0;
 	ctrl->map.player_position.y = 0;
-	//ctrl->map.orientation = '\0';
+	ctrl->map.player_index.x = 0;
+	ctrl->map.player_index.y = 0;
 	ctrl->map.rows = 0;
 	ctrl->map.columns = 0;
 	ctrl->map.players_count = 0;
@@ -116,7 +117,6 @@ int	init_ctrl(t_ctrl *ctrl)
 	ctrl->game->south_texture.path = NULL;
 	ctrl->game->east_texture.path = NULL;
 	ctrl->game->west_texture.path = NULL;
-	ctrl->game->east_texture.path = NULL;
 	ctrl->game->floor_color = 0xFFFFFFFF;
 	ctrl->game->ceiling_color = 0xFFFFFFFF;
 	return (0);

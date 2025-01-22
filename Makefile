@@ -15,7 +15,6 @@ SRCS += $(SRC_DIR)/main.c \
 		$(SRC_DIR)/parse_map.c \
 		$(SRC_DIR)/flood_fill.c \
 		$(SRC_DIR)/map_utils.c \
-		$(SRC_DIR)/hook_event.c \
 		$(SRC_DIR)/raycaster.c \
 		$(SRC_DIR)/player.c \
 		$(SRC_DIR)/utils.c \
