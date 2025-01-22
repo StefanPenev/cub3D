@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/21 14:39:39 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:04:53 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ int	init_ctrl(t_ctrl *ctrl)
 	ctrl->map.full_map = NULL;
 	ctrl->map.player_position.x = 0;
 	ctrl->map.player_position.y = 0;
-	ctrl->map.orientation = '\0';
+	//ctrl->map.orientation = '\0';
 	ctrl->map.rows = 0;
 	ctrl->map.columns = 0;
 	ctrl->map.players_count = 0;
@@ -124,9 +124,9 @@ int	init_ctrl(t_ctrl *ctrl)
 int	main(int argc, char **argv)
 {
 	t_ctrl	*ctrl;
-	float	player_start_x;
-	float	player_start_y;
-	float	player_start_angle;
+	// float	player_start_x;
+	// float	player_start_y;
+	// float	player_start_angle;
 
 	ctrl = malloc(sizeof(t_ctrl));
 	if (!ctrl)
@@ -149,11 +149,11 @@ int	main(int argc, char **argv)
 	load_all_textures(ctrl->game);
 	// float player_start_x = 224.0f;
 	// float player_start_y = 480.0f;
-	player_start_x = 96.0f;
-	player_start_y = 160.0f;
-	player_start_angle = M_PI / 2;
-	init_player(&ctrl->game->player, player_start_x, player_start_y,
-		player_start_angle);
+	// player_start_x = 96.0f;
+	// player_start_y = 160.0f;
+	// player_start_angle = M_PI / 2;
+	init_player(&ctrl->game->player, ctrl->map.player_position.x,
+		ctrl->map.player_position.y, ctrl->map.player_position.orientation);
 	mlx_loop_hook(ctrl->game->mlx, draw_loop, ctrl);
 	mlx_hook(ctrl->game->win, 2, 1L << 0, key_press, ctrl);
 	mlx_hook(ctrl->game->win, 3, 1L << 1, key_release, ctrl);

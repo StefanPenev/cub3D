@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   flood_fill.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:31:18 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/21 15:34:27 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:05:46 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,11 @@ void	check_map_valid(t_ctrl *ctrl)
 	free_map(map_copy, ctrl->map.rows);
 	printf("DEBUG: Map copy memory freed\n");
 
-	if (ctrl->map.has_free_way == 0)
-	{
-		printf("ERROR: Player has no space to move\n");
-		clean_exit("Invalid input:\nPlayer has no space to move.\n", ctrl);
-	}
+	// if (ctrl->map.has_free_way == 0)
+	// {
+	// 	printf("ERROR: Player has no space to move\n");
+	// 	clean_exit("Invalid input:\nPlayer has no space to move.\n", ctrl);
+	// }
 	printf("DEBUG: Map validity check passed\n");
 }
 

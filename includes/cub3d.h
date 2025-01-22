@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/21 16:29:59 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:02:46 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,15 +50,13 @@
 # define TEX_WIDTH 128
 # define TEX_HEIGHT 128
 
-// # define CEILING_COLOR 0x87CEEB // Sky Blue
-// # define FLOOR_COLOR   0x6E6E6E // Gray
-
 # define MAP_COLOR 0x0000FF
 
 typedef struct s_pos
 {
 	size_t		x;
 	size_t		y;
+	float		orientation;
 
 }				t_pos;
 
@@ -73,7 +71,7 @@ typedef struct s_map
 	size_t		columns;
 	size_t		players_count;
 	t_pos		player_position;
-	char		orientation;
+	//char		orientation;
 }				t_map;
 
 typedef struct s_player
@@ -139,7 +137,7 @@ int				draw_loop(t_ctrl *ctrl);
 int				key_release(int keycode, t_ctrl *ctrl);
 int				key_press(int keycode, t_ctrl *ctrl);
 void			init_player(t_player *player, float start_x, float start_y,
-					float start_angle);
+					float orientation);
 void			move_player(t_player *player, double delta_time, t_map *map);
 char			*trim_trailing_whitespace(char *str);
 int				ft_isspace(int c);

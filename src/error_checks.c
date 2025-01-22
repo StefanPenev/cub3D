@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_checks.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:52:25 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/21 15:33:44 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/22 10:00:22 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,9 +73,16 @@ void	find_players_pos(t_ctrl *ctrl, size_t i, size_t j)
 			c = ctrl->map.full_map[i][j];
 			if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
 			{
-				ctrl->map.player_position.x = i;
-				ctrl->map.player_position.y = j;
-				ctrl->map.orientation = c;
+				ctrl->map.player_position.x = (i * TILE_SIZE) + (TILE_SIZE / 2);
+				ctrl->map.player_position.y = (j * TILE_SIZE) + (TILE_SIZE / 2);
+				if (c == 'N')
+					ctrl->map.player_position.orientation = 3 * M_PI / 2;
+				else if (c == 'S')
+					ctrl->map.player_position.orientation = M_PI / 2;
+				else if (c == 'E')
+					ctrl->map.player_position.orientation = 0;
+				else if (c == 'W')
+					ctrl->map.player_position.orientation = M_PI;
 			}
 			j++;
 		}
