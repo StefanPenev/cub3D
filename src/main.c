@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/22 21:54:11 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/23 14:49:11 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,6 @@ int	main(int argc, char **argv)
 		return (1);
 	check_args(argc, argv, ctrl);
 	parse_map(argv[1], ctrl);
-	// DEBUG
-	for (int i = 0; ctrl->map.full_map[i] != NULL; i++)
-	{
-		printf("DEBUG: %s\n", ctrl->map.full_map[i]);
-	}
-	printf("SUCCESS\n");
-	// DEBUG
 	init_game_window(ctrl->game);
 	load_all_textures(ctrl->game);
 	init_player(&ctrl->game->player, ctrl->map.player_position.x,

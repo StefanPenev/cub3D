@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/22 21:07:30 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/23 14:14:44 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
 void	init_player(t_player *player, float start_x, float start_y,
-	float orientation)
+		float orientation)
 {
 	player->x = start_x;
 	player->y = start_y;
@@ -66,6 +66,7 @@ void	init_game_window(t_game *game)
 int	init_ctrl(t_ctrl *ctrl)
 {
 	ctrl->map.full_map = NULL;
+	ctrl->map.map_tmp = NULL;
 	ctrl->map.player_position.x = 0;
 	ctrl->map.player_position.y = 0;
 	ctrl->map.player_index.x = 0;
@@ -77,6 +78,8 @@ int	init_ctrl(t_ctrl *ctrl)
 	ctrl->map.textures_defined = 0;
 	ctrl->map.colors_defined = 0;
 	ctrl->map.map_started = 0;
+	ctrl->gnl.save = NULL;
+	ctrl->gnl.line = NULL;
 	ctrl->game = malloc(sizeof(t_game));
 	if (!ctrl->game)
 		return (1);

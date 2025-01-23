@@ -21,6 +21,11 @@ SRCS += $(SRC_DIR)/main.c \
 		$(SRC_DIR)/utils.c \
 		$(SRC_DIR)/debug.c \
 		$(SRC_DIR)/init.c \
+		$(SRC_DIR)/gnl.c \
+		$(SRC_DIR)/read_map.c \
+		$(SRC_DIR)/handle_textures.c \
+		$(SRC_DIR)/handle_colors.c \
+						
 
 OBJS = $(SRCS:.c=.o)
 

@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:59 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/22 19:17:06 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/23 14:54:24 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-void	hook_esc(t_ctrl *ctrl)
-{
-	close_window(ctrl);
-	exit(0);
-}
 
 int	key_press(int keycode, t_ctrl *ctrl)
 {
@@ -38,7 +32,7 @@ int	key_press(int keycode, t_ctrl *ctrl)
 	if (keycode == KEY_RIGHT)
 		player->right_rotate = true;
 	if (keycode == KEY_ESC)
-		hook_esc(ctrl);
+		close_window(ctrl);
 	return (0);
 }
 
