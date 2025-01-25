@@ -9,24 +9,38 @@ MLX_DIR = minilibx-linux
 MLX = $(MLX_DIR)/libmlx.a
 SRC_DIR = src
 
+# Main
 SRCS += $(SRC_DIR)/main.c \
-	    $(SRC_DIR)/game_cleanup.c \
-		$(SRC_DIR)/error_checks.c \
-		$(SRC_DIR)/parse_map.c \
-		$(SRC_DIR)/flood_fill.c \
-		$(SRC_DIR)/map_utils.c \
-		$(SRC_DIR)/raycaster.c \
-		$(SRC_DIR)/player.c \
-		$(SRC_DIR)/player_movement.c \
-		$(SRC_DIR)/utils.c \
-		$(SRC_DIR)/debug.c \
-		$(SRC_DIR)/init.c \
-		$(SRC_DIR)/gnl.c \
-		$(SRC_DIR)/read_map.c \
-		$(SRC_DIR)/handle_textures.c \
-		$(SRC_DIR)/handle_colors.c \
-						
 
+# Cleanup
+SRCS += $(SRC_DIR)/cleanup/game_cleanup.c \
+
+# Map parsing
+SRCS += $(SRC_DIR)/map_parsing/read_map.c \
+		$(SRC_DIR)/map_parsing/parse_map.c \
+		$(SRC_DIR)/map_parsing/flood_fill.c \
+		$(SRC_DIR)/map_parsing/error_checks.c \
+		$(SRC_DIR)/map_parsing/handle_colors.c \
+		$(SRC_DIR)/map_parsing/handle_textures.c \
+
+# Init
+SRCS += $(SRC_DIR)/init/init.c \
+		$(SRC_DIR)/init/init_hooks.c \
+		$(SRC_DIR)/init/load_textures.c \
+
+# Player
+SRCS += $(SRC_DIR)/player/player.c \
+		$(SRC_DIR)/player/player_movement.c \
+
+# Raycaster
+SRCS += $(SRC_DIR)/raycaster/debug.c \
+		$(SRC_DIR)/raycaster/raycaster.c \
+
+# Utils
+SRCS += $(SRC_DIR)/utils/gnl.c \
+		$(SRC_DIR)/utils/utils.c \
+		$(SRC_DIR)/utils/map_utils.c \
+		
 OBJS = $(SRCS:.c=.o)
 
 COLOR_RED = \033[31m

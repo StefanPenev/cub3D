@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/23 15:34:56 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/25 10:45:53 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@
 
 # define WIDTH 800
 # define HEIGHT 600
-# define BLOCK 64
 
 # define TILE_SIZE 64
 # define EMPTY_TILE 0
@@ -106,21 +105,21 @@ typedef struct s_texture
 
 typedef struct s_game
 {
-	void		*mlx;
-	void		*win;
-	void		*img;
-	char		*img_data;
-	int			bpp;
-	int			size_line;
-	int			endian;
-	unsigned int ceiling_color; // anna
-	unsigned int floor_color;   // anna
-	int			debug;
-	t_player	player;
-	t_texture	north_texture;
-	t_texture	south_texture;
-	t_texture	east_texture;
-	t_texture	west_texture;
+	void			*mlx;
+	void			*win;
+	void			*img;
+	char			*img_data;
+	int				bpp;
+	int				size_line;
+	int				endian;
+	unsigned int	ceiling_color;
+	unsigned int	floor_color;
+	int				debug;
+	t_player		player;
+	t_texture		north_texture;
+	t_texture		south_texture;
+	t_texture		east_texture;
+	t_texture		west_texture;
 }				t_game;
 
 typedef struct s_ctrl
@@ -137,6 +136,7 @@ typedef struct s_ctrl
 void			free_map(char **map, size_t rows);
 void			game_cleanup(t_ctrl *ctrl);
 void			clean_exit(char *str, t_ctrl *ctrl);
+int				close_window(t_ctrl *ctrl);
 int				close_window(t_ctrl *ctrl);
 
 /* ************************************************************************** */
@@ -173,14 +173,14 @@ char			*remove_inner_spaces(char *str, t_ctrl *ctrl);
 char			*read_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									utils.c										*/
+/*									utils.c									  */
 /* ************************************************************************** */
 
 char			*trim_trailing_whitespace(char *str);
 int				ft_isspace(int c);
 
 /* ************************************************************************** */
-/*									player.c									*/
+/*									player.c								  */
 /* ************************************************************************** */
 
 int				key_release(int keycode, t_ctrl *ctrl);
@@ -188,19 +188,19 @@ int				key_press(int keycode, t_ctrl *ctrl);
 bool			in_map_bounds(float x, float y, t_map *map);
 
 /* ************************************************************************** */
-/*								player_movement.c  								*/
+/*								player_movement.c  							  */
 /* ************************************************************************** */
 
 void			move_player(t_ctrl *ctrl, double delta_time);
 
 /* ************************************************************************** */
-/*									parse_map.c  								*/
+/*									parse_map.c  			  				  */
 /* ************************************************************************** */
 
 void			parse_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*										gnl.c  									*/
+/*										gnl.c  								  */
 /* ************************************************************************** */
 
 char			*gnl(int fd, t_ctrl *ctrl);
@@ -214,27 +214,42 @@ void			check_valid_characters(t_ctrl *ctrl);
 void			check_map_closed(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									flood_fill.c  								*/
+/*									flood_fill.c  							  */
 /* ************************************************************************** */
 
 void			check_map_valid(t_ctrl *ctrl);
 
-
-
+/* ************************************************************************** */
+/*              				raycaster.c                                   */
+/* ************************************************************************** */
 int				draw_loop(t_ctrl *ctrl);
-void			move_player(t_ctrl *ctrl, double delta_time);
-void			draw_debug(t_ctrl *ctrl);
 void			draw_square(int x, int y, int size, int color, t_game *game);
 void			normalize_angle(float *angle);
 bool			touch(size_t grid_x, size_t grid_y, t_map *map);
 
+/* ************************************************************************** */
+/*              				   debug.c                                    */
+/* ************************************************************************** */
+void			draw_debug(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*              						init.c                                */
+/*              					init.c                                    */
 /* ************************************************************************** */
 
 int				init_ctrl(t_ctrl *ctrl);
-void			init_game_window(t_game *game);
 void			init_player(t_player *player, float start_x, float start_y,
 					float orientation);
+
+/* ************************************************************************** */
+/*              			   load_textures.c                                */
+/* ************************************************************************** */
+void			load_all_textures(t_game *game, t_ctrl *ctrl);
+
+/* ************************************************************************** */
+/*              				  init_hooks.c                                */
+/* ************************************************************************** */
+
+void			init_hooks(t_ctrl *ctrl);
+void			init_game_window(t_ctrl *ctrl);
+
 #endif
