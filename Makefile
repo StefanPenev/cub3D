@@ -36,6 +36,8 @@ SRCS += $(SRC_DIR)/player/player.c \
 SRCS += $(SRC_DIR)/raycaster/debug.c \
 		$(SRC_DIR)/raycaster/debug_utils.c \
 		$(SRC_DIR)/raycaster/raycaster.c \
+		$(SRC_DIR)/raycaster/raycaster_utils.c \
+		$(SRC_DIR)/raycaster/draw.c \
 
 # Utils
 SRCS += $(SRC_DIR)/utils/gnl.c \

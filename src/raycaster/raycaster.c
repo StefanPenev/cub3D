@@ -6,88 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/22 20:39:18 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/27 11:59:13 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-void	put_pixel(int x, int y, int color, t_game *game)
-{
-	char	*dst;
-
-	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
-		return ;
-	dst = game->img_data + (y * game->size_line + x * (game->bpp / 8));
-	*(unsigned int *)dst = color;
-}
-
-void	normalize_angle(float *angle)
-{
-	while (*angle < 0)
-		*angle += 2 * M_PI;
-	while (*angle >= 2 * M_PI)
-		*angle -= 2 * M_PI;
-}
-
-void	clear_image(t_game *game)
-{
-	memset(game->img_data, 0, HEIGHT * game->size_line);
-}
-
-void	draw_square(int x, int y, int size, int color, t_game *game)
-{
-	int	i;
-	int	j;
-	int	x_pos;
-	int	y_pos;
-
-	j = 0;
-	while (j < size)
-	{
-		y_pos = y + j;
-		if (y_pos >= 0 && y_pos < HEIGHT)
-		{
-			i = 0;
-			while (i < size)
-			{
-				x_pos = x + i;
-				if (x_pos >= 0 && x_pos < WIDTH)
-					put_pixel(x_pos, y_pos, color, game);
-				i++;
-			}
-		}
-		j++;
-	}
-}
-
-void	draw_map(t_map *mapp, t_game *game)
-{
-	int		x;
-	int		y;
-	char	**map;
-	int		block_size;
-	int		color;
-
-	color = MAP_COLOR;
-	block_size = TILE_SIZE;
-	map = mapp->full_map;
-	y = 0;
-	while (map[y])
-	{
-		x = 0;
-		while (map[y][x])
-		{
-			if (map[y][x] == '1')
-			{
-				draw_square(x * block_size, y * block_size, block_size,
-					color, game);
-			}
-			x++;
-		}
-		y++;
-	}
-}
 
 float	distance_(float x, float y)
 {
@@ -106,39 +29,6 @@ float	fixed_dist(float x1, float y1, float x2, float y2, t_game *game)
 	angle = atan2f(delta_y, delta_x) - game->player.angle;
 	fix_dist = distance_(delta_x, delta_y) * cosf(angle);
 	return (fix_dist);
-}
-
-bool	touch(size_t grid_x, size_t grid_y, t_map *map)
-{
-	if (grid_x >= map->columns || grid_y >= map->rows)
-		return (false);
-	return (map->full_map[grid_y][grid_x] == '1');
-}
-
-int	get_texture_color(t_texture *texture, int tex_x, int tex_y)
-{
-	char	*pixel;
-
-	if (tex_x < 0)
-		tex_x = 0;
-	if (tex_x >= TEX_WIDTH)
-		tex_x = TEX_WIDTH - 1;
-	if (tex_y < 0)
-		tex_y = 0;
-	if (tex_y >= TEX_HEIGHT)
-		tex_y = TEX_HEIGHT - 1;
-	pixel = texture->addr + (tex_y * texture->line_length
-			+ tex_x * (texture->bits_per_pixel / 8));
-	return (*(int *)pixel);
-}
-
-int	clamp(int value, int min, int max)
-{
-	if (value < min)
-		return (min);
-	if (value > max)
-		return (max);
-	return (value);
 }
 
 void	draw_line(t_player *player, t_game *game, t_map *map,
@@ -254,23 +144,7 @@ void	draw_line(t_player *player, t_game *game, t_map *map,
         put_pixel(screen_column, y, game->floor_color, game);
 }
 
-double	compute_delta_time(void)
-{
-	struct timeval			current_time;
-	double					delta_time;
-	static struct timeval	last_time = {0};
-
-	gettimeofday(&current_time, NULL);
-	if (last_time.tv_sec == 0 && last_time.tv_usec == 0)
-		last_time = current_time;
-	delta_time = (double)(current_time.tv_sec - last_time.tv_sec);
-	delta_time += (double)(current_time.tv_usec
-			- last_time.tv_usec) / 1000000.0;
-	last_time = current_time;
-	return (delta_time);
-}
-
-static void	handle_rays(t_ctrl *ctrl, float start_angle, float angle_step)
+void	handle_rays(t_ctrl *ctrl, float start_angle, float angle_step)
 {
 	int		i;
 	float	ray_angle;
@@ -286,28 +160,4 @@ static void	handle_rays(t_ctrl *ctrl, float start_angle, float angle_step)
 		draw_line(&ctrl->game->player, ctrl->game, &ctrl->map, ray_angle, i);
 		i++;
 	}
-}
-
-int	draw_loop(t_ctrl *ctrl)
-{
-	float	fov;
-	float	start_angle;
-	float	angle_step;
-	double	delta_time;
-
-	delta_time = compute_delta_time();
-	clear_image(ctrl->game);
-	move_player(ctrl, delta_time);
-	if (ctrl->game->debug)
-		draw_debug(ctrl);
-	else
-	{
-		fov = M_PI / 3.0f;
-		start_angle = ctrl->game->player.angle - (fov / 2.0f);
-		angle_step = fov / WIDTH;
-		handle_rays(ctrl, start_angle, angle_step);
-	}
-	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
-		ctrl->game->img, 0, 0);
-	return (0);
 }

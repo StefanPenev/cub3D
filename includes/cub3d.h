@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 08:32:13 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/27 11:58:36 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -250,10 +250,17 @@ void			check_map_valid(t_ctrl *ctrl);
 /*              				raycaster.c                                   */
 /* ************************************************************************** */
 
-int				draw_loop(t_ctrl *ctrl);
-void			draw_square(int x, int y, int size, int color, t_game *game);
+void			handle_rays(t_ctrl *ctrl, float start_angle, float angle_step);
+
+/* ************************************************************************** */
+/*              			 raycaster_utils.c                                */
+/* ************************************************************************** */
+
+double			compute_delta_time(void);
 void			normalize_angle(float *angle);
+int				clamp(int value, int min, int max);
 bool			touch(size_t grid_x, size_t grid_y, t_map *map);
+int				get_texture_color(t_texture *texture, int tex_x, int tex_y);
 
 /* ************************************************************************** */
 /*              				   debug.c                                    */
@@ -269,6 +276,15 @@ void			ray_step_loop(t_raycast *rc, t_map *map);
 void			init_raycast_data(t_raycast *rc, t_game *game);
 void			draw_line_coords(int block_size, int x_end, int y_end,
 					t_game *game);
+
+/* ************************************************************************** */
+/*              				    draw.c                                    */
+/* ************************************************************************** */
+
+int				draw_loop(t_ctrl *ctrl);
+void			draw_map(t_map *mapp, t_game *game);
+void			put_pixel(int x, int y, int color, t_game *game);
+void			draw_square(int x, int y, int size, int color, t_game *game);
 
 /* ************************************************************************** */
 /*              					init.c                                    */
