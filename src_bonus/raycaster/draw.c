@@ -6,11 +6,11 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/27 14:11:02 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/27 15:34:47 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes_bonus/cub3d.h"
 
 void	put_pixel(int x, int y, int color, t_game *game)
 {
@@ -88,6 +88,12 @@ int	draw_loop(t_ctrl *ctrl)
 	float	angle_step;
 	double	delta_time;
 
+	ctrl->anim.fc++;
+	// if (ctrl->anim.fc >= TIME_SPEED)
+	// {
+	// 	ctrl->anim.fc = 0;
+	// 	select_frame(ctrl);
+	// }
 	delta_time = compute_delta_time();
 	clear_image(ctrl->game);
 	move_player(ctrl, delta_time);

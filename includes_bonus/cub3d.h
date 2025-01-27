@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 14:36:04 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/27 16:08:03 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,19 @@
 # define TEX_HEIGHT 128
 
 # define MAP_COLOR 0x0000FF
+
+// bonus
+
+# define TIME_SPEED 30000
+
+# define MAX_FRAMES 3
+
+typedef struct s_anim
+{
+	size_t			fc;
+	size_t			ac;
+	char			**frames;
+}					t_anim;
 
 typedef struct s_pos
 {
@@ -126,6 +139,7 @@ typedef struct s_ctrl
 	t_map			map;
 	t_game			*game;
 	t_gnl			gnl;
+	t_anim			anim;
 }					t_ctrl;
 
 typedef struct s_line_params
@@ -307,5 +321,12 @@ void				load_all_textures(t_game *game, t_ctrl *ctrl);
 
 void				init_hooks(t_ctrl *ctrl);
 void				init_game_window(t_ctrl *ctrl);
+
+// bonus
+/* ************************************************************************** */
+/*              						anim.c   									 */
+/* ************************************************************************** */
+
+void				select_frame(t_ctrl *ctrl);
 
 #endif

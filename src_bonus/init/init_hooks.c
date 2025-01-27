@@ -6,11 +6,11 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/27 13:25:27 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/27 14:40:34 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "../includes_bonus/cub3d.h"
 
 void	init_hooks(t_ctrl *ctrl)
 {
