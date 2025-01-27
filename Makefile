@@ -34,6 +34,7 @@ SRCS += $(SRC_DIR)/player/player.c \
 
 # Raycaster
 SRCS += $(SRC_DIR)/raycaster/debug.c \
+		$(SRC_DIR)/raycaster/debug_utils.c \
 		$(SRC_DIR)/raycaster/raycaster.c \
 
 # Utils

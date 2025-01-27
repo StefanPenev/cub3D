@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/25 10:45:53 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/27 08:32:13 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,33 @@ typedef struct s_ctrl
 	t_gnl		gnl;
 }				t_ctrl;
 
+typedef struct s_line_params
+{
+	int	delta_x;
+	int	delta_y;
+	int	step_x;
+	int	step_y;
+	int	error_val;
+	int	error_val2;
+}		t_line_params;
+
+typedef struct s_raycast
+{
+	float	ray_angle;
+	int		hit;
+	float	distance;
+	size_t	grid_x;
+	size_t	grid_y;
+	float	ray_dir_x;
+	float	ray_dir_y;
+	float	delta_dist_x;
+	float	delta_dist_y;
+	int		step_x;
+	int		step_y;
+	float	side_dist_x;
+	float	side_dist_y;
+}			t_raycast;
+
 /* ************************************************************************** */
 /*              				game_cleanup.c                                */
 /* ************************************************************************** */
@@ -222,6 +249,7 @@ void			check_map_valid(t_ctrl *ctrl);
 /* ************************************************************************** */
 /*              				raycaster.c                                   */
 /* ************************************************************************** */
+
 int				draw_loop(t_ctrl *ctrl);
 void			draw_square(int x, int y, int size, int color, t_game *game);
 void			normalize_angle(float *angle);
@@ -230,7 +258,17 @@ bool			touch(size_t grid_x, size_t grid_y, t_map *map);
 /* ************************************************************************** */
 /*              				   debug.c                                    */
 /* ************************************************************************** */
+
 void			draw_debug(t_ctrl *ctrl);
+
+/* ************************************************************************** */
+/*              				 debug_utils.c                                */
+/* ************************************************************************** */
+
+void			ray_step_loop(t_raycast *rc, t_map *map);
+void			init_raycast_data(t_raycast *rc, t_game *game);
+void			draw_line_coords(int block_size, int x_end, int y_end,
+					t_game *game);
 
 /* ************************************************************************** */
 /*              					init.c                                    */
@@ -243,6 +281,7 @@ void			init_player(t_player *player, float start_x, float start_y,
 /* ************************************************************************** */
 /*              			   load_textures.c                                */
 /* ************************************************************************** */
+
 void			load_all_textures(t_game *game, t_ctrl *ctrl);
 
 /* ************************************************************************** */
