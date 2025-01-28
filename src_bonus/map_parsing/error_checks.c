@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:52:25 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 14:40:45 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:16:45 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void	check_valid_characters(t_ctrl *ctrl)
 		{
 			c = ctrl->map.full_map[i][j];
 			if (!(c == WALL || c == EMPTY || c == NORTH || c == SOUTH
-					|| c == EAST || c == WEST))
+					|| c == EAST || c == WEST || c == DOOR || c == COLLECTIBLE))
 				clean_exit("Invalid input:\nMap contains invalid characters.\n",
 					ctrl);
 			if (c == NORTH || c == SOUTH || c == EAST || c == WEST)

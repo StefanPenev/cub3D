@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:17:15 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 14:41:04 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/28 13:56:34 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	check_line_format(char *line, t_ctrl *ctrl, int *is_map_started)
 {
 	char	*trimmed_line;
 
-	trimmed_line = ft_strtrim(line, " \t");
+	trimmed_line = ft_strtrim(line, " ");
 	if (!trimmed_line)
 		clean_exit("Memory allocation failed\n", ctrl);
 	if (ft_strlen(trimmed_line) == 0 || ft_strncmp("\n", line, 1) == 0)

@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/27 15:34:47 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:07:13 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,17 @@ int	draw_loop(t_ctrl *ctrl)
 	double	delta_time;
 
 	ctrl->anim.fc++;
-	// if (ctrl->anim.fc >= TIME_SPEED)
-	// {
-	// 	ctrl->anim.fc = 0;
-	// 	select_frame(ctrl);
-	// }
+	printf("DEBUG: ctrl->anim.fc: %zu\n", ctrl->anim.fc);
+	if (ctrl->anim.fc >= TIME_SPEED)
+	{
+		ctrl->anim.fc = 0;
+		ctrl->anim.ac++;
+		printf("DEBUG: frame index: %zu\n", ctrl->anim.ac);
+	}
+	if (ctrl->anim.ac >= MAX_FRAMES)
+	{
+		ctrl->anim.ac = 0;
+	}
 	delta_time = compute_delta_time();
 	clear_image(ctrl->game);
 	move_player(ctrl, delta_time);

@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:09:47 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 16:34:07 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/28 15:55:47 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,34 +84,37 @@ int	is_texture_definition(char *line_tmp)
 	return (0);
 }
 
-void	assign_path(char **str, char *path, char *line, t_ctrl *ctrl)
+void	assign_path(t_texture *tex, char *path, char *line, t_ctrl *ctrl)
 {
 	int		i;
 	char	*base_path;
 	char	*frame_num;
 	size_t	len;
 
-	if (*str != NULL)
+	frame_num = NULL;
+	if (tex->path != NULL)
 	{
 		free(line);
 		free_and_exit("Wrong input:\nTexture is duplicated\n", path, NULL,
 			ctrl);
 	}
-	*str = path;
-	if (!*str)
-		free_and_exit("Memory allocation failed\n", path, NULL, ctrl);
+	//tex->path = ft_strdup(path);
+	// if (!tex->path)
+	// 	free_and_exit("Memory allocation failed\n", path, NULL, ctrl);
 	len = ft_strlen(path);
 	if (len < 5 || ft_strcmp(path + len - 5, "0.xpm") != 0)
 		free_and_exit("Invalid texture path\n", path, NULL, ctrl);
 	base_path = ft_strndup(path, len - 5);
 	if (!base_path)
-		free_and_exit("Memory allocation failed\n", path, NULL, ctrl);
+		free_and_exit("base_path: memory allocation failed\n", path, NULL, ctrl);
 	i = 0;
 	while (i < MAX_FRAMES)
 	{
 		if (i == 0)
 		{
-			ctrl->anim.frames[i] = ft_strdup(path);
+			tex->paths[i] = ft_strdup(path);
+			free(path);
+			path = NULL;
 		}
 		else
 		{
@@ -119,24 +122,22 @@ void	assign_path(char **str, char *path, char *line, t_ctrl *ctrl)
 			if (!frame_num)
 			{
 				free(base_path);
-				free_and_exit("Memory allocation failed\n", path, NULL, ctrl);
+				free_and_exit("frame_num: memory allocation failed\n", NULL, NULL, ctrl);
 			}
-			ctrl->anim.frames[i] = ft_strjoin_three(base_path, frame_num,
-					".xpm");
+			tex->paths[i] = ft_strjoin_three(base_path, frame_num, ".xpm");
 			free(frame_num);
 		}
-		if (!ctrl->anim.frames[i])
+		if (!tex->paths[i])
 		{
 			free(frame_num);
 			free(base_path);
-			free_and_exit("Memory allocation failed\n", path, NULL, ctrl);
+			free_and_exit("tex->frames[i]: Memory allocation failed\n", NULL, NULL, ctrl);
 		}
 		i++;
 	}
 	free(base_path);
-	//free(path);
 	for (int j = 0; j < MAX_FRAMES; j++)
-		printf("DEBUG: %s\n", ctrl->anim.frames[j]);
+		printf("DEBUG: %s\n", tex->paths[j]);
 }
 
 void	keep_textures_path(char *line, t_ctrl *ctrl)
@@ -149,7 +150,7 @@ void	keep_textures_path(char *line, t_ctrl *ctrl)
 	trimmed_line = trim_trailing_whitespace(line);
 	path = ft_strdup(trimmed_line + 3);
 	if (!path)
-		clean_exit("Memory allocation failed\n", ctrl);
+		clean_exit("path: Memory allocation failed\n", ctrl);
 	clean_path = remove_inner_spaces(path, ctrl);
 	len = ft_strlen(clean_path);
 	if (len < 4 || ft_strncmp(clean_path + len - 4, ".xpm", 4) != 0)
@@ -159,11 +160,11 @@ void	keep_textures_path(char *line, t_ctrl *ctrl)
 			clean_path, NULL, ctrl);
 	}
 	if (ft_strncmp("NO ", trimmed_line, 3) == 0)
-		assign_path(&ctrl->game->north_texture.path, clean_path, line, ctrl);
+		assign_path(&ctrl->game->north_texture, clean_path, line, ctrl);
 	else if (ft_strncmp("SO ", trimmed_line, 3) == 0)
-		assign_path(&ctrl->game->south_texture.path, clean_path, line, ctrl);
+		assign_path(&ctrl->game->south_texture, clean_path, line, ctrl);
 	else if (ft_strncmp("WE ", trimmed_line, 3) == 0)
-		assign_path(&ctrl->game->west_texture.path, clean_path, line, ctrl);
+		assign_path(&ctrl->game->west_texture, clean_path, line, ctrl);
 	else if (ft_strncmp("EA ", trimmed_line, 3) == 0)
-		assign_path(&ctrl->game->east_texture.path, clean_path, line, ctrl);
+		assign_path(&ctrl->game->east_texture, clean_path, line, ctrl);
 }

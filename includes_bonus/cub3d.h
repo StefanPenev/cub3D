@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 16:08:03 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:15:44 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 # define SOUTH 'S'
 # define EAST 'E'
 # define WEST 'W'
+# define DOOR 'D'
+# define COLLECTIBLE 'C'
 
 # define KEY_W 119
 # define KEY_A 97
@@ -53,7 +55,7 @@
 
 // bonus
 
-# define TIME_SPEED 30000
+# define TIME_SPEED 10
 
 # define MAX_FRAMES 3
 
@@ -61,7 +63,6 @@ typedef struct s_anim
 {
 	size_t			fc;
 	size_t			ac;
-	char			**frames;
 }					t_anim;
 
 typedef struct s_pos
@@ -113,6 +114,8 @@ typedef struct s_texture
 	int				line_length;
 	int				endian;
 	char			*path;
+	char			**frames;
+	char			**paths;
 }					t_texture;
 
 typedef struct s_game
@@ -139,6 +142,7 @@ typedef struct s_ctrl
 	t_map			map;
 	t_game			*game;
 	t_gnl			gnl;
+	t_texture		texture;
 	t_anim			anim;
 }					t_ctrl;
 
@@ -324,7 +328,7 @@ void				init_game_window(t_ctrl *ctrl);
 
 // bonus
 /* ************************************************************************** */
-/*              						anim.c   									 */
+/*              						anim.c   										*/
 /* ************************************************************************** */
 
 void				select_frame(t_ctrl *ctrl);

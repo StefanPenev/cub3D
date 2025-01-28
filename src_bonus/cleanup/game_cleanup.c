@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 16:33:27 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/28 15:58:36 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,64 +28,40 @@ void	free_map(char **map, size_t rows)
 	free(map);
 }
 
+void	free_texture(t_game *game, t_texture *texture)
+{
+	int	i;
+
+	i = 0;
+	if (texture && texture->frames)
+	{
+		while (i < MAX_FRAMES)
+		{
+			if (texture->frames[i])
+			{
+				mlx_destroy_image(game->mlx, texture->frames[i]);
+				free(texture->paths[i]);
+				texture->frames[i] = NULL;
+				texture->paths[i] = NULL;
+				// printf("DEBUG: texture %d freed\n", i);
+			}
+			i++;
+		}
+		free(texture->frames);
+		texture->frames = NULL;
+		free(texture->paths);
+		texture->paths = NULL;
+	}
+}
+
 void	game_cleanup(t_ctrl *ctrl)
 {
 	if (ctrl->map.full_map)
 		free_map(ctrl->map.full_map, ctrl->map.rows);
-	if (ctrl->game->north_texture.path)
-	{
-		for (int i = 0; i < MAX_FRAMES; i++)
-		{
-			if (ctrl->anim.frames[i])
-			{
-				free(ctrl->anim.frames[i]);
-				ctrl->anim.frames[i] = NULL;
-				printf("freed\n");
-			}
-		}
-		free(ctrl->game->north_texture.path);
-	}
-	if (ctrl->game->south_texture.path)
-	{
-		for (int i = 0; i < MAX_FRAMES; i++)
-		{
-			if (ctrl->anim.frames[i])
-			{
-				free(ctrl->anim.frames[i]);
-				ctrl->anim.frames[i] = NULL;
-				printf("freed\n");
-			}
-		}
-		free(ctrl->game->south_texture.path);
-	}
-	if (ctrl->game->west_texture.path)
-	{
-		for (int i = 0; i < MAX_FRAMES; i++)
-		{
-			if (ctrl->anim.frames[i])
-			{
-				free(ctrl->anim.frames[i]);
-				ctrl->anim.frames[i] = NULL;
-				printf("freed\n");
-			}
-		}
-		free(ctrl->game->west_texture.path);
-	}
-	if (ctrl->game->east_texture.path)
-	{
-		for (int i = 0; i < MAX_FRAMES; i++)
-		{
-			if (ctrl->anim.frames[i])
-			{
-				free(ctrl->anim.frames[i]);
-				ctrl->anim.frames[i] = NULL;
-				printf("freed\n");
-			}
-		}
-		free(ctrl->game->east_texture.path);
-	}
-	free(ctrl->anim.frames);
-	ctrl->anim.frames = NULL;
+	// free_texture(ctrl->game, &ctrl->game->north_texture);
+	// free_texture(ctrl->game, &ctrl->game->south_texture);
+	// free_texture(ctrl->game, &ctrl->game->west_texture);
+	// free_texture(ctrl->game, &ctrl->game->east_texture);
 	free(ctrl->game);
 	ctrl->game = NULL;
 	free(ctrl);
@@ -104,17 +80,30 @@ void	clean_exit(char *str, t_ctrl *ctrl)
 
 void	cleanup_textures(t_game *game)
 {
-	if (game->north_texture.img)
-		mlx_destroy_image(game->mlx, game->north_texture.img);
-	if (game->south_texture.img)
-		mlx_destroy_image(game->mlx, game->south_texture.img);
-	if (game->east_texture.img)
-		mlx_destroy_image(game->mlx, game->east_texture.img);
-	if (game->west_texture.img)
-		mlx_destroy_image(game->mlx, game->west_texture.img);
+	free_texture(game, &game->north_texture);
+	printf("DEBUG: north_texture freed\n");
+	free_texture(game, &game->south_texture);
+	printf("DEBUG: south_texture freed\n");
+	free_texture(game, &game->west_texture);
+	printf("DEBUG: west_texture freed\n");
+	free_texture(game, &game->east_texture);
+	printf("DEBUG: east_texture freed\n");
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
 }
+// void	cleanup_textures(t_game *game)
+// {
+// 	if (game->north_texture.img)
+// 		mlx_destroy_image(game->mlx, game->north_texture.img);
+// 	if (game->south_texture.img)
+// 		mlx_destroy_image(game->mlx, game->south_texture.img);
+// 	if (game->east_texture.img)
+// 		mlx_destroy_image(game->mlx, game->east_texture.img);
+// 	if (game->west_texture.img)
+// 		mlx_destroy_image(game->mlx, game->west_texture.img);
+// 	if (game->img)
+// 		mlx_destroy_image(game->mlx, game->img);
+// }
 
 int	close_window(t_ctrl *ctrl)
 {

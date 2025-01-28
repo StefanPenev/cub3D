@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/27 16:13:21 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/28 15:54:52 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,24 @@ void	init_player(t_player *player, float start_x, float start_y,
 
 void	init_texture(t_texture *texture)
 {
+	int	i;
+
+	i = 0;
 	ft_memset(texture, 0, sizeof(t_texture));
 	texture->path = NULL;
-	// texture->frames = NULL;
+	texture->frames = malloc(MAX_FRAMES * sizeof(void *));
+	texture->paths = malloc(MAX_FRAMES * sizeof(void *));
+	if (!texture->frames)
+	{
+		printf("Error: Failed to allocate memory for texture frames\n");
+		exit(EXIT_FAILURE);
+	}
+	while (i < MAX_FRAMES)
+	{
+		texture->frames[i] = NULL;
+		texture->paths[i] = NULL;
+		i++;
+	}
 }
 
 void	init_game(t_game *game)
@@ -64,10 +79,6 @@ void	init_map(t_map *map)
 int	init_ctrl(t_ctrl *ctrl)
 {
 	init_map(&ctrl->map);
-	ctrl->anim.frames = malloc(MAX_FRAMES * sizeof(char *));
-for (int i = 0; i < MAX_FRAMES; i++) {
-    ctrl->anim.frames[i] = NULL;
-}
 	ctrl->anim.fc = 0;
 	ctrl->anim.ac = 0;
 	ctrl->gnl.save = NULL;
