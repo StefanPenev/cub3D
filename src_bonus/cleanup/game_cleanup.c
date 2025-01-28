@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/28 15:58:36 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:29:20 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,7 @@ void	clean_exit(char *str, t_ctrl *ctrl)
 	{
 		printf("%s", str);
 	}
-	game_cleanup(ctrl);
-	exit(1);
+	close_window(ctrl);
 }
 
 void	cleanup_textures(t_game *game)

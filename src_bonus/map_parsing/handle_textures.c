@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:09:47 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/28 15:55:47 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/28 16:31:05 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,10 @@ void	assign_path(t_texture *tex, char *path, char *line, t_ctrl *ctrl)
 	// 	free_and_exit("Memory allocation failed\n", path, NULL, ctrl);
 	len = ft_strlen(path);
 	if (len < 5 || ft_strcmp(path + len - 5, "0.xpm") != 0)
+	{
+		free(line);
 		free_and_exit("Invalid texture path\n", path, NULL, ctrl);
+	}
 	base_path = ft_strndup(path, len - 5);
 	if (!base_path)
 		free_and_exit("base_path: memory allocation failed\n", path, NULL, ctrl);
