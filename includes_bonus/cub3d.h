@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/28 16:15:44 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:35:47 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -332,5 +332,7 @@ void				init_game_window(t_ctrl *ctrl);
 /* ************************************************************************** */
 
 void				select_frame(t_ctrl *ctrl);
+
+int					mouse_move(int x, int y, t_ctrl *ctrl);
 
 #endif

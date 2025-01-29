@@ -92,6 +92,7 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/init/init.c \
 # Player
 SRCS_BONUS += $(SRC_BONUS_DIR)/player/player.c \
 			$(SRC_BONUS_DIR)/player/player_movement.c \
+			$(SRC_BONUS_DIR)/player/mouse_controls.c \
 
 # Raycaster
 SRCS_BONUS += $(SRC_BONUS_DIR)/raycaster/debug.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/28 16:07:13 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:26:03 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,32 @@ void	draw_map(t_map *mapp, t_game *game)
 	}
 }
 
+void	draw_cross(t_game *game)
+{
+	int	center_x;
+	int	center_y;
+	int	size;
+	int	color;
+	int	i;
+
+	center_x = WIDTH / 2;
+	center_y = HEIGHT / 2;
+	size = 10;
+	color = 0x00FF00;
+	i = -size;
+	while (i <= size)
+	{
+		put_pixel(center_x + i, center_y, color, game);
+		i++;
+	}
+	i = -size;
+	while (i <= size)
+	{
+		put_pixel(center_x, center_y + i, color, game);
+		i++;
+	}
+}
+
 int	draw_loop(t_ctrl *ctrl)
 {
 	float	fov;
@@ -112,6 +138,7 @@ int	draw_loop(t_ctrl *ctrl)
 		angle_step = fov / WIDTH;
 		handle_rays(ctrl, start_angle, angle_step);
 	}
+	draw_cross(ctrl->game);
 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win, ctrl->game->img,
 		0, 0);
 	return (0);

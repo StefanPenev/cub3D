@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_hooks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/27 14:40:34 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/29 13:39:02 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 void	init_hooks(t_ctrl *ctrl)
 {
+	mlx_mouse_hide(ctrl->game->mlx, ctrl->game->win);
 	mlx_loop_hook(ctrl->game->mlx, draw_loop, ctrl);
+	mlx_hook(ctrl->game->win, 6, 1L << 6, mouse_move, ctrl);
 	mlx_hook(ctrl->game->win, 2, 1L << 0, key_press, ctrl);
 	mlx_hook(ctrl->game->win, 3, 1L << 1, key_release, ctrl);
 	mlx_hook(ctrl->game->win, 17, 0, close_window, ctrl);
