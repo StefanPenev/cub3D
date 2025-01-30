@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 22:45:05 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 12:49:17 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/30 15:37:11 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void	draw_line_coords(int block_size, int x_end, int y_end, t_game *game)
 	}
 }
 
-void	ray_step_loop(t_raycast *rc, t_map *map)
+void	ray_step_loop(t_raycast_debug *rc, t_map *map)
 {
 	while (!rc->hit && rc->grid_x < map->columns && rc->grid_y < map->rows)
 	{
@@ -84,7 +84,7 @@ void	ray_step_loop(t_raycast *rc, t_map *map)
 	}
 }
 
-static void	init_raycast_data_steps(t_raycast *rc, t_game *game)
+static void	init_raycast_data_steps(t_raycast_debug *rc, t_game *game)
 {
 	float	px;
 	float	py;
@@ -113,7 +113,7 @@ static void	init_raycast_data_steps(t_raycast *rc, t_game *game)
 	}
 }
 
-void	init_raycast_data(t_raycast *rc, t_game *game)
+void	init_raycast_data(t_raycast_debug *rc, t_game *game)
 {
 	rc->hit = 0;
 	rc->distance = 0.0f;

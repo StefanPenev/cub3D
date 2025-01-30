@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 10:57:32 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/27 14:41:23 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:38:04 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "../../includes_bonus/cub3d.h"
 
 double	compute_delta_time(void)
 {

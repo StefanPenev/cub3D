@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:22:45 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 12:48:43 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/30 15:37:40 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static void	draw_player_debug(t_game *game, int block_size)
 			player_y - block_size / 8, block_size / 4, 0x00FF00), game);
 }
 
-static void	draw_hit_line(t_game *game, t_raycast rc, int block_size)
+static void	draw_hit_line(t_game *game, t_raycast_debug rc, int block_size)
 {
 	float	hit_pos_x;
 	float	hit_pos_y;
@@ -63,11 +63,11 @@ static void	draw_hit_line(t_game *game, t_raycast rc, int block_size)
 
 static void	cast_rays_debug(t_ctrl *ctrl, int block_size)
 {
-	t_raycast	rc;
-	float		fov;
-	float		angle_step;
-	float		start_angle;
-	int			i;
+	t_raycast_debug	rc;
+	float			fov;
+	float			angle_step;
+	float			start_angle;
+	int				i;
 
 	fov = M_PI / 3.0f;
 	angle_step = fov / WIDTH;
