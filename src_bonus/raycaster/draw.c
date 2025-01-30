@@ -6,46 +6,47 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 15:08:43 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 15:56:04 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
 
-void	draw_doors(t_ctrl *ctrl)
-{
-	size_t	x;
-	size_t	y;
-	int		img_x;
-	int		img_y;
+// void	draw_doors(t_ctrl *ctrl)
+// {
+// 	size_t	x;
+// 	size_t	y;
+// 	int		img_x;
+// 	int		img_y;
 
-	img_x = 0;
-	img_y = 0;
-	x = 0;
-	y = 0;
-	while (y < ctrl->map.rows)
-	{
-		x = 0;
-		while (x < ctrl->map.columns)
-		{
-			if (ctrl->map.full_map[y][x] == 'D')
-			{
-				img_x = x * TILE_SIZE;
-				img_y = y * TILE_SIZE;
-				printf("DEBUG: Door found at (%zu, %zu) -> Drawing at (%d, %d)\n", x, y, img_x, img_y);
-				if (!ctrl->game->door.img)
-				{
-					printf("DEBUG: Door texture not loaded!\n");
-					return ;
-				}
-				mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
-					ctrl->game->door.img, img_x, img_y);
-			}
-			x++;
-		}
-		y++;
-	}
-}
+// 	img_x = 0;
+// 	img_y = 0;
+// 	x = 0;
+// 	y = 0;
+// 	while (y < ctrl->map.rows)
+// 	{
+// 		x = 0;
+// 		while (x < ctrl->map.columns)
+// 		{
+// 			if (ctrl->map.full_map[y][x] == 'D')
+// 			{
+// 				img_x = x * TILE_SIZE;
+// 				img_y = y * TILE_SIZE;
+// 				printf("DEBUG: Door found at (%zu, %zu) -> Drawing at (%d, %d)\n", x, y, img_x, img_y);
+// 				if (!ctrl->game->door.img)
+// 				{
+// 					printf("DEBUG: Door texture not loaded!\n");
+// 					return ;
+// 				}
+// 				mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
+// 					ctrl->game->door.img, img_x, img_y);
+// 			}
+// 			x++;
+// 		}
+// 		y++;
+// 	}
+// }
+
 
 void	put_pixel(int x, int y, int color, t_game *game)
 {
@@ -173,7 +174,7 @@ int	draw_loop(t_ctrl *ctrl)
 		angle_step = fov / WIDTH;
 		handle_rays(ctrl, start_angle, angle_step);
 	}
-	draw_doors(ctrl);
+	//draw_doors(ctrl);
 	draw_cross(ctrl->game);
 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win, ctrl->game->img,
 		0, 0);

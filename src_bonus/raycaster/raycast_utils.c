@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:39:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 15:40:27 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/30 16:05:44 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	choose_texture(t_raycast *rc, t_ctrl *ctrl)
 	size_t	frame_index;
 
 	frame_index = ctrl->anim.ac;
-	if (frame_index >= 10)
+	if (frame_index >= TIME_SPEED)
 		frame_index = 0;
 	if (rc->side == 0)
 	{

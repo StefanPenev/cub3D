@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 15:39:34 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/30 16:09:29 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	initialize_raycast(t_raycast *rc, t_player *pl, float angle)
 	rc->side = 0;
 	rc->real_dist = 1e30f;
 	rc->perp_dist = 1e30f;
+	rc->is_door = 0;
 }
 
 void	setup_steps(t_raycast *rc, t_player *pl)
@@ -76,16 +77,34 @@ void	raycast_wall_hit(t_raycast *rc, t_map *map)
 			rc->map_y += rc->step_y;
 			rc->side = 1;
 		}
-		if (rc->map_x < 0 || (size_t)rc->map_x >= map->columns
-			|| rc->map_y < 0 || (size_t)rc->map_y >= map->rows)
+		if (rc->map_x < 0 || (size_t)rc->map_x >= map->columns || rc->map_y < 0
+			|| (size_t)rc->map_y >= map->rows)
 			break ;
 		if (touch(rc->map_x, rc->map_y, map))
 			rc->hit = 1;
+		else if (map->full_map[rc->map_y][rc->map_x] == 'D')
+		{
+			rc->hit = 1;
+			rc->is_door = 1;
+		}
+	}
+}
+
+void	draw_door(t_game *game, t_raycast *rc, int col)
+{
+	rc->y = rc->draw_start;
+	while (rc->y < rc->draw_end)
+	{
+		rc->tex_y = (int)rc->tex_pos & (TEX_HEIGHT - 1);
+		rc->tex_pos += rc->step;
+		rc->color = get_texture_color(&game->door, rc->tex_x, rc->tex_y);
+		put_pixel(col, rc->y, rc->color, game);
+		rc->y++;
 	}
 }
 
 void	draw_line(t_player *player, t_ctrl *ctrl, float ray_angle,
-	int screen_column)
+		int screen_column)
 {
 	t_raycast	rc;
 
@@ -94,15 +113,26 @@ void	draw_line(t_player *player, t_ctrl *ctrl, float ray_angle,
 	raycast_wall_hit(&rc, &ctrl->map);
 	compute_wall_dimensions(&rc, player);
 	compute_wall_x(&rc);
-	choose_texture(&rc, ctrl);
-	draw_wall(ctrl->game, &rc, screen_column);
+	// choose_texture(&rc, ctrl);
+	// draw_wall(ctrl->game, &rc, screen_column);
+	// draw_door(ctrl->game, &rc, screen_column);
+	if (rc.is_door)
+	{
+		rc.selected_texture = ctrl->game->door.img;
+		draw_door(ctrl->game, &rc, screen_column);
+	}
+	else
+	{
+		choose_texture(&rc, ctrl);
+		draw_wall(ctrl->game, &rc, screen_column);
+	}
 	draw_ceil_floor(ctrl->game, &rc, screen_column);
 }
 
 void	handle_rays(t_ctrl *ctrl, float start_angle, float angle_step)
 {
-	int		i;
-	float	ray_angle;
+	int i;
+	float ray_angle;
 
 	i = 0;
 	while (i < WIDTH)
