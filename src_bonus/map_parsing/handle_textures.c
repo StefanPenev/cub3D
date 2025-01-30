@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:09:47 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/28 16:31:05 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 13:23:00 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ void	assign_path(t_texture *tex, char *path, char *line, t_ctrl *ctrl)
 	char	*base_path;
 	char	*frame_num;
 	size_t	len;
+	int		fd;
 
 	frame_num = NULL;
 	if (tex->path != NULL)
@@ -98,9 +99,6 @@ void	assign_path(t_texture *tex, char *path, char *line, t_ctrl *ctrl)
 		free_and_exit("Wrong input:\nTexture is duplicated\n", path, NULL,
 			ctrl);
 	}
-	//tex->path = ft_strdup(path);
-	// if (!tex->path)
-	// 	free_and_exit("Memory allocation failed\n", path, NULL, ctrl);
 	len = ft_strlen(path);
 	if (len < 5 || ft_strcmp(path + len - 5, "0.xpm") != 0)
 	{
@@ -109,7 +107,8 @@ void	assign_path(t_texture *tex, char *path, char *line, t_ctrl *ctrl)
 	}
 	base_path = ft_strndup(path, len - 5);
 	if (!base_path)
-		free_and_exit("base_path: memory allocation failed\n", path, NULL, ctrl);
+		free_and_exit("base_path: memory allocation failed\n", path, NULL,
+			ctrl);
 	i = 0;
 	while (i < MAX_FRAMES)
 	{
@@ -125,16 +124,26 @@ void	assign_path(t_texture *tex, char *path, char *line, t_ctrl *ctrl)
 			if (!frame_num)
 			{
 				free(base_path);
-				free_and_exit("frame_num: memory allocation failed\n", NULL, NULL, ctrl);
+				free_and_exit("frame_num: memory allocation failed\n", NULL,
+					NULL, ctrl);
 			}
 			tex->paths[i] = ft_strjoin_three(base_path, frame_num, ".xpm");
 			free(frame_num);
+			fd = open(tex->paths[i], O_RDONLY);
+			if (fd == -1)
+			{
+				free(tex->paths[i]);
+				tex->paths[i] = NULL;
+				tex->paths[i] = ft_strdup(tex->paths[0]);
+			}
+			close(fd);
 		}
 		if (!tex->paths[i])
 		{
 			free(frame_num);
 			free(base_path);
-			free_and_exit("tex->frames[i]: Memory allocation failed\n", NULL, NULL, ctrl);
+			free_and_exit("tex->frames[i]: Memory allocation failed\n", NULL,
+				NULL, ctrl);
 		}
 		i++;
 	}

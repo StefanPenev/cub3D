@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 12:53:01 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/30 14:07:43 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	init_texture(t_texture *texture)
 	texture->path = NULL;
 	texture->frames = malloc(MAX_FRAMES * sizeof(void *));
 	texture->paths = malloc(MAX_FRAMES * sizeof(void *));
-	if (!texture->frames)
+	if (!texture->frames || !texture->paths)
 	{
 		printf("Error: Failed to allocate memory for texture frames\n");
 		exit(EXIT_FAILURE);
@@ -74,6 +74,7 @@ void	init_map(t_map *map)
 	map->textures_defined = 0;
 	map->colors_defined = 0;
 	map->map_started = 0;
+	map->doors_count = 0; //bonus
 }
 
 int	init_ctrl(t_ctrl *ctrl)

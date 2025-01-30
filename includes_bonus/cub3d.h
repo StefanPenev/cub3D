@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/30 12:44:29 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/30 14:04:44 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@
 
 # define MAX_FRAMES 3
 
+# define MAX_DOORS 100
+
 typedef struct s_anim
 {
 	size_t			fc;
@@ -78,6 +80,12 @@ typedef struct s_gnl
 	char			*line;
 }					t_gnl;
 
+typedef struct s_point
+{
+	size_t			x;
+	size_t			y;
+}					t_point;
+
 typedef struct s_map
 {
 	char			**full_map;
@@ -91,6 +99,8 @@ typedef struct s_map
 	size_t			players_count;
 	t_pos			player_position;
 	t_pos			player_index;
+	t_point doors[MAX_DOORS]; // bonus
+	int doors_count;          // bonus
 }					t_map;
 
 typedef struct s_player
@@ -135,6 +145,7 @@ typedef struct s_game
 	t_texture		south_texture;
 	t_texture		east_texture;
 	t_texture		west_texture;
+	t_texture door; // bonus
 }					t_game;
 
 typedef struct s_ctrl
@@ -225,14 +236,14 @@ char				*remove_inner_spaces(char *str, t_ctrl *ctrl);
 char				*read_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									utils.c									  */
+/*									utils.c										*/
 /* ************************************************************************** */
 
 char				*trim_trailing_whitespace(char *str);
 int					ft_isspace(int c);
 
 /* ************************************************************************** */
-/*									player.c								  */
+/*									player.c									*/
 /* ************************************************************************** */
 
 int					key_release(int keycode, t_ctrl *ctrl);
@@ -240,19 +251,19 @@ int					key_press(int keycode, t_ctrl *ctrl);
 bool				in_map_bounds(float x, float y, t_map *map);
 
 /* ************************************************************************** */
-/*								player_movement.c  							  */
+/*								player_movement.c  								*/
 /* ************************************************************************** */
 
 void				move_player(t_ctrl *ctrl, double delta_time);
 
 /* ************************************************************************** */
-/*									parse_map.c  							  */
+/*									parse_map.c  								*/
 /* ************************************************************************** */
 
 void				parse_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*										gnl.c  								  */
+/*										gnl.c  									*/
 /* ************************************************************************** */
 
 char				*gnl(int fd, t_ctrl *ctrl);
@@ -266,7 +277,7 @@ void				check_valid_characters(t_ctrl *ctrl);
 void				check_map_closed(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									flood_fill.c  							  */
+/*									flood_fill.c  								*/
 /* ************************************************************************** */
 
 void				check_map_valid(t_ctrl *ctrl);
@@ -336,7 +347,7 @@ void				init_game_window(t_ctrl *ctrl);
 
 // bonus
 /* ************************************************************************** */
-/*              						anim.c   							  */
+/*              						anim.c   								*/
 /* ************************************************************************** */
 
 void				select_frame(t_ctrl *ctrl);

@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:52:25 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/28 16:16:45 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:53:34 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,12 @@ void	check_valid_characters(t_ctrl *ctrl)
 					ctrl);
 			if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
 				ctrl->map.players_count++;
+			// if (c == DOOR)
+			// {
+			// 	ctrl->map.doors->x = i;
+			// 	ctrl->map.doors->y = j;
+			// 	ctrl->map.doors_count++;
+			// }
 			j++;
 		}
 		i++;

@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/28 16:29:20 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 14:39:18 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	free_texture(t_game *game, t_texture *texture)
 				free(texture->paths[i]);
 				texture->frames[i] = NULL;
 				texture->paths[i] = NULL;
-				// printf("DEBUG: texture %d freed\n", i);
 			}
 			i++;
 		}
@@ -51,6 +50,13 @@ void	free_texture(t_game *game, t_texture *texture)
 		texture->frames = NULL;
 		free(texture->paths);
 		texture->paths = NULL;
+	}
+	if (texture->path)
+	{
+		mlx_destroy_image(game->mlx, texture->img);
+		free(texture->path);
+		texture->img = NULL;
+		texture->path = NULL;
 	}
 }
 
@@ -87,6 +93,8 @@ void	cleanup_textures(t_game *game)
 	printf("DEBUG: west_texture freed\n");
 	free_texture(game, &game->east_texture);
 	printf("DEBUG: east_texture freed\n");
+	free_texture(game, &game->door);
+	printf("DEBUG: door freed\n");
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
 }
