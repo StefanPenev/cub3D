@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_hooks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 12:52:52 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/30 13:04:09 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	init_game_window(t_ctrl *ctrl)
 		mlx_destroy_window(ctrl->game->mlx, ctrl->game->win);
 		clean_exit("Error: Image data not initialized.\n", ctrl);
 	}
-	ctrl->game->debug = 1;
+	ctrl->game->debug = 0;
 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
 		ctrl->game->img, 0, 0);
 }
