@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:22:45 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/27 14:41:15 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:48:43 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "../../includes_bonus/cub3d.h"
 
 static void	draw_map_debug(t_game *game, t_map *map, int block_size)
 {
@@ -28,8 +28,8 @@ static void	draw_map_debug(t_game *game, t_map *map, int block_size)
 				color = 0xAAAAAA;
 			else
 				color = 0x333333;
-			draw_square(x * block_size, y * block_size,
-				block_size, color, game);
+			draw_square(init_square(x * block_size, y * block_size, block_size,
+					color), game);
 			x++;
 		}
 		y++;
@@ -43,8 +43,8 @@ static void	draw_player_debug(t_game *game, int block_size)
 
 	player_x = (game->player.x / TILE_SIZE) * block_size;
 	player_y = (game->player.y / TILE_SIZE) * block_size;
-	draw_square(player_x - block_size / 8, player_y - block_size / 8,
-		block_size / 4, 0x00FF00, game);
+	draw_square(init_square(player_x - block_size / 8,
+			player_y - block_size / 8, block_size / 4, 0x00FF00), game);
 }
 
 static void	draw_hit_line(t_game *game, t_raycast rc, int block_size)

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/28 15:56:53 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:53:23 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "../../includes_bonus/cub3d.h"
 
 // static void	load_texture(t_game *game, t_texture *texture, char *path,
 // 	t_ctrl *ctrl)
@@ -57,7 +57,6 @@ void	load_texture(t_game *game, t_texture *texture, char **frames,
 	{
 		texture->frames[i] = mlx_xpm_file_to_image(game->mlx, frames[i], &width,
 				&height);
-		
 		if (!texture->frames[i])
 		{
 			while (--i >= 0)

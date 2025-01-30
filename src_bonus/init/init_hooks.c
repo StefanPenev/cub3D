@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/29 21:33:04 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/30 12:52:52 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "../../includes_bonus/cub3d.h"
 
 void	init_hooks(t_ctrl *ctrl)
 {
@@ -45,7 +45,7 @@ void	init_game_window(t_ctrl *ctrl)
 		mlx_destroy_window(ctrl->game->mlx, ctrl->game->win);
 		clean_exit("Error: Image data not initialized.\n", ctrl);
 	}
-	ctrl->game->debug = 0;
+	ctrl->game->debug = 1;
 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
 		ctrl->game->img, 0, 0);
 }

@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/29 13:26:03 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/30 12:46:57 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "../../includes_bonus/cub3d.h"
 
 void	put_pixel(int x, int y, int color, t_game *game)
 {
@@ -27,7 +27,7 @@ static void	clear_image(t_game *game)
 	memset(game->img_data, 0, HEIGHT * game->size_line);
 }
 
-void	draw_square(int x, int y, int size, int color, t_game *game)
+void	draw_square(t_square sq, t_game *game)
 {
 	int	i;
 	int	j;
@@ -35,17 +35,17 @@ void	draw_square(int x, int y, int size, int color, t_game *game)
 	int	y_pos;
 
 	j = 0;
-	while (j < size)
+	while (j < sq.size)
 	{
-		y_pos = y + j;
+		y_pos = sq.y + j;
 		if (y_pos >= 0 && y_pos < HEIGHT)
 		{
 			i = 0;
-			while (i < size)
+			while (i < sq.size)
 			{
-				x_pos = x + i;
+				x_pos = sq.x + i;
 				if (x_pos >= 0 && x_pos < WIDTH)
-					put_pixel(x_pos, y_pos, color, game);
+					put_pixel(x_pos, y_pos, sq.color, game);
 				i++;
 			}
 		}
@@ -72,8 +72,8 @@ void	draw_map(t_map *mapp, t_game *game)
 		{
 			if (map[y][x] == '1')
 			{
-				draw_square(x * block_size, y * block_size, block_size, color,
-					game);
+				draw_square(init_square(x * block_size, y * block_size,
+						block_size, color), game);
 			}
 			x++;
 		}

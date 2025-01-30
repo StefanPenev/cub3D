@@ -89,6 +89,7 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/map_parsing/read_map.c \
 # Init
 SRCS_BONUS += $(SRC_BONUS_DIR)/init/init.c \
 			$(SRC_BONUS_DIR)/init/init_hooks.c \
+			$(SRC_BONUS_DIR)/init/init_square.c \
 			$(SRC_BONUS_DIR)/init/load_textures.c \
 
 # Player

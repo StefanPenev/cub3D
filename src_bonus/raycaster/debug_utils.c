@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 22:45:05 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/27 14:41:13 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 12:49:17 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "../../includes_bonus/cub3d.h"
 
 void	init_line_params(int start[], int x_end, int y_end, t_line_params *lp)
 {
@@ -42,7 +42,7 @@ void	draw_line_coords(int block_size, int x_end, int y_end, t_game *game)
 	init_line_params(start, x_end, y_end, &lp);
 	while (1)
 	{
-		draw_square(start[0], start[1], 1, 0x00FF00, game);
+		draw_square(init_square(start[0], start[1], 1, 0x00FF00), game);
 		if (start[0] == x_end && start[1] == y_end)
 			break ;
 		lp.error_val2 = 2 * lp.error_val;
