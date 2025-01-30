@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 16:09:29 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:15:08 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,9 @@ void	draw_line(t_player *player, t_ctrl *ctrl, float ray_angle,
 	if (rc.is_door)
 	{
 		rc.selected_texture = ctrl->game->door.img;
+		rc.step = 1.0f * TEX_HEIGHT / rc.wall_height;
+		rc.tex_pos = (rc.draw_start - HEIGHT / 2 + rc.wall_height / 2)
+			* rc.step;
 		draw_door(ctrl->game, &rc, screen_column);
 	}
 	else

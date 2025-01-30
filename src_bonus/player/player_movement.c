@@ -6,11 +6,24 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:10:00 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/27 14:41:07 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:41:26 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
+
+void	door_open(int grid_x, int grid_y, t_map *map)
+{
+	map->door_open = 1;
+	if (map->full_map[grid_y][grid_x - 1] == DOOR)
+		map->full_map[grid_y][grid_x - 1] = EMPTY;
+	if (map->full_map[grid_y][grid_x + 1] == DOOR)
+		map->full_map[grid_y][grid_x + 1] = EMPTY;
+	if (map->full_map[grid_y - 1][grid_x] == DOOR)
+		map->full_map[grid_y - 1][grid_x] = EMPTY;
+	if (map->full_map[grid_y + 1][grid_x] == DOOR)
+		map->full_map[grid_y + 1][grid_x] = EMPTY;
+}
 
 static int	is_valid_position(float x, float y, t_map *map)
 {
@@ -23,8 +36,18 @@ static int	is_valid_position(float x, float y, t_map *map)
 	grid_x = (int)(x / TILE_SIZE);
 	grid_y = (int)(y / TILE_SIZE);
 	tile = map->full_map[grid_y][grid_x];
-	return (tile == '0' || tile == 'W' || tile == 'N'
-		|| tile == 'S' || tile == 'E');
+	if (map->full_map[grid_y + 1][grid_x] == DOOR || map->full_map[grid_y
+		- 1][grid_x] == DOOR || map->full_map[grid_y][grid_x + 1] == DOOR
+		|| map->full_map[grid_y][grid_x - 1] == DOOR)
+	{
+		door_open(grid_x, grid_y, map);
+	}
+	else
+	{
+		map->door_open = 0;
+	}
+	return (tile == '0' || tile == 'W' || tile == 'N' || tile == 'S'
+		|| tile == 'E');
 }
 
 static void	update_player_angle(t_player *player, double delta_time)

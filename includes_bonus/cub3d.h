@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/30 16:03:09 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 16:29:02 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_map
 	t_pos			player_index;
 	t_point doors[MAX_DOORS]; // bonus
 	int doors_count;          // bonus
+	int door_open; //bonus
 }					t_map;
 
 typedef struct s_player
