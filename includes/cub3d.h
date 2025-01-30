@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 14:36:04 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/30 11:21:24 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,7 +138,7 @@ typedef struct s_line_params
 	int				error_val2;
 }					t_line_params;
 
-typedef struct s_raycast
+typedef struct s_raycast_debug
 {
 	float			ray_angle;
 	int				hit;
@@ -153,7 +153,47 @@ typedef struct s_raycast
 	int				step_y;
 	float			side_dist_x;
 	float			side_dist_y;
+}					t_raycast_debug;
+
+typedef struct s_raycast
+{
+	float			ray_angle;
+	float			ray_dir_x;
+	float			ray_dir_y;
+	int				map_x;
+	int				map_y;
+	float			delta_dist_x;
+	float			delta_dist_y;
+	int				step_x;
+	int				step_y;
+	float			side_dist_x;
+	float			side_dist_y;
+	int				hit;
+	int				side;
+	float			real_dist;
+	float			perp_dist;
+	int				wall_height;
+	int				draw_start;
+	int				draw_end;
+	float			hit_x;
+	float			hit_y;
+	float			wall_x;
+	t_texture		*selected_texture;
+	int				tex_x;
+	float			step;
+	float			tex_pos;
+	int				y;
+	int				tex_y;
+	int				color;
 }					t_raycast;
+
+typedef struct s_square
+{
+	int				x;
+	int				y;
+	int				size;
+	int				color;
+}					t_square;
 
 /* ************************************************************************** */
 /*              				game_cleanup.c                                */
@@ -199,14 +239,14 @@ char				*remove_inner_spaces(char *str, t_ctrl *ctrl);
 char				*read_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									utils.c										*/
+/*									utils.c									  */
 /* ************************************************************************** */
 
 char				*trim_trailing_whitespace(char *str);
 int					ft_isspace(int c);
 
 /* ************************************************************************** */
-/*									player.c									*/
+/*									player.c								  */
 /* ************************************************************************** */
 
 int					key_release(int keycode, t_ctrl *ctrl);
@@ -214,19 +254,19 @@ int					key_press(int keycode, t_ctrl *ctrl);
 bool				in_map_bounds(float x, float y, t_map *map);
 
 /* ************************************************************************** */
-/*								player_movement.c  								*/
+/*								player_movement.c  							  */
 /* ************************************************************************** */
 
 void				move_player(t_ctrl *ctrl, double delta_time);
 
 /* ************************************************************************** */
-/*									parse_map.c  									*/
+/*									parse_map.c  							  */
 /* ************************************************************************** */
 
 void				parse_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*										gnl.c  									*/
+/*										gnl.c  								  */
 /* ************************************************************************** */
 
 char				*gnl(int fd, t_ctrl *ctrl);
@@ -240,7 +280,7 @@ void				check_valid_characters(t_ctrl *ctrl);
 void				check_map_closed(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									flood_fill.c  								*/
+/*									flood_fill.c  							  */
 /* ************************************************************************** */
 
 void				check_map_valid(t_ctrl *ctrl);
@@ -253,7 +293,7 @@ void				handle_rays(t_ctrl *ctrl, float start_angle,
 						float angle_step);
 
 /* ************************************************************************** */
-/*              				raycaster_utils.c                                */
+/*              				raycaster_utils.c                             */
 /* ************************************************************************** */
 
 double				compute_delta_time(void);
@@ -263,29 +303,38 @@ bool				touch(size_t grid_x, size_t grid_y, t_map *map);
 int					get_texture_color(t_texture *texture, int tex_x, int tex_y);
 
 /* ************************************************************************** */
-/*              					debug.c                                    */
+/*              				raycast_utils.c                               */
+/* ************************************************************************** */
+
+void				compute_wall_x(t_raycast *rc);
+void				choose_texture(t_raycast *rc, t_game *gm);
+void				draw_wall(t_game *gm, t_raycast *rc, int col);
+void				draw_ceil_floor(t_game *gm, t_raycast *rc, int col);
+void				compute_wall_dimensions(t_raycast *rc, t_player *pl);
+
+/* ************************************************************************** */
+/*              					debug.c                                   */
 /* ************************************************************************** */
 
 void				draw_debug(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*              					debug_utils.c                                */
+/*              					debug_utils.c                             */
 /* ************************************************************************** */
 
-void				ray_step_loop(t_raycast *rc, t_map *map);
-void				init_raycast_data(t_raycast *rc, t_game *game);
+void				ray_step_loop(t_raycast_debug *rc, t_map *map);
+void				init_raycast_data(t_raycast_debug *rc, t_game *game);
 void				draw_line_coords(int block_size, int x_end, int y_end,
 						t_game *game);
 
 /* ************************************************************************** */
-/*              						draw.c                                    */
+/*              						draw.c                                */
 /* ************************************************************************** */
 
 int					draw_loop(t_ctrl *ctrl);
 void				draw_map(t_map *mapp, t_game *game);
 void				put_pixel(int x, int y, int color, t_game *game);
-void				draw_square(int x, int y, int size, int color,
-						t_game *game);
+void				draw_square(t_square square, t_game *game);
 
 /* ************************************************************************** */
 /*              					init.c                                    */
@@ -294,15 +343,16 @@ void				draw_square(int x, int y, int size, int color,
 int					init_ctrl(t_ctrl *ctrl);
 void				init_player(t_player *player, float start_x, float start_y,
 						float orientation);
+t_square			init_square(int x, int y, int size, int color);
 
 /* ************************************************************************** */
-/*              				load_textures.c                                */
+/*              				load_textures.c                               */
 /* ************************************************************************** */
 
 void				load_all_textures(t_game *game, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*              					init_hooks.c                                */
+/*              					init_hooks.c                              */
 /* ************************************************************************** */
 
 void				init_hooks(t_ctrl *ctrl);

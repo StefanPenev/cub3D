@@ -50,6 +50,7 @@ SRCS += $(SRC_DIR)/map_parsing/read_map.c \
 # Init
 SRCS += $(SRC_DIR)/init/init.c \
 		$(SRC_DIR)/init/init_hooks.c \
+		$(SRC_DIR)/init/init_square.c \
 		$(SRC_DIR)/init/load_textures.c \
 
 # Player
@@ -61,6 +62,7 @@ SRCS += $(SRC_DIR)/raycaster/debug.c \
 		$(SRC_DIR)/raycaster/debug_utils.c \
 		$(SRC_DIR)/raycaster/raycaster.c \
 		$(SRC_DIR)/raycaster/raycaster_utils.c \
+		$(SRC_DIR)/raycaster/raycast_utils.c \
 		$(SRC_DIR)/raycaster/draw.c \
 
 # Utils

@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/29 13:39:02 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/29 21:33:04 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	init_hooks(t_ctrl *ctrl)
 {
 	mlx_mouse_hide(ctrl->game->mlx, ctrl->game->win);
+	mlx_mouse_move(ctrl->game->mlx, ctrl->game->win, WIDTH / 2, HEIGHT / 2);
 	mlx_loop_hook(ctrl->game->mlx, draw_loop, ctrl);
 	mlx_hook(ctrl->game->win, 6, 1L << 6, mouse_move, ctrl);
 	mlx_hook(ctrl->game->win, 2, 1L << 0, key_press, ctrl);

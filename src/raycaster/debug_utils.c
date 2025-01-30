@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 22:45:05 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/27 09:34:24 by stefan           ###   ########.fr       */
+/*   Updated: 2025/01/30 11:22:04 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	draw_line_coords(int block_size, int x_end, int y_end, t_game *game)
 	init_line_params(start, x_end, y_end, &lp);
 	while (1)
 	{
-		draw_square(start[0], start[1], 1, 0x00FF00, game);
+		draw_square(init_square(start[0], start[1], 1, 0x00FF00), game);
 		if (start[0] == x_end && start[1] == y_end)
 			break ;
 		lp.error_val2 = 2 * lp.error_val;
@@ -59,7 +59,7 @@ void	draw_line_coords(int block_size, int x_end, int y_end, t_game *game)
 	}
 }
 
-void	ray_step_loop(t_raycast *rc, t_map *map)
+void	ray_step_loop(t_raycast_debug *rc, t_map *map)
 {
 	while (!rc->hit && rc->grid_x < map->columns && rc->grid_y < map->rows)
 	{
@@ -84,7 +84,7 @@ void	ray_step_loop(t_raycast *rc, t_map *map)
 	}
 }
 
-static void	init_raycast_data_steps(t_raycast *rc, t_game *game)
+static void	init_raycast_data_steps(t_raycast_debug *rc, t_game *game)
 {
 	float	px;
 	float	py;
@@ -113,7 +113,7 @@ static void	init_raycast_data_steps(t_raycast *rc, t_game *game)
 	}
 }
 
-void	init_raycast_data(t_raycast *rc, t_game *game)
+void	init_raycast_data(t_raycast_debug *rc, t_game *game)
 {
 	rc->hit = 0;
 	rc->distance = 0.0f;
