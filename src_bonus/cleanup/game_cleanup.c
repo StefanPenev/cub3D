@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/30 14:39:18 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/31 13:49:55 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,11 @@ void	game_cleanup(t_ctrl *ctrl)
 	// free_texture(ctrl->game, &ctrl->game->south_texture);
 	// free_texture(ctrl->game, &ctrl->game->west_texture);
 	// free_texture(ctrl->game, &ctrl->game->east_texture);
+	if (ctrl->map.doors)
+	{
+		free(ctrl->map.doors);
+		ctrl->map.doors = NULL;
+	}
 	free(ctrl->game);
 	ctrl->game = NULL;
 	free(ctrl);

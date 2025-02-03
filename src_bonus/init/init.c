@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 16:29:23 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/31 13:31:42 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,8 @@ void	init_map(t_map *map)
 	map->textures_defined = 0;
 	map->colors_defined = 0;
 	map->map_started = 0;
-	map->doors_count = 0; //bonus
-	map->door_open = 0; //bonus
+	map->doors_counter = 0; //bonus
+	map->doors = NULL; //bonus
 }
 
 int	init_ctrl(t_ctrl *ctrl)

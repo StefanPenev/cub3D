@@ -6,46 +6,41 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:10:00 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 16:41:26 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/03 14:38:52 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
 
-void	door_open(int grid_x, int grid_y, t_map *map)
-{
-	map->door_open = 1;
-	if (map->full_map[grid_y][grid_x - 1] == DOOR)
-		map->full_map[grid_y][grid_x - 1] = EMPTY;
-	if (map->full_map[grid_y][grid_x + 1] == DOOR)
-		map->full_map[grid_y][grid_x + 1] = EMPTY;
-	if (map->full_map[grid_y - 1][grid_x] == DOOR)
-		map->full_map[grid_y - 1][grid_x] = EMPTY;
-	if (map->full_map[grid_y + 1][grid_x] == DOOR)
-		map->full_map[grid_y + 1][grid_x] = EMPTY;
-}
-
 static int	is_valid_position(float x, float y, t_map *map)
 {
-	int		grid_x;
-	int		grid_y;
+	size_t	grid_x;
+	size_t	grid_y;
 	char	tile;
+	t_door	*door;
 
 	if (!in_map_bounds(x, y, map))
 		return (0);
-	grid_x = (int)(x / TILE_SIZE);
-	grid_y = (int)(y / TILE_SIZE);
+	grid_x = (size_t)(x / TILE_SIZE);
+	grid_y = (size_t)(y / TILE_SIZE);
 	tile = map->full_map[grid_y][grid_x];
-	if (map->full_map[grid_y + 1][grid_x] == DOOR || map->full_map[grid_y
-		- 1][grid_x] == DOOR || map->full_map[grid_y][grid_x + 1] == DOOR
-		|| map->full_map[grid_y][grid_x - 1] == DOOR)
-	{
-		door_open(grid_x, grid_y, map);
-	}
+	// door
+	if (map->full_map[grid_y + 1][grid_x] == DOOR)
+		door = get_door(grid_x, grid_y + 1, map);
+	else if (map->full_map[grid_y - 1][grid_x] == DOOR)
+		door = get_door(grid_x, grid_y - 1, map);
+	else if (map->full_map[grid_y][grid_x + 1] == DOOR)
+		door = get_door(grid_x + 1, grid_y, map);
+	else if (map->full_map[grid_y][grid_x - 1] == DOOR)
+		door = get_door(grid_x - 1, grid_y, map);
 	else
+		door = NULL;
+	if (door && door->state == DOOR_CLOSED)
 	{
-		map->door_open = 0;
+		printf("DEBUG: Opening door at (%d, %d)\n", door->x, door->y);
+		door_open(door->x, door->y, map);
 	}
+	// door
 	return (tile == '0' || tile == 'W' || tile == 'N' || tile == 'S'
 		|| tile == 'E');
 }

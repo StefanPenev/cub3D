@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:30:11 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 14:41:01 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/01/31 14:52:01 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,38 @@ void	explore_map(t_ctrl *ctrl)
 	}
 }
 
+void	create_doors_array(t_ctrl *ctrl)
+{
+	size_t	i;
+	size_t	j;
+	int		door_id;
+
+	door_id = 0;
+	i = 0;
+	ctrl->map.doors = malloc(ctrl->map.doors_counter * sizeof(t_door));
+	if (!ctrl->map.doors)
+		clean_exit("Memory allocation failed for map->doors\n", ctrl);
+	while (i < ctrl->map.rows)
+	{
+		j = 0;
+		while (j < ctrl->map.columns)
+		{
+			if (ctrl->map.full_map[i][j] == DOOR)
+			{
+				ctrl->map.doors[door_id].x = j;
+				ctrl->map.doors[door_id].y = i;
+				ctrl->map.doors[door_id].offset = 0;
+				ctrl->map.doors[door_id].state = DOOR_CLOSED;
+				printf("DEBUG: Door added at (%zu, %zu) at index %d\n", j, i,
+					door_id);
+				door_id++;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 void	parse_map(char *filename, t_ctrl *ctrl)
 {
 	char	*map_tmp;
@@ -76,4 +108,8 @@ void	parse_map(char *filename, t_ctrl *ctrl)
 	check_valid_characters(ctrl);
 	check_map_closed(ctrl);
 	check_map_valid(ctrl);
+	if (ctrl->map.doors_counter > 0)
+	{
+		create_doors_array(ctrl);
+	}
 }

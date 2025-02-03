@@ -1,0 +1,26 @@
+DEBUG: ./textures/n_walls_0.xpm
+DEBUG: ./textures/n_walls_1.xpm
+DEBUG: ./textures/n_walls_2.xpm
+DEBUG: ./textures/s_walls_0.xpm
+DEBUG: ./textures/s_walls_1.xpm
+DEBUG: ./textures/s_walls_2.xpm
+DEBUG: ./textures/w_walls_0.xpm
+DEBUG: ./textures/w_walls_1.xpm
+DEBUG: ./textures/w_walls_2.xpm
+DEBUG: ./textures/e_walls_0.xpm
+DEBUG: ./textures/e_walls_1.xpm
+DEBUG: ./textures/e_walls_2.xpm
+DEBUG: count of doors = 1
+DEBUG: Door added at (2, 3) at index 0
+DEBUG: Door texture file found, loading...
+DEBUG: Door texture loaded successfully
+DEBUG: Opening door at (2, 3)
+DEBUG: Checking door at (2, 3) | map->full_map = D
+DEBUG: Door found at (2, 3), changing state to OPENING
+10000N11111
+DEBUG: Door fully open at (2, 3)
+DEBUG: north_texture freed
+DEBUG: south_texture freed
+DEBUG: west_texture freed
+DEBUG: east_texture freed
+DEBUG: door freed

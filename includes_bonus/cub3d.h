@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/30 16:29:02 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/03 15:46:59 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@
 # define KEY_A 97
 # define KEY_S 115
 # define KEY_D 100
+//# define KEY_E 101
 # define KEY_ESC 65307
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
@@ -54,12 +55,27 @@
 # define MAP_COLOR 0x0000FF
 
 // bonus
+# define TRANSPARENT_COLOR 0xFF00FF
 
-# define TIME_SPEED 5
+# define TIME_SPEED 100
 
 # define MAX_FRAMES 3
 
-# define MAX_DOORS 100
+# define DOOR_CLOSED 0
+# define DOOR_OPENING 1
+# define DOOR_OPEN 2
+
+# define VERTICAL 0
+# define HORIZONTAL 1
+
+typedef struct s_door
+{
+	int				x;
+	int				y;
+	float			offset;
+	int				orientation;
+	int state; // bonus
+}					t_door;
 
 typedef struct s_anim
 {
@@ -80,12 +96,6 @@ typedef struct s_gnl
 	char			*line;
 }					t_gnl;
 
-typedef struct s_point
-{
-	size_t			x;
-	size_t			y;
-}					t_point;
-
 typedef struct s_map
 {
 	char			**full_map;
@@ -99,9 +109,8 @@ typedef struct s_map
 	size_t			players_count;
 	t_pos			player_position;
 	t_pos			player_index;
-	t_point doors[MAX_DOORS]; // bonus
-	int doors_count;          // bonus
-	int door_open; //bonus
+	size_t			doors_counter;
+	t_door *doors; // bonus
 }					t_map;
 
 typedef struct s_player
@@ -215,7 +224,7 @@ typedef struct s_raycast
 	int				y;
 	int				tex_y;
 	int				color;
-	int is_door; //anna
+	int is_door; // anna
 }					t_raycast;
 
 typedef struct s_square
@@ -270,14 +279,14 @@ char				*remove_inner_spaces(char *str, t_ctrl *ctrl);
 char				*read_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									utils.c									  */
+/*									utils.c										*/
 /* ************************************************************************** */
 
 char				*trim_trailing_whitespace(char *str);
 int					ft_isspace(int c);
 
 /* ************************************************************************** */
-/*									player.c								  */
+/*									player.c									*/
 /* ************************************************************************** */
 
 int					key_release(int keycode, t_ctrl *ctrl);
@@ -285,19 +294,19 @@ int					key_press(int keycode, t_ctrl *ctrl);
 bool				in_map_bounds(float x, float y, t_map *map);
 
 /* ************************************************************************** */
-/*								player_movement.c  							  */
+/*								player_movement.c  								*/
 /* ************************************************************************** */
 
 void				move_player(t_ctrl *ctrl, double delta_time);
 
 /* ************************************************************************** */
-/*									parse_map.c  							  */
+/*									parse_map.c  								*/
 /* ************************************************************************** */
 
 void				parse_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*										gnl.c  								  */
+/*										gnl.c  									*/
 /* ************************************************************************** */
 
 char				*gnl(int fd, t_ctrl *ctrl);
@@ -311,7 +320,7 @@ void				check_valid_characters(t_ctrl *ctrl);
 void				check_map_closed(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									flood_fill.c  							  */
+/*									flood_fill.c  								*/
 /* ************************************************************************** */
 
 void				check_map_valid(t_ctrl *ctrl);
@@ -342,7 +351,6 @@ void				choose_texture(t_raycast *rc, t_ctrl *ctrl);
 void				draw_wall(t_game *gm, t_raycast *rc, int col);
 void				draw_ceil_floor(t_game *gm, t_raycast *rc, int col);
 void				compute_wall_dimensions(t_raycast *rc, t_player *pl);
-
 
 /* ************************************************************************** */
 /*              					debug.c                                   */
@@ -392,11 +400,15 @@ void				init_game_window(t_ctrl *ctrl);
 
 // bonus
 /* ************************************************************************** */
-/*              						anim.c   							  */
+/*              						anim.c   								*/
 /* ************************************************************************** */
 
 void				select_frame(t_ctrl *ctrl);
 
 int					mouse_move(int x, int y, t_ctrl *ctrl);
+
+void				update_doors(t_door *door, t_map *map, double delta_time);
+t_door				*get_door(int grid_x, int grid_y, t_map *map);
+void				door_open(int grid_x, int grid_y, t_map *map);
 
 #endif

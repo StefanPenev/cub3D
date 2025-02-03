@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 16:15:08 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/03 16:25:21 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,43 @@ void	setup_steps(t_raycast *rc, t_player *pl)
 	}
 }
 
+void	apply_door_offset(t_raycast *rc, t_map *map)
+{
+	t_door	*door;
+	double	scale;
+	double	old_wall_x;
+	double	max_disp;
+	double	displacement;
+
+	scale = 2;
+	max_disp = 1;
+	door = get_door(rc->map_x, rc->map_y, map);
+	if (!door || door->state == DOOR_CLOSED)
+		return ;
+	old_wall_x = rc->wall_x;
+	displacement = scale * (door->offset / (double)TILE_SIZE);
+	if (displacement > max_disp)
+		displacement = max_disp;
+	if (door->orientation == VERTICAL)
+	{
+		rc->wall_x = old_wall_x + displacement;
+	}
+	else if (door->orientation == HORIZONTAL)
+	{
+		rc->wall_x = old_wall_x - displacement;
+	}
+	if (rc->wall_x < 0)
+		rc->wall_x = 0;
+	if (rc->wall_x > 1)
+		rc->wall_x = 1;
+	rc->tex_x = (int)(rc->wall_x * TEX_WIDTH);
+	if (rc->tex_x >= TEX_WIDTH)
+		rc->tex_x = TEX_WIDTH - 1;
+	// printf("DEBUG: Final door: original_wall_x=%.3f, displacement=%.3f,
+	// 	new wall_x=%.3f, tex_x=%d\n", old_wall_x, displacement, rc->wall_x,
+	// 	rc->tex_x);
+}
+
 void	raycast_wall_hit(t_raycast *rc, t_map *map)
 {
 	while (!rc->hit)
@@ -82,23 +119,31 @@ void	raycast_wall_hit(t_raycast *rc, t_map *map)
 			break ;
 		if (touch(rc->map_x, rc->map_y, map))
 			rc->hit = 1;
-		else if (map->full_map[rc->map_y][rc->map_x] == 'D')
+		else if (map->full_map[rc->map_y][rc->map_x] == DOOR)
 		{
+			//  t_door *door = get_door(rc->map_x, rc->map_y, map);
+			// if (door && door->offset >= TILE_SIZE * 0.1) 
+			// {
+			// 	continue;
+			// }
 			rc->hit = 1;
 			rc->is_door = 1;
+			// apply_door_offset(&rc, &map);
 		}
 	}
 }
 
-void	draw_door(t_game *game, t_raycast *rc, int col)
+void	draw_door(t_ctrl *ctrl, t_raycast *rc, int col)
 {
 	rc->y = rc->draw_start;
 	while (rc->y < rc->draw_end)
 	{
 		rc->tex_y = (int)rc->tex_pos & (TEX_HEIGHT - 1);
 		rc->tex_pos += rc->step;
-		rc->color = get_texture_color(&game->door, rc->tex_x, rc->tex_y);
-		put_pixel(col, rc->y, rc->color, game);
+		rc->color = get_texture_color(&ctrl->game->door, rc->tex_x, rc->tex_y);
+		// if (rc->tex_x > (TEX_WIDTH * (ctrl->map.doors->offset / TILE_SIZE)))
+		// 	continue ;
+		put_pixel(col, rc->y, rc->color, ctrl->game);
 		rc->y++;
 	}
 }
@@ -113,16 +158,14 @@ void	draw_line(t_player *player, t_ctrl *ctrl, float ray_angle,
 	raycast_wall_hit(&rc, &ctrl->map);
 	compute_wall_dimensions(&rc, player);
 	compute_wall_x(&rc);
-	// choose_texture(&rc, ctrl);
-	// draw_wall(ctrl->game, &rc, screen_column);
-	// draw_door(ctrl->game, &rc, screen_column);
 	if (rc.is_door)
 	{
 		rc.selected_texture = ctrl->game->door.img;
 		rc.step = 1.0f * TEX_HEIGHT / rc.wall_height;
 		rc.tex_pos = (rc.draw_start - HEIGHT / 2 + rc.wall_height / 2)
 			* rc.step;
-		draw_door(ctrl->game, &rc, screen_column);
+		apply_door_offset(&rc, &ctrl->map);
+		draw_door(ctrl, &rc, screen_column);
 	}
 	else
 	{

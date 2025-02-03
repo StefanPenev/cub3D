@@ -110,6 +110,8 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/utils/gnl.c \
 			$(SRC_BONUS_DIR)/utils/utils.c \
 			$(SRC_BONUS_DIR)/utils/map_utils.c \
 
+# Anim
+SRCS_BONUS += $(SRC_BONUS_DIR)/anim/doors.c \
 
 # **************************************************************************** #
 #                           Converting .c to .o                                 #
