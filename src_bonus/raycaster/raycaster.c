@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/03 16:25:21 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 12:56:47 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,8 @@ void	setup_steps(t_raycast *rc, t_player *pl)
 			* rc->delta_dist_y;
 	}
 }
-
-void	apply_door_offset(t_raycast *rc, t_map *map)
+// Adjusts the texture mapping for doors by applying an offset based on the door's state.
+void apply_door_offset(t_raycast *rc, t_map *map)
 {
 	t_door	*door;
 	double	scale;
@@ -69,84 +69,90 @@ void	apply_door_offset(t_raycast *rc, t_map *map)
 	double	max_disp;
 	double	displacement;
 
-	scale = 2;
-	max_disp = 1;
+	scale = 2;  // Scaling factor for the displacement calculation
+	max_disp = 1;  // Maximum allowed displacement
 	door = get_door(rc->map_x, rc->map_y, map);
-	if (!door || door->state == DOOR_CLOSED)
+	if (!door || door->state == DOOR_CLOSED) // Skip if no door or it's closed
 		return ;
 	old_wall_x = rc->wall_x;
 	displacement = scale * (door->offset / (double)TILE_SIZE);
-	if (displacement > max_disp)
+	if (displacement > max_disp) // Ensure displacement does not exceed the max limit
 		displacement = max_disp;
+	
+	// Adjust wall_x based on door orientation
 	if (door->orientation == VERTICAL)
-	{
 		rc->wall_x = old_wall_x + displacement;
-	}
 	else if (door->orientation == HORIZONTAL)
-	{
 		rc->wall_x = old_wall_x - displacement;
-	}
+
+	// Clamp wall_x between 0 and 1
 	if (rc->wall_x < 0)
 		rc->wall_x = 0;
 	if (rc->wall_x > 1)
 		rc->wall_x = 1;
+
+	// Calculate texture X coordinate
 	rc->tex_x = (int)(rc->wall_x * TEX_WIDTH);
-	if (rc->tex_x >= TEX_WIDTH)
+	if (rc->tex_x >= TEX_WIDTH) // Ensure tex_x remains within valid range
 		rc->tex_x = TEX_WIDTH - 1;
-	// printf("DEBUG: Final door: original_wall_x=%.3f, displacement=%.3f,
-	// 	new wall_x=%.3f, tex_x=%d\n", old_wall_x, displacement, rc->wall_x,
-	// 	rc->tex_x);
 }
 
-void	raycast_wall_hit(t_raycast *rc, t_map *map)
+// Performs raycasting to detect walls or doors along a ray's path.
+void raycast_wall_hit(t_raycast *rc, t_map *map)
 {
-	while (!rc->hit)
+	while (!rc->hit) // Loop until a wall or door is hit
 	{
+		// Move along the shortest path (X or Y direction)
 		if (rc->side_dist_x < rc->side_dist_y)
 		{
 			rc->side_dist_x += rc->delta_dist_x;
 			rc->map_x += rc->step_x;
-			rc->side = 0;
+			rc->side = 0; // Vertical wall hit
 		}
 		else
 		{
 			rc->side_dist_y += rc->delta_dist_y;
 			rc->map_y += rc->step_y;
-			rc->side = 1;
+			rc->side = 1; // Horizontal wall hit
 		}
+
+		// Break if outside map boundaries
 		if (rc->map_x < 0 || (size_t)rc->map_x >= map->columns || rc->map_y < 0
 			|| (size_t)rc->map_y >= map->rows)
 			break ;
+
+		// Check if a wall is hit
 		if (touch(rc->map_x, rc->map_y, map))
 			rc->hit = 1;
+		// Check if a door is hit
 		else if (map->full_map[rc->map_y][rc->map_x] == DOOR)
 		{
-			//  t_door *door = get_door(rc->map_x, rc->map_y, map);
-			// if (door && door->offset >= TILE_SIZE * 0.1) 
-			// {
-			// 	continue;
-			// }
+			// If a door is hit, mark it and stop raycasting
 			rc->hit = 1;
 			rc->is_door = 1;
-			// apply_door_offset(&rc, &map);
+			// apply_door_offset(&rc, &map); // Uncomment to apply door offset logic
 		}
 	}
 }
 
-void	draw_door(t_ctrl *ctrl, t_raycast *rc, int col)
+// Draws a door by applying texture mapping.
+void draw_door(t_ctrl *ctrl, t_raycast *rc, int col)
 {
 	rc->y = rc->draw_start;
-	while (rc->y < rc->draw_end)
+	while (rc->y < rc->draw_end) // Loop through pixels from draw_start to draw_end
 	{
-		rc->tex_y = (int)rc->tex_pos & (TEX_HEIGHT - 1);
-		rc->tex_pos += rc->step;
+		rc->tex_y = (int)rc->tex_pos & (TEX_HEIGHT - 1); // Get texture Y coordinate
+		rc->tex_pos += rc->step; // Move to next texture position
+
+		// Fetch the door's texture color
 		rc->color = get_texture_color(&ctrl->game->door, rc->tex_x, rc->tex_y);
-		// if (rc->tex_x > (TEX_WIDTH * (ctrl->map.doors->offset / TILE_SIZE)))
-		// 	continue ;
+
+		// Draw the pixel on the screen
 		put_pixel(col, rc->y, rc->color, ctrl->game);
 		rc->y++;
 	}
 }
+
 
 void	draw_line(t_player *player, t_ctrl *ctrl, float ray_angle,
 		int screen_column)
