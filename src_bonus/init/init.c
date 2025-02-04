@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/31 13:31:42 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:46:24 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	init_game(t_game *game)
 	init_texture(&game->west_texture);
 	game->floor_color = 0xFFFFFFFF;
 	game->ceiling_color = 0xFFFFFFFF;
+	game->is_shooting = 0;
+	game->shoot_ac = 0;
 }
 
 void	init_map(t_map *map)

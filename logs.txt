@@ -17,7 +17,6 @@ DEBUG: Door texture loaded successfully
 DEBUG: Opening door at (2, 3)
 DEBUG: Checking door at (2, 3) | map->full_map = D
 DEBUG: Door found at (2, 3), changing state to OPENING
-10000N11111
 DEBUG: Door fully open at (2, 3)
 DEBUG: north_texture freed
 DEBUG: south_texture freed

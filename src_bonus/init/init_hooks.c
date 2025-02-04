@@ -6,11 +6,21 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 13:04:09 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:48:08 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
+
+int	mouse_click(int button, int x, int y, t_game *game)
+{
+	if (button == MOUSE_CLICK)
+	{
+		printf("DEBUG: Mouse Click Detected at (%d, %d)\n", x, y);
+		game->is_shooting = 1;
+	}
+	return (0);
+}
 
 void	init_hooks(t_ctrl *ctrl)
 {
@@ -20,6 +30,7 @@ void	init_hooks(t_ctrl *ctrl)
 	mlx_hook(ctrl->game->win, 6, 1L << 6, mouse_move, ctrl);
 	mlx_hook(ctrl->game->win, 2, 1L << 0, key_press, ctrl);
 	mlx_hook(ctrl->game->win, 3, 1L << 1, key_release, ctrl);
+	mlx_mouse_hook(ctrl->game->win, mouse_click, ctrl->game);
 	mlx_hook(ctrl->game->win, 17, 0, close_window, ctrl);
 }
 
@@ -46,6 +57,6 @@ void	init_game_window(t_ctrl *ctrl)
 		clean_exit("Error: Image data not initialized.\n", ctrl);
 	}
 	ctrl->game->debug = 0;
-	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
-		ctrl->game->img, 0, 0);
+	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win, ctrl->game->img,
+		0, 0);
 }

@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 15:06:53 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 14:58:36 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,43 @@ static void	load_door_texture(t_game *game, t_texture *texture, char *path,
 		printf("Error: Failed to get texture data at %s\n", path);
 		close_window(ctrl);
 	}
+}
+
+void	load_weapon_textures(t_game *game)
+{
+	int	weapon_width;
+	int	weapon_height;
+
+	weapon_width = TEX_WIDTH;
+	weapon_height = TEX_HEIGHT;
+	game->weapon_idle.path = "./textures/weapon_idle.xpm";
+	game->weapon_shoot.path = "./textures/weapon_shoot.xpm";
+	// Загружаем первую текстуру
+	game->weapon_idle.img = mlx_xpm_file_to_image(game->mlx,
+			game->weapon_idle.path, &weapon_width, &weapon_height);
+	if (!game->weapon_idle.img) // Проверяем, загрузилась ли текстура
+	{
+		printf("ERROR: Failed to load weapon_idle texture: %s\n",
+			game->weapon_idle.path);
+		exit(1);
+	}
+	game->weapon_idle.addr = mlx_get_data_addr(game->weapon_idle.img,
+			&game->weapon_idle.bits_per_pixel, &game->weapon_idle.line_length,
+			&game->weapon_idle.endian);
+	// Загружаем вторую текстуру
+	game->weapon_shoot.img = mlx_xpm_file_to_image(game->mlx,
+			game->weapon_shoot.path, &weapon_width, &weapon_height);
+	if (!game->weapon_shoot.img) // Проверяем, загрузилась ли текстура
+	{
+		printf("ERROR: Failed to load weapon_shoot texture: %s\n",
+			game->weapon_shoot.path);
+		mlx_destroy_image(game->mlx, game->weapon_idle.img);
+			// Чистим предыдущую текстуру
+		exit(1);
+	}
+	game->weapon_shoot.addr = mlx_get_data_addr(game->weapon_shoot.img,
+			&game->weapon_shoot.bits_per_pixel, &game->weapon_shoot.line_length,
+			&game->weapon_shoot.endian);
 }
 
 // void	load_all_textures(t_game *game, t_ctrl *ctrl)
@@ -96,6 +133,7 @@ void	load_all_textures(t_game *game, t_ctrl *ctrl)
 		ctrl);
 	load_texture(game, &game->west_texture, ctrl->game->west_texture.paths,
 		ctrl);
+	load_weapon_textures(game);
 	fd = open(fn, O_RDONLY);
 	if (fd != -1)
 	{

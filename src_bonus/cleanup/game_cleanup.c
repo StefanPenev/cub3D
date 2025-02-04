@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/31 13:49:55 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 15:00:00 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,20 @@ void	free_map(char **map, size_t rows)
 		i++;
 	}
 	free(map);
+}
+
+void free_weapon_textures(t_game *game)
+{
+    if (game->weapon_idle.img)
+    {
+        mlx_destroy_image(game->mlx, game->weapon_idle.img);
+        game->weapon_idle.img = NULL;
+    }
+    if (game->weapon_shoot.img)
+    {
+        mlx_destroy_image(game->mlx, game->weapon_shoot.img);
+        game->weapon_shoot.img = NULL;
+    }
 }
 
 void	free_texture(t_game *game, t_texture *texture)
@@ -100,6 +114,7 @@ void	cleanup_textures(t_game *game)
 	printf("DEBUG: east_texture freed\n");
 	free_texture(game, &game->door);
 	printf("DEBUG: door freed\n");
+	free_weapon_textures(game);
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
 }

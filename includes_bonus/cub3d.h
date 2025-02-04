@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/04 08:27:37 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/04 14:46:13 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define KEY_ESC 65307
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
+# define MOUSE_CLICK 1
 
 # define WIDTH 800
 # define HEIGHT 600
@@ -150,12 +151,17 @@ typedef struct s_game
 	unsigned int	ceiling_color;
 	unsigned int	floor_color;
 	int				debug;
+	int				is_shooting;
+	int				shoot_ac;
 	t_player		player;
 	t_texture		north_texture;
 	t_texture		south_texture;
 	t_texture		east_texture;
 	t_texture		west_texture;
 	t_texture door; // bonus
+	t_texture		weapon_idle;
+	t_texture		weapon_shoot;
+
 }					t_game;
 
 typedef struct s_ctrl

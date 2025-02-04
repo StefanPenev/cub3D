@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/04 08:31:26 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/04 15:28:36 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,78 @@ void	draw_cross(t_game *game)
 	}
 }
 
+void	draw_weapon(t_texture *texture, t_game *game, int scale,
+		int recoil_offset)
+{
+	int	color;
+	int	screen_x;
+	int	screen_y;
+	int	y;
+	int	x;
+	int	weapon_x;
+	int	weapon_y;
+	int	i;
+	int	j;
+
+	weapon_x = (WIDTH / 2) - ((TEX_WIDTH * scale) / 2);
+	// change divider to move weapon left or right
+	weapon_y = HEIGHT - (TEX_HEIGHT * scale) + recoil_offset;
+	y = 0;
+	while (y < TEX_HEIGHT)
+	{
+		x = 0;
+		while (x < TEX_WIDTH)
+		{
+			color = get_texture_color(texture, x, y);
+			if (color != 0xFFFFFF)
+			{
+				i = 0;
+				while (i < scale)
+				{
+					j = 0;
+					while (j < scale)
+					{
+						screen_x = weapon_x + (x * scale) + i;
+						screen_y = weapon_y + (y * scale) + j;
+						if (screen_x >= 0 && screen_x < WIDTH && screen_y >= 0
+							&& screen_y < HEIGHT)
+							put_pixel(screen_x, screen_y, color, game);
+						j++;
+					}
+					i++;
+				}
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
+void	choose_weapon(t_game *game)
+{
+	int	scale;
+	int	recoil_offset;
+
+	recoil_offset = 0;
+	scale = 3;
+	if (game->is_shooting)
+	{
+		recoil_offset = 10;
+		draw_weapon(&game->weapon_shoot, game, scale, recoil_offset);
+		game->shoot_ac++;
+		if (game->shoot_ac >= 50) //change this value to choose how long shooting frame should be on the screen
+		{
+			//recoil_offset = 0;
+			game->is_shooting = 0;
+			game->shoot_ac = 0;
+		}
+	}
+	else
+	{
+		draw_weapon(&game->weapon_idle, game, scale, recoil_offset);
+	}
+}
+
 int	draw_loop(t_ctrl *ctrl)
 {
 	float	fov;
@@ -129,11 +201,11 @@ int	draw_loop(t_ctrl *ctrl)
 		ctrl->anim.ac = 0;
 	}
 	delta_time = compute_delta_time();
-	// printf("DEBUG: delta_time = %f\n", delta_time); 
+	// printf("DEBUG: delta_time = %f\n", delta_time);
 	// door
 	while (i < ctrl->map.doors_counter)
 	{
-		if (ctrl->map.doors[i].state == DOOR_OPENING) 
+		if (ctrl->map.doors[i].state == DOOR_OPENING)
 		{
 			update_doors(&ctrl->map.doors[i], &ctrl->map, delta_time);
 		}
@@ -154,6 +226,7 @@ int	draw_loop(t_ctrl *ctrl)
 	// draw_doors(ctrl);
 	draw_cross(ctrl->game);
 	draw_minimap(&ctrl->map, ctrl->game);
+	choose_weapon(ctrl->game);
 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win, ctrl->game->img,
 		0, 0);
 	return (0);
