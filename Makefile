@@ -104,6 +104,7 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/raycaster/debug.c \
 			$(SRC_BONUS_DIR)/raycaster/raycaster_utils.c \
 			$(SRC_BONUS_DIR)/raycaster/raycast_utils.c \
 			$(SRC_BONUS_DIR)/raycaster/draw.c \
+			$(SRC_BONUS_DIR)/raycaster/minimap.c \
 
 # Utils
 SRCS_BONUS += $(SRC_BONUS_DIR)/utils/gnl.c \

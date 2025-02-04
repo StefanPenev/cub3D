@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/03 15:46:59 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 08:27:37 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -410,5 +410,7 @@ int					mouse_move(int x, int y, t_ctrl *ctrl);
 void				update_doors(t_door *door, t_map *map, double delta_time);
 t_door				*get_door(int grid_x, int grid_y, t_map *map);
 void				door_open(int grid_x, int grid_y, t_map *map);
+
+void				draw_minimap(t_map *map, t_game *game);
 
 #endif
