@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/04 15:28:36 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:18:22 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,6 @@ int	draw_loop(t_ctrl *ctrl)
 		angle_step = fov / WIDTH;
 		handle_rays(ctrl, start_angle, angle_step);
 	}
-	// draw_doors(ctrl);
 	draw_cross(ctrl->game);
 	draw_minimap(&ctrl->map, ctrl->game);
 	choose_weapon(ctrl->game);

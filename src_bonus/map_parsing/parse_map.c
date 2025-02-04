@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:30:11 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/31 14:52:01 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:38:44 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,38 @@ void	explore_map(t_ctrl *ctrl)
 	}
 }
 
+void	create_box_array(t_ctrl *ctrl)
+{
+	size_t	i;
+	size_t	j;
+	int		box_id;
+
+	box_id = 0;
+	i = 0;
+	ctrl->map.boxes = malloc(ctrl->map.box_counter * sizeof(t_box));
+	if (!ctrl->map.boxes)
+		clean_exit("Memory allocation failed for map->boxes\n", ctrl);
+	while (i < ctrl->map.rows)
+	{
+		j = 0;
+		while (j < ctrl->map.columns)
+		{
+			if (ctrl->map.full_map[i][j] == COLLECTIBLE)
+			{
+				ctrl->map.boxes[box_id].x = j;
+				ctrl->map.boxes[box_id].y = i;
+				ctrl->map.boxes[box_id].state = NOT_DAMAGED;
+				printf("DEBUG: Box added at (%zu, %zu) at index %d\n", j, i,
+					box_id);
+				box_id++;
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
+
 void	create_doors_array(t_ctrl *ctrl)
 {
 	size_t	i;
@@ -111,5 +143,9 @@ void	parse_map(char *filename, t_ctrl *ctrl)
 	if (ctrl->map.doors_counter > 0)
 	{
 		create_doors_array(ctrl);
+	}
+	if (ctrl->map.box_counter > 0)
+	{
+		create_box_array(ctrl);
 	}
 }

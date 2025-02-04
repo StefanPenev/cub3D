@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/04 14:46:13 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:46:03 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <sys/time.h>
 # include <unistd.h>
 
+// map values
 # define WALL '1'
 # define EMPTY '0'
 # define NORTH 'N'
@@ -34,6 +35,7 @@
 # define DOOR 'D'
 # define COLLECTIBLE 'C'
 
+// keys
 # define KEY_W 119
 # define KEY_A 97
 # define KEY_S 115
@@ -43,6 +45,8 @@
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
 # define MOUSE_CLICK 1
+# define SPACE 32
+
 
 # define WIDTH 800
 # define HEIGHT 600
@@ -62,10 +66,17 @@
 
 # define MAX_FRAMES 3
 
+// door states
 # define DOOR_CLOSED 0
 # define DOOR_OPENING 1
 # define DOOR_OPEN 2
 
+// box states
+# define NOT_DAMAGED 0
+# define DAMAGED 1
+# define DESTROYED 2
+
+// door direction
 # define VERTICAL 0
 # define HORIZONTAL 1
 
@@ -75,8 +86,15 @@ typedef struct s_door
 	int				y;
 	float			offset;
 	int				orientation;
-	int state; // bonus
+	int				state;
 }					t_door;
+
+typedef struct s_box
+{
+	int				x;
+	int				y;
+	int				state;
+}					t_box;
 
 typedef struct s_anim
 {
@@ -110,8 +128,11 @@ typedef struct s_map
 	size_t			players_count;
 	t_pos			player_position;
 	t_pos			player_index;
-	size_t			doors_counter;
-	t_door *doors; // bonus
+	size_t doors_counter; // bonus
+	size_t box_counter;   // bonus
+	t_door *doors;        // bonus
+	t_box *boxes;         // bonus
+
 }					t_map;
 
 typedef struct s_player
@@ -158,9 +179,9 @@ typedef struct s_game
 	t_texture		south_texture;
 	t_texture		east_texture;
 	t_texture		west_texture;
-	t_texture door; // bonus
-	t_texture		weapon_idle;
-	t_texture		weapon_shoot;
+	t_texture door;         // bonus
+	t_texture weapon_idle;  // bonus
+	t_texture weapon_shoot; // bonus
 
 }					t_game;
 
@@ -418,5 +439,6 @@ t_door				*get_door(int grid_x, int grid_y, t_map *map);
 void				door_open(int grid_x, int grid_y, t_map *map);
 
 void				draw_minimap(t_map *map, t_game *game);
+int	mouse_click(int button, t_game *game);
 
 #endif

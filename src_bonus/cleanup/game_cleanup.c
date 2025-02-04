@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/04 15:00:00 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:06:33 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,11 @@ void	game_cleanup(t_ctrl *ctrl)
 	{
 		free(ctrl->map.doors);
 		ctrl->map.doors = NULL;
+	}
+	if (ctrl->map.boxes)
+	{
+		free(ctrl->map.boxes);
+		ctrl->map.boxes = NULL;
 	}
 	free(ctrl->game);
 	ctrl->game = NULL;

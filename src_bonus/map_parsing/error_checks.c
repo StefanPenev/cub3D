@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:52:25 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/31 14:41:56 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:13:21 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,16 @@ void	check_valid_characters(t_ctrl *ctrl)
 			{
 				ctrl->map.doors_counter++;
 			}
+			if (c == COLLECTIBLE)
+			{
+				ctrl->map.box_counter++;
+			}
 			j++;
 		}
 		i++;
 	}
 	printf("DEBUG: count of doors = %zu\n", ctrl->map.doors_counter);
+	printf("DEBUG: count of collectibles = %zu\n", ctrl->map.box_counter);
 	if (ctrl->map.players_count != 1)
 		clean_exit("Invalid input:\nSingle player position expected.\n", ctrl);
 	else

@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:10:00 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/04 12:59:01 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:39:18 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,10 @@ static int	is_valid_position(float x, float y, t_map *map)
 	// Ensure the position is within map boundaries
 	if (!in_map_bounds(x, y, map))
 		return (0);
-
 	// Convert floating-point position to grid coordinates
 	grid_x = (size_t)(x / TILE_SIZE);
 	grid_y = (size_t)(y / TILE_SIZE);
 	tile = map->full_map[grid_y][grid_x];
-
 	// Check for nearby doors and get door object if present
 	if (map->full_map[grid_y + 1][grid_x] == DOOR)
 		door = get_door(grid_x, grid_y + 1, map);
@@ -40,18 +38,17 @@ static int	is_valid_position(float x, float y, t_map *map)
 		door = get_door(grid_x - 1, grid_y, map);
 	else
 		door = NULL;
-
 	// If a closed door is detected, open it
 	if (door && door->state == DOOR_CLOSED)
 	{
+		printf("hello from if\n");
 		printf("DEBUG: Opening door at (%d, %d)\n", door->x, door->y);
 		door_open(door->x, door->y, map);
 	}
-
 	// Return whether the tile is walkable (valid for movement)
-	return (tile == '0' || tile == 'W' || tile == 'N' || tile == 'S' || tile == 'E');
+	return (tile == '0' || tile == 'W' || tile == 'N' || tile == 'S'
+		|| tile == 'E');
 }
-
 
 static void	update_player_angle(t_player *player, double delta_time)
 {

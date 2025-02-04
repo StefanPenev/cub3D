@@ -6,19 +6,16 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/04 14:48:08 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/04 16:45:10 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
 
-int	mouse_click(int button, int x, int y, t_game *game)
+int	mouse_click(int button, t_game *game)
 {
-	if (button == MOUSE_CLICK)
-	{
-		printf("DEBUG: Mouse Click Detected at (%d, %d)\n", x, y);
+	if (button == MOUSE_CLICK || button == SPACE)
 		game->is_shooting = 1;
-	}
 	return (0);
 }
 
