@@ -6,34 +6,49 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:38:18 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/06 15:15:51 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:02:13 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
 
-void	update_doors(t_door *door, t_map *map, double delta_time)
+void	update_doors(t_door *door, t_ctrl *ctrl, double delta_time)
 {
+	int	x;
+	int	y;
+
 	if (door->state == DOOR_OPENING)
 	{
 		door->state = DOOR_OPEN;
-		map->full_map[door->y][door->x] = EMPTY;
+		ctrl->map.full_map[door->y][door->x] = EMPTY;
 		printf("DEBUG: Door in (%d, %d) is OPEN.\n", door->x, door->y);
 	}
 	if (door->state == DOOR_OPEN)
 	{
-		door->timer -= delta_time;
-		if (door->timer <= 0)
+		x = (int)(ctrl->game->player.x / TILE_SIZE);
+		y = (int)(ctrl->game->player.y / TILE_SIZE);
+		if (x == door->x && y == door->y)
 		{
-			door->state = DOOR_CLOSING;
-			printf("DEBUG: Tome is over. Door in (%d, %d) is closing.\n",
-				door->x, door->y);
+			door->timer = 3.0;
+			// printf("DEBUG: Player blocks door in (%d, %d).\n", door->x,
+			// 	door->y);
+			return ;
+		}
+		else
+		{
+			door->timer -= delta_time;
+			if (door->timer <= 0)
+			{
+				door->state = DOOR_CLOSING;
+				printf("DEBUG: Time is over. Door in (%d, %d) is closing.\n",
+					door->x, door->y);
+			}
 		}
 	}
 	if (door->state == DOOR_CLOSING)
 	{
 		door->state = DOOR_CLOSED;
-		map->full_map[door->y][door->x] = DOOR;
+		ctrl->map.full_map[door->y][door->x] = DOOR;
 		printf("DEBUG: Door in (%d, %d) is CLOSE.\n", door->x, door->y);
 	}
 }

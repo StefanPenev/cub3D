@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/06 15:16:41 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:59:14 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -287,7 +287,7 @@ int	draw_loop(t_ctrl *ctrl)
 	{
 		if (ctrl->map.doors[i].state == DOOR_OPENING || ctrl->map.doors[i].state == DOOR_OPEN)
 		{
-			update_doors(&ctrl->map.doors[i], &ctrl->map, delta_time);
+			update_doors(&ctrl->map.doors[i], ctrl, delta_time);
 		}
 		i++;
 	}

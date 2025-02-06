@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/06 15:13:10 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/06 16:00:02 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ typedef struct s_door
 {
 	int				x;
 	int				y;
-	//float			offset;
-	//int				orientation;
+	// float			offset;
+	// int				orientation;
 	int				state;
 	double			timer;
 }					t_door;
@@ -436,8 +436,8 @@ void				init_game_window(t_ctrl *ctrl);
 void				select_frame(t_ctrl *ctrl);
 
 int					mouse_move(int x, int y, t_ctrl *ctrl);
-//void				update_doors(t_door *door, t_map *map);
-void				update_doors(t_door *door, t_map *map, double delta_time);
+// void				update_doors(t_door *door, t_map *map);
+void				update_doors(t_door *door, t_ctrl *ctrl, double delta_time);
 t_door				*get_door(int grid_x, int grid_y, t_map *map);
 void				door_open(int grid_x, int grid_y, t_map *map);
 
