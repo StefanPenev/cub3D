@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/04 16:46:03 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/05 22:14:45 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,6 +182,8 @@ typedef struct s_game
 	t_texture door;         // bonus
 	t_texture weapon_idle;  // bonus
 	t_texture weapon_shoot; // bonus
+	t_texture		enemy;
+	float			*zbuffer;
 
 }					t_game;
 

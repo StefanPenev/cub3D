@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/04 16:18:22 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/05 23:28:44 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,88 @@ void	choose_weapon(t_game *game)
 	}
 }
 
+int is_wall(t_ctrl *ctrl, float x, float y)
+{
+    int map_x = (int)(x / TILE_SIZE);
+    int map_y = (int)(y / TILE_SIZE);
+
+    // Bounds check to avoid accessing out of array limits
+    if (map_x < 0 || map_x >= WIDTH || map_y < 0 || map_y >= HEIGHT)
+        return 1; // Treat out-of-bounds as a wall
+
+    // Check if the tile is a wall ('1' represents walls in the map)
+    return (ctrl->map.full_map[map_y][map_x] == '1');
+}
+
+void	draw_enemy(t_ctrl *ctrl, t_player *player)
+{
+    const float enemy_world_x = 1696.0;
+    const float enemy_world_y = 480.0;
+
+    float dx = enemy_world_x - player->x;
+    float dy = enemy_world_y - player->y;
+    float distance = sqrtf(dx * dx + dy * dy);
+    float enemy_angle = atan2f(dy, dx);
+    
+    float angle_diff = enemy_angle - player->angle;
+    while (angle_diff > M_PI)
+        angle_diff -= 2 * M_PI;
+    while (angle_diff < -M_PI)
+        angle_diff += 2 * M_PI;
+
+    float half_fov = (M_PI / 3) / 2;
+    if (fabs(angle_diff) > half_fov)
+        return;
+
+    float enemy_perp_distance = distance * cos(angle_diff);
+    float fov = M_PI / 3;
+    float dist_plane = (WIDTH / 2) / tanf(fov / 2);
+
+    int sprite_height = abs((int)((TILE_SIZE / enemy_perp_distance) * dist_plane));
+    int sprite_width = sprite_height;
+    int sprite_screen_x = (int)((WIDTH / 2) + (tanf(angle_diff) * dist_plane)) - sprite_width / 2;
+    int sprite_screen_y = (HEIGHT / 2) - sprite_height / 2;
+
+    // 🔴 NEW: Cast a ray to check if a wall blocks the enemy
+    float ray_x = player->x;
+    float ray_y = player->y;
+    float step_x = dx / distance * TILE_SIZE;
+    float step_y = dy / distance * TILE_SIZE;
+    float ray_dist = 0;
+
+    while (ray_dist < distance)
+    {
+        ray_x += step_x;
+        ray_y += step_y;
+        ray_dist += TILE_SIZE;
+
+        if (is_wall(ctrl, ray_x, ray_y)) // Check if there's a wall
+            return; // 🛑 Don't draw the enemy if a wall is blocking it
+    }
+
+    // Render the sprite if no wall is blocking the view
+    for (int x = 0; x < sprite_width; x++)
+    {
+        int screen_x = sprite_screen_x + x;
+        if (screen_x < 0 || screen_x >= WIDTH)
+            continue;
+        if (ctrl->game->zbuffer && (enemy_perp_distance > ctrl->game->zbuffer[screen_x]))
+            continue;
+        for (int y = 0; y < sprite_height; y++)
+        {
+            int screen_y = sprite_screen_y + y;
+            if (screen_y < 0 || screen_y >= HEIGHT)
+                continue;
+            int tex_x = x * TEX_WIDTH / sprite_width;
+            int tex_y = y * TEX_HEIGHT / sprite_height;
+            int color = get_texture_color(&ctrl->game->enemy, tex_x, tex_y);
+            if (color != 0)
+                put_pixel(screen_x, screen_y, color, ctrl->game);
+        }
+    }
+}
+
+
 int	draw_loop(t_ctrl *ctrl)
 {
 	float	fov;
@@ -222,6 +304,7 @@ int	draw_loop(t_ctrl *ctrl)
 		start_angle = ctrl->game->player.angle - (fov / 2.0f);
 		angle_step = fov / WIDTH;
 		handle_rays(ctrl, start_angle, angle_step);
+		draw_enemy(ctrl, &ctrl->game->player);
 	}
 	draw_cross(ctrl->game);
 	draw_minimap(&ctrl->map, ctrl->game);
