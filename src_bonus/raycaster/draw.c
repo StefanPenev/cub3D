@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/05 23:28:44 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/06 12:40:31 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,8 +220,6 @@ void	draw_enemy(t_ctrl *ctrl, t_player *player)
     int sprite_width = sprite_height;
     int sprite_screen_x = (int)((WIDTH / 2) + (tanf(angle_diff) * dist_plane)) - sprite_width / 2;
     int sprite_screen_y = (HEIGHT / 2) - sprite_height / 2;
-
-    // 🔴 NEW: Cast a ray to check if a wall blocks the enemy
     float ray_x = player->x;
     float ray_y = player->y;
     float step_x = dx / distance * TILE_SIZE;
@@ -234,8 +232,8 @@ void	draw_enemy(t_ctrl *ctrl, t_player *player)
         ray_y += step_y;
         ray_dist += TILE_SIZE;
 
-        if (is_wall(ctrl, ray_x, ray_y)) // Check if there's a wall
-            return; // 🛑 Don't draw the enemy if a wall is blocking it
+        if (is_wall(ctrl, ray_x, ray_y))
+            return;
     }
 
     // Render the sprite if no wall is blocking the view
