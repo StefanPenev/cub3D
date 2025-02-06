@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/05 21:58:49 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/06 14:07:56 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ void	load_weapon_textures(t_game *game)
 
 	weapon_width = TEX_WIDTH;
 	weapon_height = TEX_HEIGHT;
-	game->weapon_idle.path = "./textures/weapon_idle.xpm";
-	game->weapon_shoot.path = "./textures/weapon_shoot.xpm";
+	game->weapon_idle.path = "./textures/gun_idle.xpm";
+	game->weapon_shoot.path = "./textures/gun_shoot.xpm";
 	// Загружаем первую текстуру
 	game->weapon_idle.img = mlx_xpm_file_to_image(game->mlx,
 			game->weapon_idle.path, &weapon_width, &weapon_height);
@@ -142,7 +142,7 @@ void	load_enemy_textures(t_game *game)
 void	load_all_textures(t_game *game, t_ctrl *ctrl)
 {
 	int		fd;
-	char	fn[] = "./textures/door.xpm";
+	char	fn[] = "./textures/door2.xpm";
 
 	fd = 0;
 	load_texture(game, &game->north_texture, ctrl->game->north_texture.paths,

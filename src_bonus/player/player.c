@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:59 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/04 16:46:15 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:52:05 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,11 @@ int	key_press(int keycode, t_ctrl *ctrl)
 	if (keycode == KEY_RIGHT)
 		player->right_rotate = true;
 	if (keycode == SPACE)
-		mouse_click(keycode, game);
+		space_press(keycode, game);
 	if (keycode == KEY_ESC)
 		close_window(ctrl);
+	if (keycode == KEY_E)
+		door_state(ctrl);
 	return (0);
 }
 

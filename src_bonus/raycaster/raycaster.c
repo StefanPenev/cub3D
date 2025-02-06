@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/05 22:08:21 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/06 14:18:25 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,40 +60,40 @@ void	setup_steps(t_raycast *rc, t_player *pl)
 			* rc->delta_dist_y;
 	}
 }
-// Adjusts the texture mapping for doors by applying an offset based on the door's state.
-void	apply_door_offset(t_raycast *rc, t_map *map)
-{
-	t_door	*door;
-	double	scale;
-	double	old_wall_x;
-	double	max_disp;
-	double	displacement;
+// // Adjusts the texture mapping for doors by applying an offset based on the door's state.
+// void	apply_door_offset(t_raycast *rc, t_map *map)
+// {
+// 	t_door	*door;
+// 	double	scale;
+// 	double	old_wall_x;
+// 	double	max_disp;
+// 	double	displacement;
 
-	scale = 2;    // Scaling factor for the displacement calculation
-	max_disp = 1; // Maximum allowed displacement
-	door = get_door(rc->map_x, rc->map_y, map);
-	if (!door || door->state == DOOR_CLOSED) // Skip if no door or it's closed
-		return ;
-	old_wall_x = rc->wall_x;
-	displacement = scale * (door->offset / (double)TILE_SIZE);
-	if (displacement > max_disp)
-		// Ensure displacement does not exceed the max limit
-		displacement = max_disp;
-	// Adjust wall_x based on door orientation
-	if (door->orientation == VERTICAL)
-		rc->wall_x = old_wall_x + displacement;
-	else if (door->orientation == HORIZONTAL)
-		rc->wall_x = old_wall_x - displacement;
-	// Clamp wall_x between 0 and 1
-	if (rc->wall_x < 0)
-		rc->wall_x = 0;
-	if (rc->wall_x > 1)
-		rc->wall_x = 1;
-	// Calculate texture X coordinate
-	rc->tex_x = (int)(rc->wall_x * TEX_WIDTH);
-	if (rc->tex_x >= TEX_WIDTH) // Ensure tex_x remains within valid range
-		rc->tex_x = TEX_WIDTH - 1;
-}
+// 	scale = 2;    // Scaling factor for the displacement calculation
+// 	max_disp = 1; // Maximum allowed displacement
+// 	door = get_door(rc->map_x, rc->map_y, map);
+// 	if (!door || door->state == DOOR_CLOSED) // Skip if no door or it's closed
+// 		return ;
+// 	old_wall_x = rc->wall_x;
+// 	displacement = scale * (door->offset / (double)TILE_SIZE);
+// 	if (displacement > max_disp)
+// 		// Ensure displacement does not exceed the max limit
+// 		displacement = max_disp;
+// 	// Adjust wall_x based on door orientation
+// 	if (door->orientation == VERTICAL)
+// 		rc->wall_x = old_wall_x + displacement;
+// 	else if (door->orientation == HORIZONTAL)
+// 		rc->wall_x = old_wall_x - displacement;
+// 	// Clamp wall_x between 0 and 1
+// 	if (rc->wall_x < 0)
+// 		rc->wall_x = 0;
+// 	if (rc->wall_x > 1)
+// 		rc->wall_x = 1;
+// 	// Calculate texture X coordinate
+// 	rc->tex_x = (int)(rc->wall_x * TEX_WIDTH);
+// 	if (rc->tex_x >= TEX_WIDTH) // Ensure tex_x remains within valid range
+// 		rc->tex_x = TEX_WIDTH - 1;
+// }
 
 // Performs raycasting to detect walls or doors along a ray's path.
 void	raycast_wall_hit(t_raycast *rc, t_map *map)
@@ -167,7 +167,7 @@ void	draw_line(t_player *player, t_ctrl *ctrl, float ray_angle,
 		rc.step = 1.0f * TEX_HEIGHT / rc.wall_height;
 		rc.tex_pos = (rc.draw_start - HEIGHT / 2 + rc.wall_height / 2)
 			* rc.step;
-		apply_door_offset(&rc, &ctrl->map);
+		//apply_door_offset(&rc, &ctrl->map);
 		draw_door(ctrl, &rc, screen_column);
 	}
 	else

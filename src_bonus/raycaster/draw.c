@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/06 12:40:31 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/06 15:16:41 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ void	draw_weapon(t_texture *texture, t_game *game, int scale,
 	int	i;
 	int	j;
 
-	weapon_x = (WIDTH / 2) - ((TEX_WIDTH * scale) / 2);
+	weapon_x = (WIDTH / 2) - ((TEX_WIDTH * scale) / 2.3);
 	// change divider to move weapon left or right
 	weapon_y = HEIGHT - (TEX_HEIGHT * scale) + recoil_offset;
 	y = 0;
@@ -130,8 +130,8 @@ void	draw_weapon(t_texture *texture, t_game *game, int scale,
 		while (x < TEX_WIDTH)
 		{
 			color = get_texture_color(texture, x, y);
-			if (color != 0xFFFFFF)
-			{
+			if (color != 0x000000)
+			 {
 				i = 0;
 				while (i < scale)
 				{
@@ -285,7 +285,7 @@ int	draw_loop(t_ctrl *ctrl)
 	// door
 	while (i < ctrl->map.doors_counter)
 	{
-		if (ctrl->map.doors[i].state == DOOR_OPENING)
+		if (ctrl->map.doors[i].state == DOOR_OPENING || ctrl->map.doors[i].state == DOOR_OPEN)
 		{
 			update_doors(&ctrl->map.doors[i], &ctrl->map, delta_time);
 		}

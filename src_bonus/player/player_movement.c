@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:10:00 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/04 16:39:18 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/06 14:42:54 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	is_valid_position(float x, float y, t_map *map)
 	size_t	grid_x;
 	size_t	grid_y;
 	char	tile;
-	t_door	*door;
+	//t_door	*door;
 
 	// Ensure the position is within map boundaries
 	if (!in_map_bounds(x, y, map))
@@ -27,28 +27,67 @@ static int	is_valid_position(float x, float y, t_map *map)
 	grid_x = (size_t)(x / TILE_SIZE);
 	grid_y = (size_t)(y / TILE_SIZE);
 	tile = map->full_map[grid_y][grid_x];
-	// Check for nearby doors and get door object if present
-	if (map->full_map[grid_y + 1][grid_x] == DOOR)
-		door = get_door(grid_x, grid_y + 1, map);
-	else if (map->full_map[grid_y - 1][grid_x] == DOOR)
-		door = get_door(grid_x, grid_y - 1, map);
-	else if (map->full_map[grid_y][grid_x + 1] == DOOR)
-		door = get_door(grid_x + 1, grid_y, map);
-	else if (map->full_map[grid_y][grid_x - 1] == DOOR)
-		door = get_door(grid_x - 1, grid_y, map);
-	else
-		door = NULL;
-	// If a closed door is detected, open it
-	if (door && door->state == DOOR_CLOSED)
-	{
-		printf("hello from if\n");
-		printf("DEBUG: Opening door at (%d, %d)\n", door->x, door->y);
-		door_open(door->x, door->y, map);
-	}
+	// // Check for nearby doors and get door object if present
+	// if (map->full_map[grid_y + 1][grid_x] == DOOR)
+	// 	door = get_door(grid_x, grid_y + 1, map);
+	// else if (map->full_map[grid_y - 1][grid_x] == DOOR)
+	// 	door = get_door(grid_x, grid_y - 1, map);
+	// else if (map->full_map[grid_y][grid_x + 1] == DOOR)
+	// 	door = get_door(grid_x + 1, grid_y, map);
+	// else if (map->full_map[grid_y][grid_x - 1] == DOOR)
+	// 	door = get_door(grid_x - 1, grid_y, map);
+	// else
+	// 	door = NULL;
+	// // If a closed door is detected, open it
+	// if (door && door->state == DOOR_CLOSED)
+	// {
+	// 	printf("hello from if\n");
+	// 	printf("DEBUG: Opening door at (%d, %d)\n", door->x, door->y);
+	// 	door_open(door->x, door->y, map);
+	// }
 	// Return whether the tile is walkable (valid for movement)
 	return (tile == '0' || tile == 'W' || tile == 'N' || tile == 'S'
 		|| tile == 'E');
 }
+
+
+// // Checks if a position is valid for movement and handles door opening
+// static int	is_valid_position(float x, float y, t_map *map)
+// {
+// 	size_t	grid_x;
+// 	size_t	grid_y;
+// 	char	tile;
+// 	t_door	*door;
+
+// 	// Ensure the position is within map boundaries
+// 	if (!in_map_bounds(x, y, map))
+// 		return (0);
+// 	// Convert floating-point position to grid coordinates
+// 	grid_x = (size_t)(x / TILE_SIZE);
+// 	grid_y = (size_t)(y / TILE_SIZE);
+// 	tile = map->full_map[grid_y][grid_x];
+// 	// Check for nearby doors and get door object if present
+// 	if (map->full_map[grid_y + 1][grid_x] == DOOR)
+// 		door = get_door(grid_x, grid_y + 1, map);
+// 	else if (map->full_map[grid_y - 1][grid_x] == DOOR)
+// 		door = get_door(grid_x, grid_y - 1, map);
+// 	else if (map->full_map[grid_y][grid_x + 1] == DOOR)
+// 		door = get_door(grid_x + 1, grid_y, map);
+// 	else if (map->full_map[grid_y][grid_x - 1] == DOOR)
+// 		door = get_door(grid_x - 1, grid_y, map);
+// 	else
+// 		door = NULL;
+// 	// If a closed door is detected, open it
+// 	if (door && door->state == DOOR_CLOSED)
+// 	{
+// 		printf("hello from if\n");
+// 		printf("DEBUG: Opening door at (%d, %d)\n", door->x, door->y);
+// 		door_open(door->x, door->y, map);
+// 	}
+// 	// Return whether the tile is walkable (valid for movement)
+// 	return (tile == '0' || tile == 'W' || tile == 'N' || tile == 'S'
+// 		|| tile == 'E');
+// }
 
 static void	update_player_angle(t_player *player, double delta_time)
 {

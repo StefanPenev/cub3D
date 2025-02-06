@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/05 22:14:45 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/06 15:13:10 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,12 @@
 # define KEY_A 97
 # define KEY_S 115
 # define KEY_D 100
-//# define KEY_E 101
+# define KEY_E 101
 # define KEY_ESC 65307
 # define KEY_LEFT 65361
 # define KEY_RIGHT 65363
 # define MOUSE_CLICK 1
 # define SPACE 32
-
 
 # define WIDTH 800
 # define HEIGHT 600
@@ -70,6 +69,7 @@
 # define DOOR_CLOSED 0
 # define DOOR_OPENING 1
 # define DOOR_OPEN 2
+# define DOOR_CLOSING 3
 
 // box states
 # define NOT_DAMAGED 0
@@ -84,9 +84,10 @@ typedef struct s_door
 {
 	int				x;
 	int				y;
-	float			offset;
-	int				orientation;
+	//float			offset;
+	//int				orientation;
 	int				state;
+	double			timer;
 }					t_door;
 
 typedef struct s_box
@@ -435,12 +436,13 @@ void				init_game_window(t_ctrl *ctrl);
 void				select_frame(t_ctrl *ctrl);
 
 int					mouse_move(int x, int y, t_ctrl *ctrl);
-
+//void				update_doors(t_door *door, t_map *map);
 void				update_doors(t_door *door, t_map *map, double delta_time);
 t_door				*get_door(int grid_x, int grid_y, t_map *map);
 void				door_open(int grid_x, int grid_y, t_map *map);
 
 void				draw_minimap(t_map *map, t_game *game);
-int	mouse_click(int button, t_game *game);
+int					space_press(int keycode, t_game *game);
+void				door_state(t_ctrl *ctrl);
 
 #endif

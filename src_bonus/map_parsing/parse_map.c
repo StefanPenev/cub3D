@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:30:11 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/04 16:38:44 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/06 15:13:47 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,8 @@ void	create_doors_array(t_ctrl *ctrl)
 			{
 				ctrl->map.doors[door_id].x = j;
 				ctrl->map.doors[door_id].y = i;
-				ctrl->map.doors[door_id].offset = 0;
+				//ctrl->map.doors[door_id].offset = 0;
+				ctrl->map.doors[door_id].timer = 0;
 				ctrl->map.doors[door_id].state = DOOR_CLOSED;
 				printf("DEBUG: Door added at (%zu, %zu) at index %d\n", j, i,
 					door_id);
