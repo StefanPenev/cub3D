@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:30:11 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/06 15:13:47 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:29:39 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
-#include <ctype.h>
+#include "../../includes_bonus/cub3d.h"
 
 // static bool	data_completed(t_ctrl *ctrl)
 // {
@@ -125,6 +124,40 @@ void	create_doors_array(t_ctrl *ctrl)
 	}
 }
 
+void	create_enemy_array(t_ctrl *ctrl)
+{
+	size_t	i;
+	size_t	j;
+	size_t	enemy_index;
+
+	enemy_index = 0;
+	ctrl->map.enemies = malloc(sizeof(t_enemy) * ctrl->map.enemies_counter);
+	if (!ctrl->map.enemies)
+		clean_exit("Error: Memory allocation failed for enemies.\n", ctrl);
+	i = 0;
+	while (i < ctrl->map.rows)
+	{
+		j = 0;
+		while (j < ctrl->map.columns)
+		{
+			if (ctrl->map.full_map[i][j] == ENEMY)
+			{
+				ctrl->map.enemies[enemy_index].x = j * TILE_SIZE
+					+ TILE_SIZE / 2;
+				ctrl->map.enemies[enemy_index].y = i * TILE_SIZE
+					+ TILE_SIZE / 2;
+				ctrl->map.enemies[enemy_index].state = ENEMY_IDLE;
+				ctrl->map.enemies[enemy_index].frame = 0;
+				ctrl->map.enemies[enemy_index].frame_time = 0.0f;
+				enemy_index++;
+			}
+			j++;
+		}
+		i++;
+	}
+	printf("Enemies successfully allocated and positioned.\n");
+}
+
 void	parse_map(char *filename, t_ctrl *ctrl)
 {
 	char	*map_tmp;
@@ -148,5 +181,9 @@ void	parse_map(char *filename, t_ctrl *ctrl)
 	if (ctrl->map.box_counter > 0)
 	{
 		create_box_array(ctrl);
+	}
+	if (ctrl->map.enemies_counter > 0)
+	{
+		create_enemy_array(ctrl);
 	}
 }

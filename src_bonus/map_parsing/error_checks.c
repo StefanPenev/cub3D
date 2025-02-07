@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_checks.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:52:25 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/04 16:13:21 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:26:47 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ void	check_valid_characters(t_ctrl *ctrl)
 		{
 			c = ctrl->map.full_map[i][j];
 			if (!(c == WALL || c == EMPTY || c == NORTH || c == SOUTH
-					|| c == EAST || c == WEST || c == DOOR || c == COLLECTIBLE))
+					|| c == EAST || c == WEST || c == DOOR || c == COLLECTIBLE
+					|| c == ENEMY))
 				clean_exit("Invalid input:\nMap contains invalid characters.\n",
 					ctrl);
 			if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
@@ -92,6 +93,10 @@ void	check_valid_characters(t_ctrl *ctrl)
 			if (c == COLLECTIBLE)
 			{
 				ctrl->map.box_counter++;
+			}
+			if (c == ENEMY)
+			{
+				ctrl->map.enemies_counter++;
 			}
 			j++;
 		}

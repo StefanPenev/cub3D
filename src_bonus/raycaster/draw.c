@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/06 15:59:14 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:44:27 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,10 +192,10 @@ int is_wall(t_ctrl *ctrl, float x, float y)
     return (ctrl->map.full_map[map_y][map_x] == '1');
 }
 
-void	draw_enemy(t_ctrl *ctrl, t_player *player)
+void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 {
-    const float enemy_world_x = 1696.0;
-    const float enemy_world_y = 480.0;
+	float enemy_world_x = enemy->x;
+    float enemy_world_y = enemy->y;
 
     float dx = enemy_world_x - player->x;
     float dy = enemy_world_y - player->y;
@@ -302,7 +302,12 @@ int	draw_loop(t_ctrl *ctrl)
 		start_angle = ctrl->game->player.angle - (fov / 2.0f);
 		angle_step = fov / WIDTH;
 		handle_rays(ctrl, start_angle, angle_step);
-		draw_enemy(ctrl, &ctrl->game->player);
+		i = 0;
+		while (i < ctrl->map.enemies_counter)
+		{
+			draw_enemy(ctrl, &ctrl->game->player, &ctrl->map.enemies[i]);
+			i++;
+		}
 	}
 	draw_cross(ctrl->game);
 	draw_minimap(&ctrl->map, ctrl->game);

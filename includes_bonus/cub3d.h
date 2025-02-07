@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/06 16:00:02 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/07 11:25:09 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define WEST 'W'
 # define DOOR 'D'
 # define COLLECTIBLE 'C'
+# define ENEMY 'M'
 
 // keys
 # define KEY_W 119
@@ -80,6 +81,14 @@
 # define VERTICAL 0
 # define HORIZONTAL 1
 
+typedef enum
+{
+	ENEMY_IDLE,         // Default idle animation
+	ENEMY_TRIGGERED,    // Play 5-frame alert animation once
+	ENEMY_ACTIVE,       // Loop 2-frame animation while player is in range
+	ENEMY_RETURN_IDLE   // Transition back to idle when player leaves
+} 		t_enemy_state;
+
 typedef struct s_door
 {
 	int				x;
@@ -96,6 +105,17 @@ typedef struct s_box
 	int				y;
 	int				state;
 }					t_box;
+
+typedef struct s_enemy
+{
+	float	x;
+	float	y;
+	float	distance;
+	int		state;
+	int		frame;
+	float	frame_time;
+}			t_enemy;
+
 
 typedef struct s_anim
 {
@@ -131,8 +151,10 @@ typedef struct s_map
 	t_pos			player_index;
 	size_t doors_counter; // bonus
 	size_t box_counter;   // bonus
+	size_t			enemies_counter;
 	t_door *doors;        // bonus
 	t_box *boxes;         // bonus
+	t_enemy			*enemies;
 
 }					t_map;
 

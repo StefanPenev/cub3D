@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 08:23:44 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/04 11:39:33 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/07 11:40:42 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #define PLAYER_COLOR   0x00FF00 // Green color for player
 #define WALL_COLOR     0x3D3D3D // Walls
 #define FLOOR_COLOR    0x9FB6CD // Floors
+#define ENEMY_COLOR    0xFF0000 // Enemy
 #define MINIMAP_OFFSET_X  20
 #define MINIMAP_OFFSET_Y  20
 
@@ -76,6 +77,16 @@ void	draw_map_tiles(t_map *map, t_game *game, t_minimap_data *data)
 					MINIMAP_OFFSET_X + x * data->block_size,
 					MINIMAP_OFFSET_Y + y * data->block_size,
 					data->block_size, color}, game);
+				if (map->full_map[map_y][map_x] == 'M')
+				{
+					color = ENEMY_COLOR;
+					draw_square((t_square){
+						MINIMAP_OFFSET_X + x * data->block_size
+						+ data->block_size / 4,
+						MINIMAP_OFFSET_Y + y * data->block_size
+						+ data->block_size / 4,
+						data->block_size / 2, color}, game);
+				}
 			}
 		}
 	}
