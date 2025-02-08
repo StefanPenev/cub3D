@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/04 16:06:50 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:00:04 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ void	init_texture(t_texture *texture)
 	texture->path = NULL;
 	texture->frames = malloc(MAX_FRAMES * sizeof(void *));
 	texture->paths = malloc(MAX_FRAMES * sizeof(void *));
-	if (!texture->frames || !texture->paths)
+	texture->frames_addr = malloc(MAX_FRAMES * sizeof(void *));
+	if (!texture->frames || !texture->paths || !texture->frames_addr)
 	{
 		printf("Error: Failed to allocate memory for texture frames\n");
 		exit(EXIT_FAILURE);
@@ -44,6 +45,7 @@ void	init_texture(t_texture *texture)
 	{
 		texture->frames[i] = NULL;
 		texture->paths[i] = NULL;
+		texture->frames_addr[i] = NULL;
 		i++;
 	}
 }
@@ -76,10 +78,10 @@ void	init_map(t_map *map)
 	map->textures_defined = 0;
 	map->colors_defined = 0;
 	map->map_started = 0;
-	map->doors_counter = 0; // bonus
-	map->box_counter = 0;   // bonus
-	map->doors = NULL;      // bonus
-	map->boxes = NULL;      // bonus
+	map->doors_counter = 0;
+	map->box_counter = 0;
+	map->doors = NULL;
+	map->boxes = NULL;
 }
 
 int	init_ctrl(t_ctrl *ctrl)
@@ -93,5 +95,12 @@ int	init_ctrl(t_ctrl *ctrl)
 	if (!ctrl->game)
 		return (1);
 	init_game(ctrl->game);
+	ctrl->trig_tables = init_trig_tables();
+	if (!ctrl->trig_tables)
+	{
+		printf("Error: Failed to initialize trigonometric tables.\n");
+		free(ctrl->game);
+		return (1);
+	}
 	return (0);
 }

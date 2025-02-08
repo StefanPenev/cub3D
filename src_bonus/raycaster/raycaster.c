@@ -3,21 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/06 14:18:25 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:08:22 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
 
-void	initialize_raycast(t_raycast *rc, t_player *pl, float angle)
+void	initialize_raycast(t_raycast *rc, t_player *pl, t_ctrl *ctrl,
+	float angle)
 {
+	int	index;
+
 	rc->ray_angle = angle;
 	normalize_angle(&rc->ray_angle);
-	rc->ray_dir_x = cosf(rc->ray_angle);
-	rc->ray_dir_y = sinf(rc->ray_angle);
+	index = (int)(rc->ray_angle * (ANGLE_TABLE_SIZE / (2 * M_PI)))
+		% ANGLE_TABLE_SIZE;
+	if (index < 0)
+		index += ANGLE_TABLE_SIZE;
+	rc->ray_dir_x = ctrl->trig_tables->cos_table[index];
+	rc->ray_dir_y = ctrl->trig_tables->sin_table[index];
 	rc->map_x = (int)(pl->x / TILE_SIZE);
 	rc->map_y = (int)(pl->y / TILE_SIZE);
 	if (rc->ray_dir_x == 0.0f)
@@ -156,7 +163,7 @@ void	draw_line(t_player *player, t_ctrl *ctrl, float ray_angle,
 {
 	t_raycast	rc;
 
-	initialize_raycast(&rc, player, ray_angle);
+	initialize_raycast(&rc, player, ctrl, ray_angle);
 	setup_steps(&rc, player);
 	raycast_wall_hit(&rc, &ctrl->map);
 	compute_wall_dimensions(&rc, player);

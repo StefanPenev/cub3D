@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/06 15:43:41 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/08 15:45:33 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,18 +72,7 @@ void	load_weapon_textures(t_game *game)
 			&game->weapon_shoot.endian);
 }
 
-// void	load_all_textures(t_game *game, t_ctrl *ctrl)
-// {
-// 	load_texture(game, &game->north_texture, game->north_texture.frames[0],
-// 		ctrl);
-// 	load_texture(game, &game->south_texture, game->south_texture.frames[0],
-// 		ctrl);
-// 	load_texture(game, &game->east_texture, game->east_texture.frames[0], ctrl);
-// 	load_texture(game, &game->west_texture, game->west_texture.frames[0], ctrl);
-// }
-
-void	load_texture(t_game *game, t_texture *texture, char **frames,
-		t_ctrl *ctrl)
+void	load_texture(t_game *game, t_texture *texture, char **frames, t_ctrl *ctrl)
 {
 	int	i;
 	int	width;
@@ -100,8 +89,8 @@ void	load_texture(t_game *game, t_texture *texture, char **frames,
 			i++;
 			continue ;
 		}
-		texture->frames[i] = mlx_xpm_file_to_image(game->mlx, frames[i], &width,
-				&height);
+		texture->frames[i] = mlx_xpm_file_to_image(game->mlx,
+				frames[i], &width, &height);
 		if (!texture->frames[i])
 		{
 			printf("Error: Failed to load texture at %s\n", frames[i]);
@@ -115,28 +104,36 @@ void	load_texture(t_game *game, t_texture *texture, char **frames,
 			texture->frames = NULL;
 			close_window(ctrl);
 		}
+		texture->frames_addr[i] = mlx_get_data_addr(texture->frames[i],
+				&texture->bits_per_pixel, &texture->line_length,
+				&texture->endian);
+		if (!texture->frames_addr[i])
+		{
+			printf("Error: Failed to get texture data at %s\n", frames[i]);
+			close_window(ctrl);
+		}
 		i++;
 	}
 }
 
 void	load_enemy_textures(t_game *game)
 {
-    int enemy_width;
-    int enemy_height;
+	int	enemy_width;
+	int	enemy_height;
 
-    enemy_width = TEX_WIDTH;
-    enemy_height = TEX_HEIGHT;
-    game->enemy.path = "./textures/enemy/e_0.xpm";
-    game->enemy.img = mlx_xpm_file_to_image(game->mlx, game->enemy.path,
-            &enemy_width, &enemy_height);
-    if (!game->enemy.img)
-    {
-        printf("ERROR: Failed to load enemy texture: %s\n", game->enemy.path);
-        exit(1);
-    }
-    game->enemy.addr = mlx_get_data_addr(game->enemy.img,
-            &game->enemy.bits_per_pixel, &game->enemy.line_length,
-            &game->enemy.endian);
+	enemy_width = TEX_WIDTH;
+	enemy_height = TEX_HEIGHT;
+	game->enemy.path = "./textures/enemy/e_0.xpm";
+	game->enemy.img = mlx_xpm_file_to_image(game->mlx, game->enemy.path,
+			&enemy_width, &enemy_height);
+	if (!game->enemy.img)
+	{
+		printf("ERROR: Failed to load enemy texture: %s\n", game->enemy.path);
+		exit(1);
+	}
+	game->enemy.addr = mlx_get_data_addr(game->enemy.img,
+			&game->enemy.bits_per_pixel, &game->enemy.line_length,
+			&game->enemy.endian);
 }
 
 void	load_all_textures(t_game *game, t_ctrl *ctrl)

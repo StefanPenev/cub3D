@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:39:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 16:05:44 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/08 12:28:45 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,37 +47,33 @@ void	compute_wall_x(t_raycast *rc)
 
 void	choose_texture(t_raycast *rc, t_ctrl *ctrl)
 {
-	size_t	frame_index;
+	size_t		frame_index;
+	t_texture	*sel_tex;
 
-	frame_index = ctrl->anim.ac;
-	if (frame_index >= TIME_SPEED)
-		frame_index = 0;
+	frame_index = ctrl->anim.ac % TIME_SPEED;
+	sel_tex = NULL;
 	if (rc->side == 0)
 	{
 		if (rc->ray_dir_x > 0)
-			rc->selected_texture = &ctrl->game->west_texture;
+			sel_tex = &ctrl->game->west_texture;
 		else
-			rc->selected_texture = &ctrl->game->east_texture;
+			sel_tex = &ctrl->game->east_texture;
 	}
 	else
 	{
 		if (rc->ray_dir_y > 0)
-			rc->selected_texture = &ctrl->game->south_texture;
+			sel_tex = &ctrl->game->south_texture;
 		else
-			rc->selected_texture = &ctrl->game->north_texture;
+			sel_tex = &ctrl->game->north_texture;
 	}
-	if (!rc->selected_texture->frames
-		|| !rc->selected_texture->frames[frame_index])
+	rc->selected_texture = sel_tex;
+	if (!sel_tex->frames || !sel_tex->frames[frame_index])
 	{
 		printf("Error: Missing animation frame for texture\n");
 		return ;
 	}
-	rc->selected_texture->addr = mlx_get_data_addr(
-			rc->selected_texture->frames[frame_index],
-			&rc->selected_texture->bits_per_pixel,
-			&rc->selected_texture->line_length,
-			&rc->selected_texture->endian);
-	rc->step = 1.0f * TEX_HEIGHT / rc->wall_height;
+	rc->selected_texture->addr = sel_tex->frames_addr[frame_index];
+	rc->step = (float)TEX_HEIGHT / (float)rc->wall_height;
 	rc->tex_pos = (rc->draw_start - HEIGHT / 2 + rc->wall_height / 2)
 		* rc->step;
 }

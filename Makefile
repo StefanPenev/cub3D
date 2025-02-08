@@ -7,7 +7,7 @@ NAME_BONUS      = cub3D_bonus
 
 CC              = cc
 CFLAGS          = -Wall -Wextra -Werror -I./includes -I$(MLX_DIR) -g
-CFLAGS_BONUS    = -Wall -Wextra -Werror -I./includes_bonus -I$(MLX_DIR) -g
+CFLAGS_BONUS    = -Wall -Wextra -Werror -I./includes_bonus -I$(MLX_DIR) -g -pg
 LDFLAGS         = -L minilibx-linux -lmlx -lX11 -lXext -lm
 
 LIBFT_DIR       = libft
@@ -105,6 +105,7 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/raycaster/debug.c \
 			$(SRC_BONUS_DIR)/raycaster/raycast_utils.c \
 			$(SRC_BONUS_DIR)/raycaster/draw.c \
 			$(SRC_BONUS_DIR)/raycaster/minimap.c \
+			$(SRC_BONUS_DIR)/raycaster/trig_tables.c \
 
 # Utils
 SRCS_BONUS += $(SRC_BONUS_DIR)/utils/gnl.c \

@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/07 11:25:09 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/08 15:05:19 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,16 @@
 # define VERTICAL 0
 # define HORIZONTAL 1
 
-typedef enum
+// trig tables
+# define ANGLE_TABLE_SIZE 3600
+
+typedef enum enemy_state
 {
-	ENEMY_IDLE,         // Default idle animation
-	ENEMY_TRIGGERED,    // Play 5-frame alert animation once
-	ENEMY_ACTIVE,       // Loop 2-frame animation while player is in range
-	ENEMY_RETURN_IDLE   // Transition back to idle when player leaves
-} 		t_enemy_state;
+	ENEMY_IDLE,			// Default idle animation
+	ENEMY_TRIGGERED,	// Play 5-frame alert animation once
+	ENEMY_ACTIVE,		// Loop 2-frame animation while player is in range
+	ENEMY_RETURN_IDLE,	// Transition back to idle when player leaves
+}			t_enemy_state;
 
 typedef struct s_door
 {
@@ -115,7 +118,6 @@ typedef struct s_enemy
 	int		frame;
 	float	frame_time;
 }			t_enemy;
-
 
 typedef struct s_anim
 {
@@ -149,11 +151,11 @@ typedef struct s_map
 	size_t			players_count;
 	t_pos			player_position;
 	t_pos			player_index;
-	size_t doors_counter; // bonus
-	size_t box_counter;   // bonus
+	size_t			doors_counter;	// bonus
+	size_t			box_counter;	// bonus
 	size_t			enemies_counter;
-	t_door *doors;        // bonus
-	t_box *boxes;         // bonus
+	t_door			*doors;			// bonus
+	t_box			*boxes;			// bonus
 	t_enemy			*enemies;
 
 }					t_map;
@@ -180,6 +182,7 @@ typedef struct s_texture
 	int				endian;
 	char			*path;
 	char			**frames;
+	char			**frames_addr;
 	char			**paths;
 }					t_texture;
 
@@ -202,13 +205,19 @@ typedef struct s_game
 	t_texture		south_texture;
 	t_texture		east_texture;
 	t_texture		west_texture;
-	t_texture door;         // bonus
-	t_texture weapon_idle;  // bonus
-	t_texture weapon_shoot; // bonus
+	t_texture		door;			// bonus
+	t_texture		weapon_idle;	// bonus
+	t_texture		weapon_shoot;	// bonus
 	t_texture		enemy;
 	float			*zbuffer;
 
 }					t_game;
+
+typedef struct s_trig_tables
+{
+	double			*sin_table;
+	double			*cos_table;
+}					t_trig_tables;
 
 typedef struct s_ctrl
 {
@@ -217,6 +226,7 @@ typedef struct s_ctrl
 	t_gnl			gnl;
 	t_texture		texture;
 	t_anim			anim;
+	t_trig_tables	*trig_tables;
 }					t_ctrl;
 
 typedef struct s_line_params
@@ -276,7 +286,7 @@ typedef struct s_raycast
 	int				y;
 	int				tex_y;
 	int				color;
-	int is_door; // anna
+	int				is_door;
 }					t_raycast;
 
 typedef struct s_square
@@ -331,14 +341,14 @@ char				*remove_inner_spaces(char *str, t_ctrl *ctrl);
 char				*read_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									utils.c										*/
+/*									utils.c									  */
 /* ************************************************************************** */
 
 char				*trim_trailing_whitespace(char *str);
 int					ft_isspace(int c);
 
 /* ************************************************************************** */
-/*									player.c									*/
+/*									player.c								  */
 /* ************************************************************************** */
 
 int					key_release(int keycode, t_ctrl *ctrl);
@@ -346,19 +356,19 @@ int					key_press(int keycode, t_ctrl *ctrl);
 bool				in_map_bounds(float x, float y, t_map *map);
 
 /* ************************************************************************** */
-/*								player_movement.c  								*/
+/*								player_movement.c  							  */
 /* ************************************************************************** */
 
 void				move_player(t_ctrl *ctrl, double delta_time);
 
 /* ************************************************************************** */
-/*									parse_map.c  								*/
+/*									parse_map.c  							  */
 /* ************************************************************************** */
 
 void				parse_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*										gnl.c  									*/
+/*										gnl.c  								  */
 /* ************************************************************************** */
 
 char				*gnl(int fd, t_ctrl *ctrl);
@@ -372,7 +382,7 @@ void				check_valid_characters(t_ctrl *ctrl);
 void				check_map_closed(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									flood_fill.c  								*/
+/*									flood_fill.c  							  */
 /* ************************************************************************** */
 
 void				check_map_valid(t_ctrl *ctrl);
@@ -452,7 +462,7 @@ void				init_game_window(t_ctrl *ctrl);
 
 // bonus
 /* ************************************************************************** */
-/*              						anim.c   								*/
+/*              						anim.c   							  */
 /* ************************************************************************** */
 
 void				select_frame(t_ctrl *ctrl);
@@ -466,5 +476,6 @@ void				door_open(int grid_x, int grid_y, t_map *map);
 void				draw_minimap(t_map *map, t_game *game);
 int					space_press(int keycode, t_game *game);
 void				door_state(t_ctrl *ctrl);
+t_trig_tables		*init_trig_tables(void);
 
 #endif
