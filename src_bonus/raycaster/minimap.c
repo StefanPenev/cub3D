@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 08:23:44 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/07 11:40:42 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/10 17:42:54 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,6 @@
 #define ENEMY_COLOR    0xFF0000 // Enemy
 #define MINIMAP_OFFSET_X  20
 #define MINIMAP_OFFSET_Y  20
-
-typedef struct	s_minimap_data
-{
-	int		block_size;
-	int		minimap_tiles;
-	float	player_tile_x;
-	float	player_tile_y;
-	float	start_x;
-	float	start_y;
-}			t_minimap_data;
-
 
 static void	compute_minimap_data(t_map *map, t_game *game, t_minimap_data *data)
 {

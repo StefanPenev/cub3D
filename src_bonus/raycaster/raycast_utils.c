@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:39:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/08 12:28:45 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/10 20:10:54 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	choose_texture(t_raycast *rc, t_ctrl *ctrl)
 	size_t		frame_index;
 	t_texture	*sel_tex;
 
-	frame_index = ctrl->anim.ac % TIME_SPEED;
 	sel_tex = NULL;
 	if (rc->side == 0)
 	{
@@ -67,11 +66,13 @@ void	choose_texture(t_raycast *rc, t_ctrl *ctrl)
 			sel_tex = &ctrl->game->north_texture;
 	}
 	rc->selected_texture = sel_tex;
+	frame_index = (ctrl->anim.ac * 2) % sel_tex->frames_count;
 	if (!sel_tex->frames || !sel_tex->frames[frame_index])
 	{
 		printf("Error: Missing animation frame for texture\n");
 		return ;
 	}
+	sel_tex->current_frame = frame_index;
 	rc->selected_texture->addr = sel_tex->frames_addr[frame_index];
 	rc->step = (float)TEX_HEIGHT / (float)rc->wall_height;
 	rc->tex_pos = (rc->draw_start - HEIGHT / 2 + rc->wall_height / 2)

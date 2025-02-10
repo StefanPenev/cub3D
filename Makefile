@@ -92,6 +92,7 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/init/init.c \
 			$(SRC_BONUS_DIR)/init/init_hooks.c \
 			$(SRC_BONUS_DIR)/init/init_square.c \
 			$(SRC_BONUS_DIR)/init/load_textures.c \
+			$(SRC_BONUS_DIR)/init/load_textures_utils.c \
 
 # Player
 SRCS_BONUS += $(SRC_BONUS_DIR)/player/player.c \

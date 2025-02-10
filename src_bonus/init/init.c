@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/10 15:56:37 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/10 19:38:39 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,22 @@ void	init_player(t_player *player, float start_x, float start_y,
 	player->right_rotate = false;
 }
 
-void	init_texture(t_texture *texture)
+void	init_texture(t_texture *texture, int max_frames)
 {
 	int	i;
 
 	i = 0;
 	ft_memset(texture, 0, sizeof(t_texture));
 	texture->path = NULL;
-	texture->frames = malloc(MAX_FRAMES * sizeof(void *));
-	texture->paths = malloc(MAX_FRAMES * sizeof(void *));
-	texture->frames_addr = malloc(MAX_FRAMES * sizeof(void *));
+	texture->frames = malloc(max_frames * sizeof(void *));
+	texture->paths = malloc(max_frames * sizeof(void *));
+	texture->frames_addr = malloc(max_frames * sizeof(void *));
 	if (!texture->frames || !texture->paths || !texture->frames_addr)
 	{
 		printf("Error: Failed to allocate memory for texture frames\n");
 		exit(EXIT_FAILURE);
 	}
-	while (i < MAX_FRAMES)
+	while (i < max_frames)
 	{
 		texture->frames[i] = NULL;
 		texture->paths[i] = NULL;
@@ -53,10 +53,10 @@ void	init_texture(t_texture *texture)
 void	init_game(t_game *game)
 {
 	ft_memset(game, 0, sizeof(t_game));
-	init_texture(&game->north_texture);
-	init_texture(&game->south_texture);
-	init_texture(&game->east_texture);
-	init_texture(&game->west_texture);
+	init_texture(&game->north_texture, 4);
+	init_texture(&game->south_texture, 4);
+	init_texture(&game->east_texture, 4);
+	init_texture(&game->west_texture, 4);
 	game->floor_color = 0xFFFFFFFF;
 	game->ceiling_color = 0xFFFFFFFF;
 	game->is_shooting = 0;

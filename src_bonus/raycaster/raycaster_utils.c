@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 10:57:32 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 15:38:04 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/10 19:35:11 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,13 @@ double	compute_delta_time(void)
 int	get_texture_color(t_texture *texture, int tex_x, int tex_y)
 {
 	char	*pixel;
+	int		frame;
 
+	frame = texture->current_frame;
+	if (texture->frames_count <= 0)
+		return (0x000000);
+	if (frame < 0 || frame >= texture->frames_count)
+		frame = 0;
 	if (tex_x < 0)
 		tex_x = 0;
 	if (tex_x >= TEX_WIDTH)
@@ -40,7 +46,7 @@ int	get_texture_color(t_texture *texture, int tex_x, int tex_y)
 		tex_y = 0;
 	if (tex_y >= TEX_HEIGHT)
 		tex_y = TEX_HEIGHT - 1;
-	pixel = texture->addr + (tex_y * texture->line_length
+	pixel = texture->frames_addr[frame] + (tex_y * texture->line_length
 			+ tex_x * (texture->bits_per_pixel / 8));
 	return (*(int *)pixel);
 }
