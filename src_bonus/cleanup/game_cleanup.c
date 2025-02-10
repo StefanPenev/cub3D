@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/04 16:06:33 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/10 13:42:52 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,23 @@ void	free_map(char **map, size_t rows)
 	free(map);
 }
 
-void free_weapon_textures(t_game *game)
+void	free_weapon_textures(t_game *game)
 {
-    if (game->weapon_idle.img)
-    {
-        mlx_destroy_image(game->mlx, game->weapon_idle.img);
-        game->weapon_idle.img = NULL;
-    }
-    if (game->weapon_shoot.img)
-    {
-        mlx_destroy_image(game->mlx, game->weapon_shoot.img);
-        game->weapon_shoot.img = NULL;
-    }
+	if (game->weapon_idle.img)
+	{
+		mlx_destroy_image(game->mlx, game->weapon_idle.img);
+		game->weapon_idle.img = NULL;
+	}
+	if (game->weapon_shoot.img)
+	{
+		mlx_destroy_image(game->mlx, game->weapon_shoot.img);
+		game->weapon_shoot.img = NULL;
+	}
+	if (game->enemy.img)
+	{
+		mlx_destroy_image(game->mlx, game->enemy.img);
+		game->enemy.img = NULL;
+	}
 }
 
 void	free_texture(t_game *game, t_texture *texture)
@@ -64,6 +69,8 @@ void	free_texture(t_game *game, t_texture *texture)
 		texture->frames = NULL;
 		free(texture->paths);
 		texture->paths = NULL;
+		free(texture->frames_addr);
+		texture->frames_addr = NULL;
 	}
 	if (texture->path)
 	{
@@ -78,10 +85,6 @@ void	game_cleanup(t_ctrl *ctrl)
 {
 	if (ctrl->map.full_map)
 		free_map(ctrl->map.full_map, ctrl->map.rows);
-	// free_texture(ctrl->game, &ctrl->game->north_texture);
-	// free_texture(ctrl->game, &ctrl->game->south_texture);
-	// free_texture(ctrl->game, &ctrl->game->west_texture);
-	// free_texture(ctrl->game, &ctrl->game->east_texture);
 	if (ctrl->map.doors)
 	{
 		free(ctrl->map.doors);
@@ -91,6 +94,10 @@ void	game_cleanup(t_ctrl *ctrl)
 	{
 		free(ctrl->map.boxes);
 		ctrl->map.boxes = NULL;
+	}
+	if (ctrl->trig_tables)
+	{
+		free_trig_tables(ctrl->trig_tables);
 	}
 	free(ctrl->game);
 	ctrl->game = NULL;
@@ -119,6 +126,8 @@ void	cleanup_textures(t_game *game)
 	printf("DEBUG: east_texture freed\n");
 	free_texture(game, &game->door);
 	printf("DEBUG: door freed\n");
+	// free_texture(game, &game->enemy);
+	// printf("DEBUG: enemy freed\n");
 	free_weapon_textures(game);
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
@@ -142,14 +151,36 @@ int	close_window(t_ctrl *ctrl)
 	if (!ctrl)
 		exit(EXIT_FAILURE);
 	cleanup_textures(ctrl->game);
+	if (ctrl->game->mlx)
+		mlx_loop_end(ctrl->game->mlx);
 	if (ctrl->game->mlx && ctrl->game->win)
+	{
 		mlx_destroy_window(ctrl->game->mlx, ctrl->game->win);
+		ctrl->game->win = NULL;
+	}
 	if (ctrl->game->mlx)
 	{
 		mlx_destroy_display(ctrl->game->mlx);
-		mlx_loop_end(ctrl->game->mlx);
 		free(ctrl->game->mlx);
+		ctrl->game->mlx = NULL;
 	}
 	game_cleanup(ctrl);
 	exit(EXIT_SUCCESS);
 }
+
+// int	close_window(t_ctrl *ctrl)
+// {
+// 	if (!ctrl)
+// 		exit(EXIT_FAILURE);
+// 	cleanup_textures(ctrl->game);
+// 	if (ctrl->game->mlx && ctrl->game->win)
+// 		mlx_destroy_window(ctrl->game->mlx, ctrl->game->win);
+// 	if (ctrl->game->mlx)
+// 	{
+// 		mlx_destroy_display(ctrl->game->mlx);
+// 		mlx_loop_end(ctrl->game->mlx);
+// 		free(ctrl->game->mlx);
+// 	}
+// 	game_cleanup(ctrl);
+// 	exit(EXIT_SUCCESS);
+// }

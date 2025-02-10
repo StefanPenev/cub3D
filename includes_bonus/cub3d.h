@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/08 15:05:19 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/10 13:42:34 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -477,5 +477,6 @@ void				draw_minimap(t_map *map, t_game *game);
 int					space_press(int keycode, t_game *game);
 void				door_state(t_ctrl *ctrl);
 t_trig_tables		*init_trig_tables(void);
+void	free_trig_tables(t_trig_tables *tables);
 
 #endif

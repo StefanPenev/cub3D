@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/08 15:45:33 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/10 13:22:04 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,10 +44,9 @@ void	load_weapon_textures(t_game *game)
 	weapon_height = TEX_HEIGHT;
 	game->weapon_idle.path = "./textures/gun_idle.xpm";
 	game->weapon_shoot.path = "./textures/gun_shoot.xpm";
-	// Загружаем первую текстуру
 	game->weapon_idle.img = mlx_xpm_file_to_image(game->mlx,
 			game->weapon_idle.path, &weapon_width, &weapon_height);
-	if (!game->weapon_idle.img) // Проверяем, загрузилась ли текстура
+	if (!game->weapon_idle.img)
 	{
 		printf("ERROR: Failed to load weapon_idle texture: %s\n",
 			game->weapon_idle.path);
@@ -56,15 +55,13 @@ void	load_weapon_textures(t_game *game)
 	game->weapon_idle.addr = mlx_get_data_addr(game->weapon_idle.img,
 			&game->weapon_idle.bits_per_pixel, &game->weapon_idle.line_length,
 			&game->weapon_idle.endian);
-	// Загружаем вторую текстуру
 	game->weapon_shoot.img = mlx_xpm_file_to_image(game->mlx,
 			game->weapon_shoot.path, &weapon_width, &weapon_height);
-	if (!game->weapon_shoot.img) // Проверяем, загрузилась ли текстура
+	if (!game->weapon_shoot.img)
 	{
 		printf("ERROR: Failed to load weapon_shoot texture: %s\n",
 			game->weapon_shoot.path);
 		mlx_destroy_image(game->mlx, game->weapon_idle.img);
-			// Чистим предыдущую текстуру
 		exit(1);
 	}
 	game->weapon_shoot.addr = mlx_get_data_addr(game->weapon_shoot.img,
@@ -72,7 +69,8 @@ void	load_weapon_textures(t_game *game)
 			&game->weapon_shoot.endian);
 }
 
-void	load_texture(t_game *game, t_texture *texture, char **frames, t_ctrl *ctrl)
+void	load_texture(t_game *game, t_texture *texture, char **frames,
+		t_ctrl *ctrl)
 {
 	int	i;
 	int	width;
@@ -89,8 +87,8 @@ void	load_texture(t_game *game, t_texture *texture, char **frames, t_ctrl *ctrl)
 			i++;
 			continue ;
 		}
-		texture->frames[i] = mlx_xpm_file_to_image(game->mlx,
-				frames[i], &width, &height);
+		texture->frames[i] = mlx_xpm_file_to_image(game->mlx, frames[i], &width,
+				&height);
 		if (!texture->frames[i])
 		{
 			printf("Error: Failed to load texture at %s\n", frames[i]);

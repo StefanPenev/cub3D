@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/08 15:00:04 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/10 13:14:51 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ void	init_map(t_map *map)
 	map->map_started = 0;
 	map->doors_counter = 0;
 	map->box_counter = 0;
+	map->enemies_counter = 0;
 	map->doors = NULL;
 	map->boxes = NULL;
 }
