@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/06 12:46:40 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/10 15:10:09 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	mouse_click(int button, int x, int y, t_game *game)
 	(void)y;
 	if (!game)
 		return (1);
-	if (button == 1) 
+	if (button == 1)
 		game->is_shooting = 1;
 	return (0);
 }

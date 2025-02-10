@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:09:47 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/30 13:23:00 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:53:27 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,26 +53,6 @@ char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3)
 	return (res);
 }
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t	i;
-
-	i = 0;
-	if (!s1 || !s2)
-	{
-		return (0);
-	}
-	while (s1[i] != '\0' || s2[i] != '\0')
-	{
-		if (s1[i] != s2[i])
-		{
-			return ((unsigned char)s1[i] - (unsigned char)s2[i]);
-		}
-		i++;
-	}
-	return (0);
-}
-
 int	is_texture_definition(char *line_tmp)
 {
 	if (ft_strncmp("NO ", line_tmp, 3) == 0 || ft_strncmp("SO ", line_tmp,
@@ -86,13 +66,9 @@ int	is_texture_definition(char *line_tmp)
 
 void	assign_path(t_texture *tex, char *path, char *line, t_ctrl *ctrl)
 {
-	int		i;
 	char	*base_path;
-	char	*frame_num;
 	size_t	len;
-	int		fd;
 
-	frame_num = NULL;
 	if (tex->path != NULL)
 	{
 		free(line);
@@ -109,47 +85,11 @@ void	assign_path(t_texture *tex, char *path, char *line, t_ctrl *ctrl)
 	if (!base_path)
 		free_and_exit("base_path: memory allocation failed\n", path, NULL,
 			ctrl);
-	i = 0;
-	while (i < MAX_FRAMES)
-	{
-		if (i == 0)
-		{
-			tex->paths[i] = ft_strdup(path);
-			free(path);
-			path = NULL;
-		}
-		else
-		{
-			frame_num = ft_itoa(i);
-			if (!frame_num)
-			{
-				free(base_path);
-				free_and_exit("frame_num: memory allocation failed\n", NULL,
-					NULL, ctrl);
-			}
-			tex->paths[i] = ft_strjoin_three(base_path, frame_num, ".xpm");
-			free(frame_num);
-			fd = open(tex->paths[i], O_RDONLY);
-			if (fd == -1)
-			{
-				free(tex->paths[i]);
-				tex->paths[i] = NULL;
-				tex->paths[i] = ft_strdup(tex->paths[0]);
-			}
-			close(fd);
-		}
-		if (!tex->paths[i])
-		{
-			free(frame_num);
-			free(base_path);
-			free_and_exit("tex->frames[i]: Memory allocation failed\n", NULL,
-				NULL, ctrl);
-		}
-		i++;
-	}
+	tex->paths[0] = ft_strdup(path);
+	free(path);
+	path = NULL;
+	create_frame_paths(tex, base_path, ctrl);
 	free(base_path);
-	for (int j = 0; j < MAX_FRAMES; j++)
-		printf("DEBUG: %s\n", tex->paths[j]);
 }
 
 void	keep_textures_path(char *line, t_ctrl *ctrl)

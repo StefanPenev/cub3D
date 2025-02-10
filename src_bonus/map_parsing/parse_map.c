@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:30:11 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/07 11:29:39 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/10 15:09:20 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,38 +59,6 @@ void	explore_map(t_ctrl *ctrl)
 	}
 }
 
-void	create_box_array(t_ctrl *ctrl)
-{
-	size_t	i;
-	size_t	j;
-	int		box_id;
-
-	box_id = 0;
-	i = 0;
-	ctrl->map.boxes = malloc(ctrl->map.box_counter * sizeof(t_box));
-	if (!ctrl->map.boxes)
-		clean_exit("Memory allocation failed for map->boxes\n", ctrl);
-	while (i < ctrl->map.rows)
-	{
-		j = 0;
-		while (j < ctrl->map.columns)
-		{
-			if (ctrl->map.full_map[i][j] == COLLECTIBLE)
-			{
-				ctrl->map.boxes[box_id].x = j;
-				ctrl->map.boxes[box_id].y = i;
-				ctrl->map.boxes[box_id].state = NOT_DAMAGED;
-				printf("DEBUG: Box added at (%zu, %zu) at index %d\n", j, i,
-					box_id);
-				box_id++;
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
-
 void	create_doors_array(t_ctrl *ctrl)
 {
 	size_t	i;
@@ -108,16 +76,7 @@ void	create_doors_array(t_ctrl *ctrl)
 		while (j < ctrl->map.columns)
 		{
 			if (ctrl->map.full_map[i][j] == DOOR)
-			{
-				ctrl->map.doors[door_id].x = j;
-				ctrl->map.doors[door_id].y = i;
-				//ctrl->map.doors[door_id].offset = 0;
-				ctrl->map.doors[door_id].timer = 0;
-				ctrl->map.doors[door_id].state = DOOR_CLOSED;
-				printf("DEBUG: Door added at (%zu, %zu) at index %d\n", j, i,
-					door_id);
-				door_id++;
-			}
+				ctrl->map.doors[door_id++] = (t_door){j, i, 0, DOOR_CLOSED};
 			j++;
 		}
 		i++;
@@ -142,10 +101,10 @@ void	create_enemy_array(t_ctrl *ctrl)
 		{
 			if (ctrl->map.full_map[i][j] == ENEMY)
 			{
-				ctrl->map.enemies[enemy_index].x = j * TILE_SIZE
-					+ TILE_SIZE / 2;
-				ctrl->map.enemies[enemy_index].y = i * TILE_SIZE
-					+ TILE_SIZE / 2;
+				ctrl->map.enemies[enemy_index].x = j * TILE_SIZE + TILE_SIZE
+					/ 2;
+				ctrl->map.enemies[enemy_index].y = i * TILE_SIZE + TILE_SIZE
+					/ 2;
 				ctrl->map.enemies[enemy_index].state = ENEMY_IDLE;
 				ctrl->map.enemies[enemy_index].frame = 0;
 				ctrl->map.enemies[enemy_index].frame_time = 0.0f;
@@ -175,15 +134,7 @@ void	parse_map(char *filename, t_ctrl *ctrl)
 	check_map_closed(ctrl);
 	check_map_valid(ctrl);
 	if (ctrl->map.doors_counter > 0)
-	{
 		create_doors_array(ctrl);
-	}
-	if (ctrl->map.box_counter > 0)
-	{
-		create_box_array(ctrl);
-	}
 	if (ctrl->map.enemies_counter > 0)
-	{
 		create_enemy_array(ctrl);
-	}
 }

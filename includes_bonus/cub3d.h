@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/10 13:42:34 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/10 16:52:56 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,20 +86,18 @@
 
 typedef enum enemy_state
 {
-	ENEMY_IDLE,			// Default idle animation
-	ENEMY_TRIGGERED,	// Play 5-frame alert animation once
-	ENEMY_ACTIVE,		// Loop 2-frame animation while player is in range
-	ENEMY_RETURN_IDLE,	// Transition back to idle when player leaves
-}			t_enemy_state;
+	ENEMY_IDLE,        // Default idle animation
+	ENEMY_TRIGGERED,   // Play 5-frame alert animation once
+	ENEMY_ACTIVE,      // Loop 2-frame animation while player is in range
+	ENEMY_RETURN_IDLE, // Transition back to idle when player leaves
+}					t_enemy_state;
 
 typedef struct s_door
 {
 	int				x;
 	int				y;
-	// float			offset;
-	// int				orientation;
-	int				state;
 	double			timer;
+	int				state;
 }					t_door;
 
 typedef struct s_box
@@ -111,13 +109,13 @@ typedef struct s_box
 
 typedef struct s_enemy
 {
-	float	x;
-	float	y;
-	float	distance;
-	int		state;
-	int		frame;
-	float	frame_time;
-}			t_enemy;
+	float			x;
+	float			y;
+	float			distance;
+	int				state;
+	int				frame;
+	float			frame_time;
+}					t_enemy;
 
 typedef struct s_anim
 {
@@ -151,11 +149,9 @@ typedef struct s_map
 	size_t			players_count;
 	t_pos			player_position;
 	t_pos			player_index;
-	size_t			doors_counter;	// bonus
-	size_t			box_counter;	// bonus
+	size_t doors_counter; // bonus
 	size_t			enemies_counter;
-	t_door			*doors;			// bonus
-	t_box			*boxes;			// bonus
+	t_door *doors; // bonus
 	t_enemy			*enemies;
 
 }					t_map;
@@ -205,9 +201,9 @@ typedef struct s_game
 	t_texture		south_texture;
 	t_texture		east_texture;
 	t_texture		west_texture;
-	t_texture		door;			// bonus
-	t_texture		weapon_idle;	// bonus
-	t_texture		weapon_shoot;	// bonus
+	t_texture door;         // bonus
+	t_texture weapon_idle;  // bonus
+	t_texture weapon_shoot; // bonus
 	t_texture		enemy;
 	float			*zbuffer;
 
@@ -302,9 +298,10 @@ typedef struct s_square
 /* ************************************************************************** */
 
 void				free_map(char **map, size_t rows);
+void				free_single_texture(t_game *game);
+void				free_framed_texture(t_game *game, t_texture *texture);
 void				game_cleanup(t_ctrl *ctrl);
 void				clean_exit(char *str, t_ctrl *ctrl);
-int					close_window(t_ctrl *ctrl);
 int					close_window(t_ctrl *ctrl);
 
 /* ************************************************************************** */
@@ -321,6 +318,8 @@ void				define_fc_colors(char *line, t_ctrl *ctrl);
 /*              				handle_textures.c                             */
 /* ************************************************************************** */
 
+char				*ft_strjoin_three(const char *s1, const char *s2,
+						const char *s3);
 int					is_texture_definition(char *line_tmp);
 void				keep_textures_path(char *line, t_ctrl *ctrl);
 
@@ -341,14 +340,17 @@ char				*remove_inner_spaces(char *str, t_ctrl *ctrl);
 char				*read_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									utils.c									  */
+/*									utils.c										*/
 /* ************************************************************************** */
 
+int					ft_strcmp(const char *s1, const char *s2);
 char				*trim_trailing_whitespace(char *str);
 int					ft_isspace(int c);
+void				create_frame_paths(t_texture *tex, char *base_path,
+						t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									player.c								  */
+/*									player.c									*/
 /* ************************************************************************** */
 
 int					key_release(int keycode, t_ctrl *ctrl);
@@ -356,19 +358,19 @@ int					key_press(int keycode, t_ctrl *ctrl);
 bool				in_map_bounds(float x, float y, t_map *map);
 
 /* ************************************************************************** */
-/*								player_movement.c  							  */
+/*								player_movement.c  								*/
 /* ************************************************************************** */
 
 void				move_player(t_ctrl *ctrl, double delta_time);
 
 /* ************************************************************************** */
-/*									parse_map.c  							  */
+/*									parse_map.c  								*/
 /* ************************************************************************** */
 
 void				parse_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*										gnl.c  								  */
+/*										gnl.c  									*/
 /* ************************************************************************** */
 
 char				*gnl(int fd, t_ctrl *ctrl);
@@ -382,7 +384,7 @@ void				check_valid_characters(t_ctrl *ctrl);
 void				check_map_closed(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									flood_fill.c  							  */
+/*									flood_fill.c  								*/
 /* ************************************************************************** */
 
 void				check_map_valid(t_ctrl *ctrl);
@@ -462,7 +464,7 @@ void				init_game_window(t_ctrl *ctrl);
 
 // bonus
 /* ************************************************************************** */
-/*              						anim.c   							  */
+/*              						anim.c   								*/
 /* ************************************************************************** */
 
 void				select_frame(t_ctrl *ctrl);
@@ -477,6 +479,6 @@ void				draw_minimap(t_map *map, t_game *game);
 int					space_press(int keycode, t_game *game);
 void				door_state(t_ctrl *ctrl);
 t_trig_tables		*init_trig_tables(void);
-void	free_trig_tables(t_trig_tables *tables);
+void				free_trig_tables(t_trig_tables *tables);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:55:23 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 14:41:37 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:39:05 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,15 @@ char	*merge_map_arr(t_ctrl *ctrl, char *line_tmp, char *map_tmp)
 void	free_and_exit(char *msg, char *line, char **tmp_arr, t_ctrl *ctrl)
 {
 	if (tmp_arr)
-	{
 		free_map(tmp_arr, 3);
-	}
 	if (line)
-	{
 		free(line);
-	}
 	if (ctrl->gnl.save)
-	{
 		free(ctrl->gnl.save);
-	}
 	if (ctrl->gnl.line)
-	{
 		free(ctrl->gnl.line);
-	}
 	if (ctrl->map.map_tmp)
-	{
 		free(ctrl->map.map_tmp);
-	}
 	clean_exit(msg, ctrl);
 }
 

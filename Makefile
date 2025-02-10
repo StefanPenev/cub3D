@@ -7,7 +7,7 @@ NAME_BONUS      = cub3D_bonus
 
 CC              = cc
 CFLAGS          = -Wall -Wextra -Werror -I./includes -I$(MLX_DIR) -g
-CFLAGS_BONUS    = -Wall -Wextra -Werror -I./includes_bonus -I$(MLX_DIR) -g -pg
+CFLAGS_BONUS    = -Wall -Wextra -Werror -I./includes_bonus -I$(MLX_DIR) -g #-pg
 LDFLAGS         = -L minilibx-linux -lmlx -lX11 -lXext -lm
 
 LIBFT_DIR       = libft
@@ -77,6 +77,7 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/main.c \
 
 # Cleanup
 SRCS_BONUS += $(SRC_BONUS_DIR)/cleanup/game_cleanup.c \
+			$(SRC_BONUS_DIR)/cleanup/game_cleanup_2.c \
 
 # Map parsing
 SRCS_BONUS += $(SRC_BONUS_DIR)/map_parsing/read_map.c \

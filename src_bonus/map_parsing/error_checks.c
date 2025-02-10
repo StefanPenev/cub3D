@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_checks.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:52:25 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/07 11:26:47 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/10 15:01:05 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,34 +80,19 @@ void	check_valid_characters(t_ctrl *ctrl)
 		{
 			c = ctrl->map.full_map[i][j];
 			if (!(c == WALL || c == EMPTY || c == NORTH || c == SOUTH
-					|| c == EAST || c == WEST || c == DOOR || c == COLLECTIBLE
-					|| c == ENEMY))
-				clean_exit("Invalid input:\nMap contains invalid characters.\n",
-					ctrl);
-			if (c == NORTH || c == SOUTH || c == EAST || c == WEST)
-				ctrl->map.players_count++;
-			if (c == DOOR)
-			{
-				ctrl->map.doors_counter++;
-			}
-			if (c == COLLECTIBLE)
-			{
-				ctrl->map.box_counter++;
-			}
-			if (c == ENEMY)
-			{
-				ctrl->map.enemies_counter++;
-			}
+					|| c == EAST || c == WEST || c == DOOR || c == ENEMY))
+				clean_exit("Invalid map: contains unknown characters.\n", ctrl);
+			ctrl->map.players_count += (c == NORTH || c == SOUTH || c == EAST
+					|| c == WEST);
+			ctrl->map.doors_counter += (c == DOOR);
+			ctrl->map.enemies_counter += (c == ENEMY);
 			j++;
 		}
 		i++;
 	}
-	printf("DEBUG: count of doors = %zu\n", ctrl->map.doors_counter);
-	printf("DEBUG: count of collectibles = %zu\n", ctrl->map.box_counter);
 	if (ctrl->map.players_count != 1)
 		clean_exit("Invalid input:\nSingle player position expected.\n", ctrl);
-	else
-		find_players_pos(ctrl);
+	find_players_pos(ctrl);
 }
 
 void	check_map_closed(t_ctrl *ctrl)

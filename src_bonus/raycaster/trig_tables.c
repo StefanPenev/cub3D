@@ -6,13 +6,13 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 14:01:17 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/10 13:42:17 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/10 14:16:44 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
 
-static t_trig_tables	*allocate_trig_tables(void)
+static t_trig_tables *allocate_trig_tables(void)
 {
 	t_trig_tables	*tables;
 
