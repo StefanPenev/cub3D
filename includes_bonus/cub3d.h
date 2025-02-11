@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/11 00:27:49 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/11 15:50:36 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,18 @@
 // trig tables
 # define ANGLE_TABLE_SIZE 3600
 
+// fight
+# define PLAYER_HP 100
+# define PLAYER_DAMAGE 50
+# define ENEMY_HP 100
+# define ENEMY_DAMAGE 20
+
 typedef enum enemy_state
 {
-	ENEMY_IDLE,			// Default idle animation
-	ENEMY_TRIGGERED,	// Play 5-frame alert animation once
-	ENEMY_ACTIVE,		// Loop 2-frame animation while player is in range
-	ENEMY_RETURN_IDLE,	// Transition back to idle when player leaves
+	ENEMY_IDLE,        // Default idle animation
+	ENEMY_TRIGGERED,   // Play 5-frame alert animation once
+	ENEMY_ACTIVE,      // Loop 2-frame animation while player is in range
+	ENEMY_RETURN_IDLE, // Transition back to idle when player leaves
 }					t_enemy_state;
 
 typedef struct s_door
@@ -100,12 +106,13 @@ typedef struct s_door
 	int				state;
 }					t_door;
 
-typedef struct s_box
+typedef struct s_fight
 {
-	int				x;
-	int				y;
-	int				state;
-}					t_box;
+	int				fight_started;
+	int				enemy_shoot;
+	int				player_shoot;
+	int				shoot_delay;
+}					t_fight;
 
 typedef struct s_enemy
 {
@@ -150,11 +157,10 @@ typedef struct s_map
 	size_t			players_count;
 	t_pos			player_position;
 	t_pos			player_index;
-	size_t			doors_counter; // bonus
+	size_t			doors_counter;
 	size_t			enemies_counter;
-	t_door			*doors; // bonus
+	t_door			*doors;
 	t_enemy			*enemies;
-
 }					t_map;
 
 typedef struct s_player
@@ -168,6 +174,7 @@ typedef struct s_player
 	bool			key_right;
 	bool			left_rotate;
 	bool			right_rotate;
+	int				hp;
 }					t_player;
 
 typedef struct s_texture
@@ -200,15 +207,17 @@ typedef struct s_game
 	int				is_shooting;
 	int				shoot_ac;
 	t_player		player;
+	//t_enemy			enemy_struct;
 	t_texture		north_texture;
 	t_texture		south_texture;
 	t_texture		east_texture;
 	t_texture		west_texture;
-	t_texture		door;			// bonus
-	t_texture		weapon_idle;	// bonus
-	t_texture		weapon_shoot;	// bonus
+	t_texture door;         // bonus
+	t_texture weapon_idle;  // bonus
+	t_texture weapon_shoot; // bonus
 	t_texture		enemy;
 	float			*zbuffer;
+	t_fight		fight;
 
 }					t_game;
 
@@ -353,7 +362,7 @@ char				*remove_inner_spaces(char *str, t_ctrl *ctrl);
 char				*read_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									utils.c									  */
+/*									utils.c										*/
 /* ************************************************************************** */
 
 int					ft_strcmp(const char *s1, const char *s2);
@@ -363,7 +372,7 @@ void				create_frame_paths(t_texture *tex, char *base_path,
 						t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									player.c								  */
+/*									player.c									*/
 /* ************************************************************************** */
 
 int					key_release(int keycode, t_ctrl *ctrl);
@@ -371,25 +380,25 @@ int					key_press(int keycode, t_ctrl *ctrl);
 bool				in_map_bounds(float x, float y, t_map *map);
 
 /* ************************************************************************** */
-/*								player_movement.c  							  */
+/*								player_movement.c  								*/
 /* ************************************************************************** */
 
 void				move_player(t_ctrl *ctrl, double delta_time);
 
 /* ************************************************************************** */
-/*									parse_map.c  							  */
+/*									parse_map.c  								*/
 /* ************************************************************************** */
 
 void				parse_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*										gnl.c  								  */
+/*										gnl.c  									*/
 /* ************************************************************************** */
 
 char				*gnl(int fd, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*								error_checks.c  							  */
+/*								error_checks.c  								*/
 /* ************************************************************************** */
 
 void				check_args(int argc, char *argv[], t_ctrl *ctrl);
@@ -397,7 +406,7 @@ void				check_valid_characters(t_ctrl *ctrl);
 void				check_map_closed(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									flood_fill.c  							  */
+/*									flood_fill.c  								*/
 /* ************************************************************************** */
 
 void				check_map_valid(t_ctrl *ctrl);
@@ -480,7 +489,7 @@ void				init_game_window(t_ctrl *ctrl);
 
 // bonus
 /* ************************************************************************** */
-/*              						anim.c   						      */
+/*              						anim.c   								*/
 /* ************************************************************************** */
 
 void				select_frame(t_ctrl *ctrl);
@@ -496,5 +505,8 @@ int					space_press(int keycode, t_game *game);
 void				door_state(t_ctrl *ctrl);
 t_trig_tables		*init_trig_tables(void);
 void				free_trig_tables(t_trig_tables *tables);
+void				draw_hp_bar(t_game *game, double delta_time);
+int	check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl);
+void	enemy_attack(t_ctrl *ctrl);
 
 #endif

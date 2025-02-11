@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/11 00:36:15 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/11 15:50:28 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void	draw_weapon(t_texture *texture, t_game *game, int scale,
 		{
 			color = get_texture_color(texture, x, y);
 			if (color != 0x000000)
-			 {
+			{
 				i = 0;
 				while (i < scale)
 				{
@@ -166,9 +166,10 @@ void	choose_weapon(t_game *game)
 		recoil_offset = 10;
 		draw_weapon(&game->weapon_shoot, game, scale, recoil_offset);
 		game->shoot_ac++;
-		if (game->shoot_ac >= 50) //change this value to choose how long shooting frame should be on the screen
+		if (game->shoot_ac >= 50)
+		// change this value to choose how long shooting frame should be on the screen
 		{
-			//recoil_offset = 0;
+			// recoil_offset = 0;
 			game->is_shooting = 0;
 			game->shoot_ac = 0;
 		}
@@ -191,93 +192,113 @@ int	is_wall(t_ctrl *ctrl, float x, float y)
 	return (ctrl->map.full_map[map_y][map_x] == '1');
 }
 
-void draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
+void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 {
-    // Calculate enemy's world position relative to the player.
-    float enemy_world_x = enemy->x;
-    float enemy_world_y = enemy->y;
-    float dx = enemy_world_x - player->x;
-    float dy = enemy_world_y - player->y;
-    float distance = sqrtf(dx * dx + dy * dy);
-    float enemy_angle = atan2f(dy, dx);
-    
-    // Calculate angle difference between enemy and player's view.
-    float angle_diff = enemy_angle - player->angle;
-    while (angle_diff > M_PI)
-        angle_diff -= 2 * M_PI;
-    while (angle_diff < -M_PI)
-        angle_diff += 2 * M_PI;
+	float	enemy_world_x;
+	float	enemy_world_y;
+	float	dx;
+	float	dy;
+	float	distance;
+	float	enemy_angle;
+	float	angle_diff;
+	float	half_fov;
+	float	enemy_perp_distance;
+	float	fov;
+	float	dist_plane;
+	int		sprite_height;
+	int		sprite_width;
+	int		sprite_screen_x;
+	int		sprite_screen_y;
+	float	ray_x;
+	float	ray_y;
+	float	step_x;
+	float	step_y;
+	float	ray_dist;
+	int		screen_x;
+	int		screen_y;
+	int		tex_x;
+	int		tex_y;
+	int		color;
 
-    // If the enemy is outside the player's field of view, do not draw.
-    float half_fov = (M_PI / 3) / 2;
-    if (fabs(angle_diff) > half_fov)
-        return;
-
-    // Compute the perpendicular distance to the enemy.
-    //float enemy_perp_distance = distance * cos(angle_diff);
-    float enemy_perp_distance = distance;
-    float fov = M_PI / 3;
-    float dist_plane = (WIDTH / 2) / tanf(fov / 2);
-
-    // Calculate the sprite's size and screen position.
-    int sprite_height = abs((int)((TILE_SIZE / enemy_perp_distance) * dist_plane));
-    int sprite_width = sprite_height;
-    int sprite_screen_x = (int)((WIDTH / 2) + (tanf(angle_diff) * dist_plane)) - sprite_width / 2;
-    int sprite_screen_y = (HEIGHT / 2) - sprite_height / 2;
-
-    // Raycasting: Check if a wall blocks the enemy's view.
-    float ray_x = player->x;
-    float ray_y = player->y;
-    float step_x = dx / distance * TILE_SIZE;
-    float step_y = dy / distance * TILE_SIZE;
-    float ray_dist = 0;
-    while (ray_dist < distance)
-    {
-        ray_x += step_x;
-        ray_y += step_y;
-        ray_dist += TILE_SIZE;
-        if (is_wall(ctrl, ray_x, ray_y))
-            return;
-    }
-
-    // Animation 
-    // if (ctrl->game->enemy.frames_count > 1)
+	// Calculate enemy's world position relative to the player.
+	enemy_world_x = enemy->x;
+	enemy_world_y = enemy->y;
+	dx = enemy_world_x - player->x;
+	dy = enemy_world_y - player->y;
+	distance = sqrtf(dx * dx + dy * dy);
+	enemy_angle = atan2f(dy, dx);
+	// Calculate angle difference between enemy and player's view.
+	angle_diff = enemy_angle - player->angle;
+	while (angle_diff > M_PI)
+		angle_diff -= 2 * M_PI;
+	while (angle_diff < -M_PI)
+		angle_diff += 2 * M_PI;
+	// If the enemy is outside the player's field of view, do not draw.
+	half_fov = (M_PI / 3) / 2;
+	if (fabs(angle_diff) > half_fov)
+		return ;
+	// Compute the perpendicular distance to the enemy.
+	// float enemy_perp_distance = distance * cos(angle_diff);
+	enemy_perp_distance = distance;
+	fov = M_PI / 3;
+	dist_plane = (WIDTH / 2) / tanf(fov / 2);
+	// Calculate the sprite's size and screen position.
+	sprite_height = abs((int)((TILE_SIZE / enemy_perp_distance) * dist_plane));
+	sprite_width = sprite_height;
+	sprite_screen_x = (int)((WIDTH / 2) + (tanf(angle_diff) * dist_plane))
+		- sprite_width / 2;
+	sprite_screen_y = (HEIGHT / 2) - sprite_height / 2;
+	// Raycasting: Check if a wall blocks the enemy's view.
+	ray_x = player->x;
+	ray_y = player->y;
+	step_x = dx / distance * TILE_SIZE;
+	step_y = dy / distance * TILE_SIZE;
+	ray_dist = 0;
+	while (ray_dist < distance)
+	{
+		ray_x += step_x;
+		ray_y += step_y;
+		ray_dist += TILE_SIZE;
+		if (is_wall(ctrl, ray_x, ray_y))
+			return ;
+	}
+	// Animation
+	// if (ctrl->game->enemy.frames_count > 1)
 	// {
-    // 	enemy->frame_time += compute_delta_time();
-    // 	if (enemy->frame_time >= enemy->frame_duration)
-    // 	{
-    //     	enemy->frame = (enemy->frame + 1) % ctrl->game->enemy.frames_count;
-    //     	enemy->frame_time = 0;
-    // 	}
-	// }	
-    // ------------------------------------------------------------
-
-    // Render the enemy sprite (or animated texture) onto the screen.
-    for (int x = 0; x < sprite_width; x++)
-    {
-        int screen_x = sprite_screen_x + x;
-        if (screen_x < 0 || screen_x >= WIDTH)
-            continue;
-        // Use the zbuffer to skip pixels where a wall is closer than the enemy.
-        if (ctrl->game->zbuffer && (enemy_perp_distance > ctrl->game->zbuffer[screen_x]))
-            continue;
-        for (int y = 0; y < sprite_height; y++)
-        {
-            int screen_y = sprite_screen_y + y;
-            if (screen_y < 0 || screen_y >= HEIGHT)
-                continue;
-            // Map the current screen pixel to texture coordinates.
-            int tex_x = x * TEX_WIDTH / sprite_width;
-            int tex_y = y * TEX_HEIGHT / sprite_height;
-            // Get the pixel color from the enemy texture using the current frame.
-            int color = get_texture_color(&ctrl->game->enemy, tex_x, tex_y);
-            // Assume that a color value of 0 is transparent.
-            if (color != 0)
-                put_pixel(screen_x, screen_y, color, ctrl->game);
-        }
-    }
+	// 	enemy->frame_time += compute_delta_time();
+	// 	if (enemy->frame_time >= enemy->frame_duration)
+	// 	{
+	//     	enemy->frame = (enemy->frame + 1) % ctrl->game->enemy.frames_count;
+	//     	enemy->frame_time = 0;
+	// 	}
+	// }
+	// ------------------------------------------------------------
+	// Render the enemy sprite (or animated texture) onto the screen.
+	for (int x = 0; x < sprite_width; x++)
+	{
+		screen_x = sprite_screen_x + x;
+		if (screen_x < 0 || screen_x >= WIDTH)
+			continue ;
+		// Use the zbuffer to skip pixels where a wall is closer than the enemy.
+		if (ctrl->game->zbuffer
+			&& (enemy_perp_distance > ctrl->game->zbuffer[screen_x]))
+			continue ;
+		for (int y = 0; y < sprite_height; y++)
+		{
+			screen_y = sprite_screen_y + y;
+			if (screen_y < 0 || screen_y >= HEIGHT)
+				continue ;
+			// Map the current screen pixel to texture coordinates.
+			tex_x = x * TEX_WIDTH / sprite_width;
+			tex_y = y * TEX_HEIGHT / sprite_height;
+			// Get the pixel color from the enemy texture using the current frame.
+			color = get_texture_color(&ctrl->game->enemy, tex_x, tex_y);
+			// Assume that a color value of 0 is transparent.
+			if (color != 0)
+				put_pixel(screen_x, screen_y, color, ctrl->game);
+		}
+	}
 }
-
 
 int	draw_loop(t_ctrl *ctrl)
 {
@@ -286,7 +307,9 @@ int	draw_loop(t_ctrl *ctrl)
 	float	angle_step;
 	double	delta_time;
 	size_t	i;
+	int		enemy_visible;
 
+	enemy_visible = 0;
 	i = 0;
 	ctrl->anim.fc++;
 	// printf("DEBUG: ctrl->anim.fc: %zu\n", ctrl->anim.fc);
@@ -294,6 +317,19 @@ int	draw_loop(t_ctrl *ctrl)
 	{
 		ctrl->anim.fc = 0;
 		ctrl->anim.ac++;
+		// ctrl->game->player.fight.enemy_shoot = 1;
+		// // debug_enemy_shoot_simulator
+		// printf("enemy shooted\n");
+		// printf("ctrl->game->player.fight.enemy_shoot = %d\n",
+		// 	ctrl->game->player.fight.enemy_shoot);
+		// if (!ctrl->game->player.fight.fight_started
+		// 	&& ctrl->game->player.hp == PLAYER_HP)
+		// {
+		// 	ctrl->game->player.fight.fight_started = 1;
+		// 	printf("ctrl->game->player.fight.fight_started = %d\n",
+		// 		ctrl->game->player.fight.fight_started);
+		// 	// debug_enemy_shoot_simulator
+		// }
 		// printf("DEBUG: frame index: %zu\n", ctrl->anim.ac);
 	}
 	if (ctrl->anim.ac >= MAX_FRAMES)
@@ -305,7 +341,8 @@ int	draw_loop(t_ctrl *ctrl)
 	// door
 	while (i < ctrl->map.doors_counter)
 	{
-		if (ctrl->map.doors[i].state == DOOR_OPENING || ctrl->map.doors[i].state == DOOR_OPEN)
+		if (ctrl->map.doors[i].state == DOOR_OPENING
+			|| ctrl->map.doors[i].state == DOOR_OPEN)
 		{
 			update_doors(&ctrl->map.doors[i], ctrl, delta_time);
 		}
@@ -326,12 +363,20 @@ int	draw_loop(t_ctrl *ctrl)
 		while (i < ctrl->map.enemies_counter)
 		{
 			draw_enemy(ctrl, &ctrl->game->player, &ctrl->map.enemies[i]);
+			if (check_enemy_visibility(&ctrl->map.enemies[i], ctrl))
+			{
+				enemy_visible = 1;
+				// ctrl->game->fight.fight_started = 1;
+				enemy_attack(ctrl);
+			}
 			i++;
 		}
+		ctrl->game->fight.fight_started = enemy_visible;
 	}
 	draw_cross(ctrl->game);
 	draw_minimap(&ctrl->map, ctrl->game);
 	choose_weapon(ctrl->game);
+	draw_hp_bar(ctrl->game, delta_time);
 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win, ctrl->game->img,
 		0, 0);
 	return (0);

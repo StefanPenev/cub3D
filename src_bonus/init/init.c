@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/10 19:38:39 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/11 15:51:44 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	init_player(t_player *player, float start_x, float start_y,
 	player->key_left = false;
 	player->left_rotate = false;
 	player->right_rotate = false;
+	player->hp = PLAYER_HP;
 }
 
 void	init_texture(t_texture *texture, int max_frames)
@@ -61,6 +62,10 @@ void	init_game(t_game *game)
 	game->ceiling_color = 0xFFFFFFFF;
 	game->is_shooting = 0;
 	game->shoot_ac = 0;
+	game->fight.fight_started = 0;
+	game->fight.enemy_shoot = 0;
+	game->fight.player_shoot = 0;
+	game->fight.shoot_delay = 100;
 }
 
 void	init_map(t_map *map)

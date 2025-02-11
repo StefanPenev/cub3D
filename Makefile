@@ -98,6 +98,7 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/init/init.c \
 SRCS_BONUS += $(SRC_BONUS_DIR)/player/player.c \
 			$(SRC_BONUS_DIR)/player/player_movement.c \
 			$(SRC_BONUS_DIR)/player/mouse_controls.c \
+			$(SRC_BONUS_DIR)/player/player_hp_bar.c \
 
 # Raycaster
 SRCS_BONUS += $(SRC_BONUS_DIR)/raycaster/debug.c \
@@ -116,6 +117,9 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/utils/gnl.c \
 
 # Anim
 SRCS_BONUS += $(SRC_BONUS_DIR)/anim/doors.c \
+
+# Fight
+SRCS_BONUS += $(SRC_BONUS_DIR)/fight/enemy_attack.c \
 
 # **************************************************************************** #
 #                           Converting .c to .o                                 #
