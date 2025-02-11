@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/10 20:54:17 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/11 23:53:33 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,29 +47,19 @@ void	load_wall_textures(t_ctrl *ctrl)
 		ctrl->game->west_texture.paths);
 }
 
-// void	load_enemy_textures(t_game *game)
-// {
-// 	char	*enemy_frames[2];
-
-// 	init_texture(&game->enemy, 2);
-// 	game->enemy.path = "./textures/enemy/e_0.xpm";
-// 	enemy_frames[0] = game->enemy.path;
-// 	enemy_frames[1] = NULL;
-// 	load_texture(game, &game->enemy, enemy_frames);
-// }
-void load_enemy_textures(t_game *game)
+void	load_enemy_textures(t_game *game)
 {
-    char *enemy_frames[] = {
-        "./textures/enemy/e_0.xpm",
-        "./textures/enemy/e_1.xpm",
-        "./textures/enemy/e_2.xpm",
-        "./textures/enemy/e_3.xpm",
-        "./textures/enemy/e_4.xpm",
-        NULL
-    };
+	char	*enemy_frames[7];
 
-    init_texture(&game->enemy, 5);
-    load_texture(game, &game->enemy, enemy_frames);
+	enemy_frames[0] = "./textures/enemy/e_0.xpm";
+	enemy_frames[1] = "./textures/enemy/e_1.xpm";
+	enemy_frames[2] = "./textures/enemy/e_2.xpm";
+	enemy_frames[3] = "./textures/enemy/e_3.xpm";
+	enemy_frames[4] = "./textures/enemy/e_4.xpm";
+	enemy_frames[5] = "./textures/enemy/e_5.xpm";
+	enemy_frames[6] = NULL;
+	init_texture(&game->enemy, 6);
+	load_texture(game, &game->enemy, enemy_frames);
 }
 
 void	load_door_textures(t_game *game)
@@ -83,10 +73,24 @@ void	load_door_textures(t_game *game)
 	load_texture(game, &game->door, door_frames);
 }
 
+void	load_crosshair(t_game *game)
+{
+	char	*crosshair_frames[2];
+
+	init_texture(&game->crosshair, 2);
+	game->crosshair.path = "./textures/crosshair.xpm";
+	game->crosshair.width = 40;
+	game->crosshair.height = 24;
+	crosshair_frames[0] = game->crosshair.path;
+	crosshair_frames[1] = NULL;
+	load_texture(game, &game->crosshair, crosshair_frames);
+}
+
 void	load_all_textures(t_game *game, t_ctrl *ctrl)
 {
 	load_wall_textures(ctrl);
 	load_weapon_textures(game);
 	load_door_textures(game);
+	load_crosshair(game);
 	load_enemy_textures(game);
 }

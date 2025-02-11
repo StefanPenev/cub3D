@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/11 15:50:36 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/11 23:50:45 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,6 +186,8 @@ typedef struct s_texture
 	int				endian;
 	int				frames_count;
 	int				current_frame;
+	int				width;
+	int				height;
 	char			*path;
 	char			**frames;
 	char			**frames_addr;
@@ -216,9 +218,9 @@ typedef struct s_game
 	t_texture weapon_idle;  // bonus
 	t_texture weapon_shoot; // bonus
 	t_texture		enemy;
+	t_texture		crosshair;
 	float			*zbuffer;
 	t_fight		fight;
-
 }					t_game;
 
 typedef struct s_trig_tables

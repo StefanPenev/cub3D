@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/11 15:50:28 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/11 23:59:46 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,38 @@ void	draw_map(t_map *mapp, t_game *game)
 	}
 }
 
+void	draw_crosshair(t_game *game)
+{
+	int		x;
+	int		y;
+	int		i;
+	int		j;
+	size_t	color;
+
+	if (!game)
+		return ;
+	x = (WIDTH / 2) - (game->crosshair.width / 2);
+	y = (HEIGHT / 2) - (game->crosshair.height / 2);
+
+	i = 0;
+	while (i < game->crosshair.height)
+	{
+		j = 0;
+		while (j < game->crosshair.width)
+		{
+			color = get_texture_color(&game->crosshair, j, i);
+
+			if ((color & 0xFFFFFF) != 0x000000)
+			{
+				put_pixel((x + 9) + j, (y + 35) + i, color, game);
+				//put_pixel(x + j, y + i, color, game);
+			}
+			j++;
+		}
+		i++;
+	}
+}
+
 void	draw_cross(t_game *game)
 {
 	int	center_x;
@@ -130,7 +162,7 @@ void	draw_weapon(t_texture *texture, t_game *game, int scale,
 		while (x < TEX_WIDTH)
 		{
 			color = get_texture_color(texture, x, y);
-			if (color != 0x000000)
+			if ((color & 0xFFFFFF) != 0x000000)
 			{
 				i = 0;
 				while (i < scale)
@@ -190,6 +222,48 @@ int	is_wall(t_ctrl *ctrl, float x, float y)
 	if (map_x < 0 || map_x >= WIDTH || map_y < 0 || map_y >= HEIGHT)
 		return (1);
 	return (ctrl->map.full_map[map_y][map_x] == '1');
+}
+
+#define THRESHOLD 200.0f
+
+float compute_distance(float x1, float y1, float x2, float y2)
+{
+    float dx = x2 - x1;
+    float dy = y2 - y1;
+    return sqrtf(dx * dx + dy * dy);
+}
+
+void update_enemy_state(t_enemy *enemy, t_player *player)
+{
+    float distance = compute_distance(enemy->x, enemy->y, player->x, player->y);
+
+    switch (enemy->state)
+    {
+        case ENEMY_IDLE:
+            if (distance < THRESHOLD)
+            {
+                enemy->state = ENEMY_TRIGGERED;
+                enemy->frame = 0;
+                enemy->frame_time = 0;
+            }
+            break;
+
+        case ENEMY_TRIGGERED:
+            // Remain in triggered state while within range.
+            // When the player goes out of range, transition to return idle.
+            if (distance >= THRESHOLD)
+                enemy->state = ENEMY_RETURN_IDLE;
+            break;
+
+        case ENEMY_ACTIVE:  // Not used in this behavior
+            break;
+
+        case ENEMY_RETURN_IDLE:
+            enemy->state = ENEMY_IDLE;
+            enemy->frame = 0;
+            enemy->frame_time = 0;
+            break;
+    }
 }
 
 void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
@@ -300,84 +374,174 @@ void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 	}
 }
 
-int	draw_loop(t_ctrl *ctrl)
-{
-	float	fov;
-	float	start_angle;
-	float	angle_step;
-	double	delta_time;
-	size_t	i;
-	int		enemy_visible;
+// int	draw_loop(t_ctrl *ctrl)
+// {
+// 	float	fov;
+// 	float	start_angle;
+// 	float	angle_step;
+// 	double	delta_time;
+// 	size_t	i;
+// 	int		enemy_visible;
 
-	enemy_visible = 0;
-	i = 0;
-	ctrl->anim.fc++;
-	// printf("DEBUG: ctrl->anim.fc: %zu\n", ctrl->anim.fc);
-	if (ctrl->anim.fc >= TIME_SPEED)
-	{
-		ctrl->anim.fc = 0;
-		ctrl->anim.ac++;
-		// ctrl->game->player.fight.enemy_shoot = 1;
-		// // debug_enemy_shoot_simulator
-		// printf("enemy shooted\n");
-		// printf("ctrl->game->player.fight.enemy_shoot = %d\n",
-		// 	ctrl->game->player.fight.enemy_shoot);
-		// if (!ctrl->game->player.fight.fight_started
-		// 	&& ctrl->game->player.hp == PLAYER_HP)
-		// {
-		// 	ctrl->game->player.fight.fight_started = 1;
-		// 	printf("ctrl->game->player.fight.fight_started = %d\n",
-		// 		ctrl->game->player.fight.fight_started);
-		// 	// debug_enemy_shoot_simulator
-		// }
-		// printf("DEBUG: frame index: %zu\n", ctrl->anim.ac);
-	}
-	if (ctrl->anim.ac >= MAX_FRAMES)
-	{
-		ctrl->anim.ac = 0;
-	}
-	delta_time = compute_delta_time();
-	// printf("DEBUG: delta_time = %f\n", delta_time);
-	// door
-	while (i < ctrl->map.doors_counter)
-	{
-		if (ctrl->map.doors[i].state == DOOR_OPENING
-			|| ctrl->map.doors[i].state == DOOR_OPEN)
-		{
-			update_doors(&ctrl->map.doors[i], ctrl, delta_time);
-		}
-		i++;
-	}
-	// door
-	clear_image(ctrl->game);
-	move_player(ctrl, delta_time);
-	if (ctrl->game->debug)
-		draw_debug(ctrl);
-	else
-	{
-		fov = M_PI / 3.0f;
-		start_angle = ctrl->game->player.angle - (fov / 2.0f);
-		angle_step = fov / WIDTH;
-		handle_rays(ctrl, start_angle, angle_step);
-		i = 0;
-		while (i < ctrl->map.enemies_counter)
-		{
-			draw_enemy(ctrl, &ctrl->game->player, &ctrl->map.enemies[i]);
-			if (check_enemy_visibility(&ctrl->map.enemies[i], ctrl))
-			{
-				enemy_visible = 1;
-				// ctrl->game->fight.fight_started = 1;
-				enemy_attack(ctrl);
-			}
-			i++;
-		}
-		ctrl->game->fight.fight_started = enemy_visible;
-	}
-	draw_cross(ctrl->game);
-	draw_minimap(&ctrl->map, ctrl->game);
-	choose_weapon(ctrl->game);
-	draw_hp_bar(ctrl->game, delta_time);
-	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win, ctrl->game->img,
-		0, 0);
-	return (0);
+// 	enemy_visible = 0;
+// 	i = 0;
+// 	ctrl->anim.fc++;
+// 	// printf("DEBUG: ctrl->anim.fc: %zu\n", ctrl->anim.fc);
+// 	if (ctrl->anim.fc >= TIME_SPEED)
+// 	{
+// 		ctrl->anim.fc = 0;
+// 		ctrl->anim.ac++;
+// 		// ctrl->game->player.fight.enemy_shoot = 1;
+// 		// // debug_enemy_shoot_simulator
+// 		// printf("enemy shooted\n");
+// 		// printf("ctrl->game->player.fight.enemy_shoot = %d\n",
+// 		// 	ctrl->game->player.fight.enemy_shoot);
+// 		// if (!ctrl->game->player.fight.fight_started
+// 		// 	&& ctrl->game->player.hp == PLAYER_HP)
+// 		// {
+// 		// 	ctrl->game->player.fight.fight_started = 1;
+// 		// 	printf("ctrl->game->player.fight.fight_started = %d\n",
+// 		// 		ctrl->game->player.fight.fight_started);
+// 		// 	// debug_enemy_shoot_simulator
+// 		// }
+// 		// printf("DEBUG: frame index: %zu\n", ctrl->anim.ac);
+// 	}
+// 	if (ctrl->anim.ac >= MAX_FRAMES)
+// 	{
+// 		ctrl->anim.ac = 0;
+// 	}
+// 	delta_time = compute_delta_time();
+// 	// printf("DEBUG: delta_time = %f\n", delta_time);
+// 	// door
+// 	while (i < ctrl->map.doors_counter)
+// 	{
+// 		if (ctrl->map.doors[i].state == DOOR_OPENING
+// 			|| ctrl->map.doors[i].state == DOOR_OPEN)
+// 		{
+// 			update_doors(&ctrl->map.doors[i], ctrl, delta_time);
+// 		}
+// 		i++;
+// 	}
+// 	// door
+// 	clear_image(ctrl->game);
+// 	move_player(ctrl, delta_time);
+// 	if (ctrl->game->debug)
+// 		draw_debug(ctrl);
+// 	else
+// 	{
+// 		fov = M_PI / 3.0f;
+// 		start_angle = ctrl->game->player.angle - (fov / 2.0f);
+// 		angle_step = fov / WIDTH;
+// 		handle_rays(ctrl, start_angle, angle_step);
+// 		i = 0;
+// 		while (i < ctrl->map.enemies_counter)
+// 		{
+// 			draw_enemy(ctrl, &ctrl->game->player, &ctrl->map.enemies[i]);
+// 			if (check_enemy_visibility(&ctrl->map.enemies[i], ctrl))
+// 			{
+// 				enemy_visible = 1;
+// 				// ctrl->game->fight.fight_started = 1;
+// 				enemy_attack(ctrl);
+// 			}
+// 			i++;
+// 		}
+// 		ctrl->game->fight.fight_started = enemy_visible;
+// 	}
+// 	draw_cross(ctrl->game);
+// 	draw_minimap(&ctrl->map, ctrl->game);
+// 	choose_weapon(ctrl->game);
+// 	draw_hp_bar(ctrl->game, delta_time);
+// 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win, ctrl->game->img,
+// 		0, 0);
+// 	return (0);
+// }
+int draw_loop(t_ctrl *ctrl)
+{
+    float   fov;
+    float   start_angle;
+    float   angle_step;
+    double  delta_time;
+    size_t  i;
+
+    delta_time = compute_delta_time();
+    // door update
+    i = 0;
+    while (i < ctrl->map.doors_counter)
+    {
+        if (ctrl->map.doors[i].state == DOOR_OPENING ||
+            ctrl->map.doors[i].state == DOOR_OPEN)
+        {
+            update_doors(&ctrl->map.doors[i], ctrl, delta_time);
+        }
+        i++;
+    }
+    // clear and move player
+    clear_image(ctrl->game);
+    move_player(ctrl, delta_time);
+    if (ctrl->game->debug)
+    {
+        draw_debug(ctrl);
+    }
+    else
+    {
+        fov = M_PI / 3.0f;
+        start_angle = ctrl->game->player.angle - (fov / 2.0f);
+        angle_step = fov / WIDTH;
+        handle_rays(ctrl, start_angle, angle_step);
+        i = 0;
+        while (i < ctrl->map.enemies_counter)
+{
+    // Update enemy state based on player's position.
+    update_enemy_state(&ctrl->map.enemies[i], &ctrl->game->player);
+    
+    // Update enemy animation based on its state.
+    if (ctrl->map.enemies[i].state == ENEMY_IDLE)
+    {
+        ctrl->map.enemies[i].frame = 0;
+    }
+    
+    ///////////////////
+    else if (ctrl->map.enemies[i].state == ENEMY_TRIGGERED)
+{
+    ctrl->map.enemies[i].frame_time += delta_time;
+
+    // Adjustable speed
+    float frame_delay = 0.1f;  
+
+    if (ctrl->map.enemies[i].frame_time >= frame_delay)
+    {
+        ctrl->map.enemies[i].frame_time = 0; // Reset timer
+
+        // Only increment if not at last frame
+        if (ctrl->map.enemies[i].frame < 4)
+        {
+            ctrl->map.enemies[i].frame++;
+        }
+    }
+
+    // Smooth transition effect (optional)
+    float blend_factor = ctrl->map.enemies[i].frame_time / frame_delay; 
+    ctrl->game->enemy.current_frame = ctrl->map.enemies[i].frame + blend_factor;
+}
+    ///////////////////
+
+    else if (ctrl->map.enemies[i].state == ENEMY_RETURN_IDLE)
+    {
+        ctrl->map.enemies[i].frame = 0;
+        ctrl->map.enemies[i].state = ENEMY_IDLE;
+    }
+    
+    // Sync the texture's current_frame with the enemy's frame.
+    ctrl->game->enemy.current_frame = ctrl->map.enemies[i].frame;
+    
+    draw_enemy(ctrl, &ctrl->game->player, &ctrl->map.enemies[i]);
+    i++;
+}
+    }
+    //draw_cross(ctrl->game);
+    draw_minimap(&ctrl->map, ctrl->game);
+    choose_weapon(ctrl->game);
+    draw_crosshair(ctrl->game);
+    mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win, ctrl->game->img, 0, 0);
+    return (0);
 }

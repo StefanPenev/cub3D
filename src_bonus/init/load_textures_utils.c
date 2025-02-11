@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 20:13:30 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/10 20:40:37 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/11 23:52:29 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,8 @@
 
 static int	load_frame(t_game *game, t_texture *texture, char *path, int index)
 {
-	int	width;
-	int	height;
-
-	width = TEX_WIDTH;
-	height = TEX_HEIGHT;
-	texture->frames[index] = mlx_xpm_file_to_image(game->mlx, path, &width,
-			&height);
+	texture->frames[index] = mlx_xpm_file_to_image(game->mlx, path,
+			&texture->width, &texture->height);
 	if (!texture->frames[index])
 	{
 		if (path == NULL)

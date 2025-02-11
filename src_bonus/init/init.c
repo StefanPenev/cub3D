@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/11 15:51:44 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/11 23:51:50 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	init_texture(t_texture *texture, int max_frames)
 
 	i = 0;
 	ft_memset(texture, 0, sizeof(t_texture));
+	texture->width = TEX_WIDTH;
+	texture->height = TEX_HEIGHT;
 	texture->path = NULL;
 	texture->frames = malloc(max_frames * sizeof(void *));
 	texture->paths = malloc(max_frames * sizeof(void *));
