@@ -6,7 +6,7 @@
 /*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/12 11:50:19 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/12 11:58:47 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -283,6 +283,7 @@ void update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl, double d
                     enemy->frame = (enemy->frame == 4) ? 5 : 4;
                 }
                 enemy_attack(ctrl);
+				ctrl->game->fight.fight_started = 1;
             }
             break;
 
@@ -290,6 +291,7 @@ void update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl, double d
             enemy->state = ENEMY_IDLE;
             enemy->frame = 0;
             enemy->frame_time = 0;
+			ctrl->game->fight.fight_started = 0;
             break;
     }
 }
