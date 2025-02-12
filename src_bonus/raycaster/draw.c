@@ -6,7 +6,7 @@
 /*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/12 11:20:58 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/12 11:50:19 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -236,10 +236,10 @@ float	compute_distance(float x1, float y1, float x2, float y2)
 	return (sqrtf(dx * dx + dy * dy));
 }
 
-void update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl)
+void update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl, double delta_time)
 {
     float distance = compute_distance(enemy->x, enemy->y, player->x, player->y);
-    float frame_delay = 0.4f;  // Adjust this to control animation speed (0.3s per frame)
+    float frame_delay = 0.4f;      // Adjust this to control animation speed
     float transition_delay = 0.5f; // Delay before switching from ENEMY_TRIGGERED to ENEMY_ACTIVE
 
     switch (enemy->state)
@@ -254,7 +254,7 @@ void update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl)
             break;
 
         case ENEMY_TRIGGERED:
-            enemy->frame_time += compute_delta_time();
+            enemy->frame_time += delta_time;
             if (enemy->frame_time >= frame_delay)
             {
                 enemy->frame_time = 0;
@@ -265,7 +265,6 @@ void update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl)
             }
             if (enemy->frame_time < 0)
                 break;
-
             enemy->state = ENEMY_ACTIVE;
             enemy->frame = 1;
             break;
@@ -277,15 +276,16 @@ void update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl)
             }
             else
             {
-                enemy->frame_time += compute_delta_time();
+                enemy->frame_time += delta_time;
                 if (enemy->frame_time >= frame_delay)
                 {
                     enemy->frame_time = 0;
                     enemy->frame = (enemy->frame == 4) ? 5 : 4;
                 }
-				enemy_attack(ctrl);
+                enemy_attack(ctrl);
             }
             break;
+
         case ENEMY_RETURN_IDLE:
             enemy->state = ENEMY_IDLE;
             enemy->frame = 0;
@@ -477,12 +477,7 @@ int	draw_loop(t_ctrl *ctrl)
 	float	angle_step;
 	double	delta_time;
 	size_t	i;
-	int		enemy_visible;
-	float	blend_factor;
-	float	frame_delay;
 
-	enemy_visible = 0;
-	i = 0;
 	ctrl->anim.fc++;
 	if (ctrl->anim.fc >= TIME_SPEED)
 	{
@@ -490,9 +485,7 @@ int	draw_loop(t_ctrl *ctrl)
 		ctrl->anim.ac++;
 	}
 	if (ctrl->anim.ac >= MAX_FRAMES)
-	{
 		ctrl->anim.ac = 0;
-	}
 	delta_time = compute_delta_time();
 	i = 0;
 	while (i < ctrl->map.doors_counter)
@@ -518,30 +511,7 @@ int	draw_loop(t_ctrl *ctrl)
 		while (i < ctrl->map.enemies_counter)
 		{
 			update_enemy_state(&ctrl->map.enemies[i], &ctrl->game->player,
-				ctrl);
-			if (ctrl->map.enemies[i].state == ENEMY_IDLE)
-			{
-				ctrl->map.enemies[i].frame = 0;
-			}
-			else if (ctrl->map.enemies[i].state == ENEMY_TRIGGERED)
-			{
-				ctrl->map.enemies[i].frame_time += delta_time;
-				frame_delay = 0.15f;
-				if (ctrl->map.enemies[i].frame_time >= frame_delay)
-				{
-					ctrl->map.enemies[i].frame_time = 0;
-					if (ctrl->map.enemies[i].frame < 4)
-						ctrl->map.enemies[i].frame++;
-				}
-				blend_factor = ctrl->map.enemies[i].frame_time / frame_delay;
-				ctrl->game->enemy.current_frame = ctrl->map.enemies[i].frame
-					+ blend_factor;
-			}
-			else if (ctrl->map.enemies[i].state == ENEMY_RETURN_IDLE)
-			{
-				ctrl->map.enemies[i].frame = 0;
-				ctrl->map.enemies[i].state = ENEMY_IDLE;
-			}
+				ctrl, delta_time);
 			ctrl->game->enemy.current_frame = ctrl->map.enemies[i].frame;
 			draw_enemy(ctrl, &ctrl->game->player, &ctrl->map.enemies[i]);
 			i++;
