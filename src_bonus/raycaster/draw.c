@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/12 14:35:02 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/12 19:01:30 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -442,7 +442,8 @@ int	draw_loop(t_ctrl *ctrl)
 			update_enemy_state(&ctrl->map.enemies[i], &ctrl->game->player, ctrl,
 				delta_time);
 			ctrl->game->enemy.current_frame = ctrl->map.enemies[i].frame;
-			draw_enemy(ctrl, &ctrl->game->player, &ctrl->map.enemies[i]);
+			if (check_enemy_visibility(&ctrl->map.enemies[i], ctrl))
+				draw_enemy(ctrl, &ctrl->game->player, &ctrl->map.enemies[i]);
 			i++;
 		}
 	}
