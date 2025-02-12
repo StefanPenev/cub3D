@@ -6,7 +6,7 @@
 /*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/12 10:36:09 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/12 11:20:58 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -226,16 +226,21 @@ int	is_wall(t_ctrl *ctrl, float x, float y)
 
 #define THRESHOLD 200.0f
 
-float compute_distance(float x1, float y1, float x2, float y2)
+float	compute_distance(float x1, float y1, float x2, float y2)
 {
-    float dx = x2 - x1;
-    float dy = y2 - y1;
-    return sqrtf(dx * dx + dy * dy);
+	float	dx;
+	float	dy;
+
+	dx = x2 - x1;
+	dy = y2 - y1;
+	return (sqrtf(dx * dx + dy * dy));
 }
 
-void update_enemy_state(t_enemy *enemy, t_player *player)
+void update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl)
 {
     float distance = compute_distance(enemy->x, enemy->y, player->x, player->y);
+    float frame_delay = 0.4f;  // Adjust this to control animation speed (0.3s per frame)
+    float transition_delay = 0.5f; // Delay before switching from ENEMY_TRIGGERED to ENEMY_ACTIVE
 
     switch (enemy->state)
     {
@@ -243,19 +248,44 @@ void update_enemy_state(t_enemy *enemy, t_player *player)
             if (distance < THRESHOLD)
             {
                 enemy->state = ENEMY_TRIGGERED;
-                enemy->frame = 0;
+                enemy->frame = 1;
                 enemy->frame_time = 0;
             }
             break;
 
         case ENEMY_TRIGGERED:
+            enemy->frame_time += compute_delta_time();
+            if (enemy->frame_time >= frame_delay)
+            {
+                enemy->frame_time = 0;
+                if (enemy->frame < 4)
+                    enemy->frame++;
+                else
+                    enemy->frame_time = -transition_delay;
+            }
+            if (enemy->frame_time < 0)
+                break;
+
+            enemy->state = ENEMY_ACTIVE;
+            enemy->frame = 1;
+            break;
+
+        case ENEMY_ACTIVE:
             if (distance >= THRESHOLD)
+            {
                 enemy->state = ENEMY_RETURN_IDLE;
+            }
+            else
+            {
+                enemy->frame_time += compute_delta_time();
+                if (enemy->frame_time >= frame_delay)
+                {
+                    enemy->frame_time = 0;
+                    enemy->frame = (enemy->frame == 4) ? 5 : 4;
+                }
+				enemy_attack(ctrl);
+            }
             break;
-
-        case ENEMY_ACTIVE:  // Not used in this behavior
-            break;
-
         case ENEMY_RETURN_IDLE:
             enemy->state = ENEMY_IDLE;
             enemy->frame = 0;
@@ -263,6 +293,7 @@ void update_enemy_state(t_enemy *enemy, t_player *player)
             break;
     }
 }
+
 
 void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 {
@@ -334,24 +365,11 @@ void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 		if (is_wall(ctrl, ray_x, ray_y))
 			return ;
 	}
-	// Animation
-	// if (ctrl->game->enemy.frames_count > 1)
-	// {
-	// 	enemy->frame_time += compute_delta_time();
-	// 	if (enemy->frame_time >= enemy->frame_duration)
-	// 	{
-	//     	enemy->frame = (enemy->frame + 1) % ctrl->game->enemy.frames_count;
-	//     	enemy->frame_time = 0;
-	// 	}
-	// }
-	// ------------------------------------------------------------
-	// Render the enemy sprite (or animated texture) onto the screen.
 	for (int x = 0; x < sprite_width; x++)
 	{
 		screen_x = sprite_screen_x + x;
 		if (screen_x < 0 || screen_x >= WIDTH)
 			continue ;
-		// Use the zbuffer to skip pixels where a wall is closer than the enemy.
 		if (ctrl->game->zbuffer
 			&& (enemy_perp_distance > ctrl->game->zbuffer[screen_x]))
 			continue ;
@@ -360,12 +378,9 @@ void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 			screen_y = sprite_screen_y + y;
 			if (screen_y < 0 || screen_y >= HEIGHT)
 				continue ;
-			// Map the current screen pixel to texture coordinates.
 			tex_x = x * TEX_WIDTH / sprite_width;
 			tex_y = y * TEX_HEIGHT / sprite_height;
-			// Get the pixel color from the enemy texture using the current frame.
 			color = get_texture_color(&ctrl->game->enemy, tex_x, tex_y);
-			// Assume that a color value of 0 is transparent.
 			if (color != 0)
 				put_pixel(screen_x, screen_y, color, ctrl->game);
 		}
@@ -502,7 +517,8 @@ int	draw_loop(t_ctrl *ctrl)
 		i = 0;
 		while (i < ctrl->map.enemies_counter)
 		{
-			update_enemy_state(&ctrl->map.enemies[i], &ctrl->game->player);
+			update_enemy_state(&ctrl->map.enemies[i], &ctrl->game->player,
+				ctrl);
 			if (ctrl->map.enemies[i].state == ENEMY_IDLE)
 			{
 				ctrl->map.enemies[i].frame = 0;
