@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/11 23:50:45 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/12 10:08:22 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,10 +92,10 @@
 
 typedef enum enemy_state
 {
-	ENEMY_IDLE,        // Default idle animation
-	ENEMY_TRIGGERED,   // Play 5-frame alert animation once
-	ENEMY_ACTIVE,      // Loop 2-frame animation while player is in range
-	ENEMY_RETURN_IDLE, // Transition back to idle when player leaves
+	ENEMY_IDLE,			// Default idle animation
+	ENEMY_TRIGGERED,	// Play 5-frame alert animation once
+	ENEMY_ACTIVE,		// Loop 2-frame animation while player is in range
+	ENEMY_RETURN_IDLE,	// Transition back to idle when player leaves
 }					t_enemy_state;
 
 typedef struct s_door
@@ -214,13 +214,13 @@ typedef struct s_game
 	t_texture		south_texture;
 	t_texture		east_texture;
 	t_texture		west_texture;
-	t_texture door;         // bonus
-	t_texture weapon_idle;  // bonus
-	t_texture weapon_shoot; // bonus
+	t_texture		door;			// bonus
+	t_texture		weapon_idle;	// bonus
+	t_texture		weapon_shoot;	// bonus
 	t_texture		enemy;
 	t_texture		crosshair;
 	float			*zbuffer;
-	t_fight		fight;
+	t_fight			fight;
 }					t_game;
 
 typedef struct s_trig_tables
@@ -364,7 +364,7 @@ char				*remove_inner_spaces(char *str, t_ctrl *ctrl);
 char				*read_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									utils.c										*/
+/*									utils.c									  */
 /* ************************************************************************** */
 
 int					ft_strcmp(const char *s1, const char *s2);
@@ -374,7 +374,7 @@ void				create_frame_paths(t_texture *tex, char *base_path,
 						t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									player.c									*/
+/*									player.c								  */
 /* ************************************************************************** */
 
 int					key_release(int keycode, t_ctrl *ctrl);
@@ -382,25 +382,25 @@ int					key_press(int keycode, t_ctrl *ctrl);
 bool				in_map_bounds(float x, float y, t_map *map);
 
 /* ************************************************************************** */
-/*								player_movement.c  								*/
+/*								player_movement.c  							  */
 /* ************************************************************************** */
 
 void				move_player(t_ctrl *ctrl, double delta_time);
 
 /* ************************************************************************** */
-/*									parse_map.c  								*/
+/*									parse_map.c  							  */
 /* ************************************************************************** */
 
 void				parse_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*										gnl.c  									*/
+/*										gnl.c  								  */
 /* ************************************************************************** */
 
 char				*gnl(int fd, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*								error_checks.c  								*/
+/*								error_checks.c  							  */
 /* ************************************************************************** */
 
 void				check_args(int argc, char *argv[], t_ctrl *ctrl);
@@ -408,7 +408,7 @@ void				check_valid_characters(t_ctrl *ctrl);
 void				check_map_closed(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									flood_fill.c  								*/
+/*									flood_fill.c  							  */
 /* ************************************************************************** */
 
 void				check_map_valid(t_ctrl *ctrl);
@@ -491,7 +491,7 @@ void				init_game_window(t_ctrl *ctrl);
 
 // bonus
 /* ************************************************************************** */
-/*              						anim.c   								*/
+/*              						anim.c   							  */
 /* ************************************************************************** */
 
 void				select_frame(t_ctrl *ctrl);
@@ -508,7 +508,7 @@ void				door_state(t_ctrl *ctrl);
 t_trig_tables		*init_trig_tables(void);
 void				free_trig_tables(t_trig_tables *tables);
 void				draw_hp_bar(t_game *game, double delta_time);
-int	check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl);
-void	enemy_attack(t_ctrl *ctrl);
+int					check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl);
+void				enemy_attack(t_ctrl *ctrl);
 
 #endif
