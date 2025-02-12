@@ -6,7 +6,7 @@
 /*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/12 10:08:22 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/12 12:47:45 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -510,5 +510,6 @@ void				free_trig_tables(t_trig_tables *tables);
 void				draw_hp_bar(t_game *game, double delta_time);
 int					check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl);
 void				enemy_attack(t_ctrl *ctrl);
+float				compute_distance(float x1, float y1, float x2, float y2);
 
 #endif

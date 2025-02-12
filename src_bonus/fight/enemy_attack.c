@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_attack.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:16:47 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/11 15:50:19 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/12 12:48:37 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int	check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl)
 	player_py = ctrl->game->player.y;
 	dx = player_px - enemy_px;
 	dy = player_py - enemy_py;
-	distance = sqrt(dx * dx + dy * dy);
-	if (distance > 2 * TILE_SIZE)
+	distance = compute_distance(player_px, player_py, enemy_px, enemy_py);
+	if (distance > 3 * TILE_SIZE)
 		return (0);
 	ray_angle = atan2(dy, dx);
 	step = TILE_SIZE / 8.0;
