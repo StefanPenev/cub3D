@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/11 23:51:50 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/12 14:17:16 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,8 @@ void	init_game(t_game *game)
 	game->fight.fight_started = 0;
 	game->fight.enemy_shoot = 0;
 	game->fight.player_shoot = 0;
-	game->fight.shoot_delay = 100;
+	game->fight.shoot_delay = 200;
+	game->fight.lose_flag = 0;
 }
 
 void	init_map(t_map *map)

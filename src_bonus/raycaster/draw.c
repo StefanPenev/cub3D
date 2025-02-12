@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/12 12:51:18 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/12 14:35:02 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ void	draw_crosshair(t_game *game)
 		return ;
 	x = (WIDTH / 2) - (game->crosshair.width / 2);
 	y = (HEIGHT / 2) - (game->crosshair.height / 2);
-
 	i = 0;
 	while (i < game->crosshair.height)
 	{
@@ -101,11 +100,10 @@ void	draw_crosshair(t_game *game)
 		while (j < game->crosshair.width)
 		{
 			color = get_texture_color(&game->crosshair, j, i);
-
 			if ((color & 0xFFFFFF) != 0x000000)
 			{
 				put_pixel((x + 9) + j, (y + 35) + i, color, game);
-				//put_pixel(x + j, y + i, color, game);
+				// put_pixel(x + j, y + i, color, game);
 			}
 			j++;
 		}
@@ -236,71 +234,72 @@ float	compute_distance(float x1, float y1, float x2, float y2)
 	return (sqrtf(dx * dx + dy * dy));
 }
 
-void update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl, double delta_time)
-{	
-    float	distance = compute_distance(enemy->x, enemy->y, player->x, player->y);
-    float	frame_delay = 0.4f;      // Adjust this to control animation speed
-    float	transition_delay = 0.5f; // Delay before switching from ENEMY_TRIGGERED to ENEMY_ACTIVE
-	int		enemy_visible = 0;
-	
-    switch (enemy->state)
-    {
-        case ENEMY_IDLE:
-            if (distance < THRESHOLD)
-            {
-                enemy->state = ENEMY_TRIGGERED;
-                enemy->frame = 1;
-                enemy->frame_time = 0;
-            }
-            break;
+void	update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl,
+		double delta_time)
+{
+	float	distance;
+	int		enemy_visible;
+	float	transition_delay;
 
-        case ENEMY_TRIGGERED:
-            enemy->frame_time += delta_time;
-            if (enemy->frame_time >= frame_delay)
-            {
-                enemy->frame_time = 0;
-                if (enemy->frame < 4)
-                    enemy->frame++;
-                else
-                    enemy->frame_time = -transition_delay;
-            }
-            if (enemy->frame_time < 0)
-                break;
-            enemy->state = ENEMY_ACTIVE;
-            enemy->frame = 1;
-            break;
-
-        case ENEMY_ACTIVE:
-            if (distance >= THRESHOLD)
-            {
-                enemy->state = ENEMY_RETURN_IDLE;
-            }
-            else
-            {
-                enemy->frame_time += delta_time;
-                if (enemy->frame_time >= frame_delay)
-                {
-                    enemy->frame_time = 0;
-                    enemy->frame = (enemy->frame == 4) ? 5 : 4;
-                }
-				if (check_enemy_visibility(enemy, ctrl))
-				{
-					enemy_visible = 1;
-					enemy_attack(ctrl);
-				}
-				ctrl->game->fight.fight_started = enemy_visible;
-            }
-            break;
-
-        case ENEMY_RETURN_IDLE:
-            enemy->state = ENEMY_IDLE;
-            enemy->frame = 0;
-            enemy->frame_time = 0;
-			ctrl->game->fight.fight_started = 0;
-            break;
-    }
+	distance = compute_distance(enemy->x, enemy->y, player->x, player->y);
+	float frame_delay = 0.4f; // Adjust this to control animation speed
+	transition_delay = 0.5f;
+	// Delay before switching from ENEMY_TRIGGERED to ENEMY_ACTIVE
+	enemy_visible = 0;
+	switch (enemy->state)
+	{
+	case ENEMY_IDLE:
+		if (distance < THRESHOLD)
+		{
+			enemy->state = ENEMY_TRIGGERED;
+			enemy->frame = 1;
+			enemy->frame_time = 0;
+		}
+		break ;
+	case ENEMY_TRIGGERED:
+		enemy->frame_time += delta_time;
+		if (enemy->frame_time >= frame_delay)
+		{
+			enemy->frame_time = 0;
+			if (enemy->frame < 4)
+				enemy->frame++;
+			else
+				enemy->frame_time = -transition_delay;
+		}
+		if (enemy->frame_time < 0)
+			break ;
+		enemy->state = ENEMY_ACTIVE;
+		enemy->frame = 1;
+		break ;
+	case ENEMY_ACTIVE:
+		if (distance >= THRESHOLD)
+		{
+			enemy->state = ENEMY_RETURN_IDLE;
+		}
+		else
+		{
+			enemy->frame_time += delta_time;
+			if (enemy->frame_time >= frame_delay)
+			{
+				enemy->frame_time = 0;
+				enemy->frame = (enemy->frame == 4) ? 5 : 4;
+			}
+			if (check_enemy_visibility(enemy, ctrl))
+			{
+				enemy_visible = 1;
+				enemy_attack(ctrl);
+			}
+			ctrl->game->fight.fight_started = enemy_visible;
+		}
+		break ;
+	case ENEMY_RETURN_IDLE:
+		enemy->state = ENEMY_IDLE;
+		enemy->frame = 0;
+		enemy->frame_time = 0;
+		ctrl->game->fight.fight_started = 0;
+		break ;
+	}
 }
-
 
 void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 {
@@ -348,7 +347,7 @@ void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 	if (fabs(angle_diff) > half_fov)
 		return ;
 	// Compute the perpendicular distance to the enemy.
-	//float enemy_perp_distance = distance * cos(angle_diff);
+	// float enemy_perp_distance = distance * cos(angle_diff);
 	enemy_perp_distance = distance;
 	fov = M_PI / 3;
 	dist_plane = (WIDTH / 2) / tanf(fov / 2);
@@ -402,6 +401,8 @@ int	draw_loop(t_ctrl *ctrl)
 	double	delta_time;
 	size_t	i;
 
+	// if (ctrl->game->game_over)
+	// 	return (0);
 	ctrl->anim.fc++;
 	if (ctrl->anim.fc >= TIME_SPEED)
 	{
@@ -434,8 +435,12 @@ int	draw_loop(t_ctrl *ctrl)
 		i = 0;
 		while (i < ctrl->map.enemies_counter)
 		{
-			update_enemy_state(&ctrl->map.enemies[i], &ctrl->game->player,
-				ctrl, delta_time);
+			if (ctrl->map.enemies[i].is_dead)
+			{
+				i++;
+			}
+			update_enemy_state(&ctrl->map.enemies[i], &ctrl->game->player, ctrl,
+				delta_time);
 			ctrl->game->enemy.current_frame = ctrl->map.enemies[i].frame;
 			draw_enemy(ctrl, &ctrl->game->player, &ctrl->map.enemies[i]);
 			i++;
@@ -445,7 +450,14 @@ int	draw_loop(t_ctrl *ctrl)
 	choose_weapon(ctrl->game);
 	draw_hp_bar(ctrl->game, delta_time);
 	draw_crosshair(ctrl->game);
-	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
-		ctrl->game->img, 0, 0);
+	if (ctrl->game->fight.lose_flag)
+	{
+		mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
+			ctrl->game->lose_img.frames[0], 0, 0);
+		return (0);
+	}
+	else
+		mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
+			ctrl->game->img, 0, 0);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:30:11 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/10 15:09:20 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:18:00 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ void	create_enemy_array(t_ctrl *ctrl)
 				ctrl->map.enemies[enemy_index].state = ENEMY_IDLE;
 				ctrl->map.enemies[enemy_index].frame = 0;
 				ctrl->map.enemies[enemy_index].frame_time = 0.0f;
+				ctrl->map.enemies[enemy_index].enemy_hp = ENEMY_HP;
+				ctrl->map.enemies[enemy_index].is_dead = 0;
 				enemy_index++;
 			}
 			j++;

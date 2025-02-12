@@ -6,29 +6,35 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/10 15:10:09 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:31:32 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
 
-int	space_press(int keycode, t_game *game)
+int	space_press(int keycode, t_ctrl *ctrl)
 {
-	if (!game)
+	if (!ctrl->game)
 		return (1);
 	if (keycode == SPACE)
-		game->is_shooting = 1;
+	{
+		ctrl->game->is_shooting = 1;
+		//shoot(ctrl);
+	}
 	return (0);
 }
 
-int	mouse_click(int button, int x, int y, t_game *game)
+int	mouse_click(int button, int x, int y, t_ctrl *ctrl)
 {
 	(void)x;
 	(void)y;
-	if (!game)
+	if (!ctrl->game)
 		return (1);
-	if (button == 1)
-		game->is_shooting = 1;
+	if (button ==  MOUSE_CLICK)
+	{
+		ctrl->game->is_shooting = 1;
+		//shoot(ctrl);
+	}
 	return (0);
 }
 
@@ -40,7 +46,7 @@ void	init_hooks(t_ctrl *ctrl)
 	mlx_hook(ctrl->game->win, 6, 1L << 6, mouse_move, ctrl);
 	mlx_hook(ctrl->game->win, 2, 1L << 0, key_press, ctrl);
 	mlx_hook(ctrl->game->win, 3, 1L << 1, key_release, ctrl);
-	mlx_mouse_hook(ctrl->game->win, mouse_click, ctrl->game);
+	mlx_mouse_hook(ctrl->game->win, mouse_click, ctrl);
 	mlx_hook(ctrl->game->win, 17, 0, close_window, ctrl);
 }
 

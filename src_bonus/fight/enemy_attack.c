@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_attack.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:16:47 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/12 12:48:37 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/12 13:49:57 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,13 @@ void	enemy_attack(t_ctrl *ctrl)
 	}
 	else
 	{
-		ctrl->game->fight.enemy_shoot = 1;
-		printf("Enemy attacks\n");
-		frame_count = 0;
+		if (!ctrl->game->fight.lose_flag)
+		{
+			ctrl->game->fight.enemy_shoot = 1;
+			printf(COLOR_RED "Enemy attacks!\n" COLOR_RESET);
+			frame_count = 0;
+		}
+		else
+			return ;
 	}
 }

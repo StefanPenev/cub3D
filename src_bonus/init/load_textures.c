@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/11 23:53:33 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/12 13:22:10 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,22 @@ void	load_crosshair(t_game *game)
 	load_texture(game, &game->crosshair, crosshair_frames);
 }
 
+void	load_lose_texture(t_game *game)
+{
+	char	*lose_frames[2];
+
+	init_texture(&game->lose_img, 2);
+	game->lose_img.path = "./textures/you_lose.xpm";
+	lose_frames[0] = game->lose_img.path;
+	lose_frames[1] = NULL;
+	if (!load_texture(game, &game->lose_img, lose_frames))
+	{
+		printf("ERROR: Failed to load 'You Lose' texture: %s\n",
+			game->lose_img.path);
+		game->lose_img.frames[0] = NULL;
+	}
+}
+
 void	load_all_textures(t_game *game, t_ctrl *ctrl)
 {
 	load_wall_textures(ctrl);
@@ -93,4 +109,5 @@ void	load_all_textures(t_game *game, t_ctrl *ctrl)
 	load_door_textures(game);
 	load_crosshair(game);
 	load_enemy_textures(game);
+	load_lose_texture(game);
 }
