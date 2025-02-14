@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/14 09:39:16 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/14 13:29:50 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	load_wall_textures(t_ctrl *ctrl)
 
 void	load_enemy_textures(t_game *game)
 {
-	char	*enemy_frames[7];
+	char	*enemy_frames[8];
 
 	enemy_frames[0] = "./textures/enemy/e_0.xpm";
 	enemy_frames[1] = "./textures/enemy/e_1.xpm";
@@ -57,7 +57,8 @@ void	load_enemy_textures(t_game *game)
 	enemy_frames[3] = "./textures/enemy/e_3.xpm";
 	enemy_frames[4] = "./textures/enemy/e_4.xpm";
 	enemy_frames[5] = "./textures/enemy/e_5.xpm";
-	enemy_frames[6] = NULL;
+	enemy_frames[6] = "./textures/enemy/e_corpse.xpm";
+	enemy_frames[7] = NULL;
 	init_texture(&game->enemy, 6);
 	load_texture(game, &game->enemy, enemy_frames);
 }

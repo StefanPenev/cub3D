@@ -120,6 +120,7 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/anim/doors.c \
 
 # Fight
 SRCS_BONUS += $(SRC_BONUS_DIR)/fight/enemy_attack.c \
+			 $(SRC_BONUS_DIR)/fight/player_attack.c \
 
 # **************************************************************************** #
 #                           Converting .c to .o                                 #

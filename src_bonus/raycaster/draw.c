@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/14 09:18:28 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/14 14:17:57 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,13 @@ void	update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl,
 	int		enemy_visible;
 	float	transition_delay;
 
+	if (enemy->is_dead)
+	{
+		enemy->frame = 6;  
+		//printf(COLOR_YELLOW "[DEBUG] Enemy at (%.2f, %.2f) is dead, rendering corpse.\n" COLOR_RESET, enemy->x, enemy->y);
+		return; 
+	}
+	
 	distance = compute_distance(enemy->x, enemy->y, player->x, player->y);
 	float frame_delay = 0.4f; // Adjust this to control animation speed
 	transition_delay = 0.5f;
@@ -328,7 +335,18 @@ void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 	int		tex_x;
 	int		tex_y;
 	int		color;
+	t_texture *sprite_texture;
 
+	if (enemy->is_dead)
+	{
+		//printf(COLOR_YELLOW "[DEBUG] Enemy at (%.2f, %.2f) is now a corpse.\n" COLOR_RESET, enemy->x, enemy->y);
+		sprite_texture = &ctrl->game->enemy;  
+		enemy->frame = 6; 
+	}
+	else
+	{
+		sprite_texture = &ctrl->game->enemy; 
+	}
 	// Calculate enemy's world position relative to the player.
 	enemy_world_x = enemy->x;
 	enemy_world_y = enemy->y;
@@ -386,7 +404,8 @@ void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 				continue ;
 			tex_x = x * TEX_WIDTH / sprite_width;
 			tex_y = y * TEX_HEIGHT / sprite_height;
-			color = get_texture_color(&ctrl->game->enemy, tex_x, tex_y);
+			// color = get_texture_color(&ctrl->game->enemy, tex_x, tex_y);
+			color = get_texture_color(sprite_texture, tex_x, tex_y);
 			if (color != 0)
 				put_pixel(screen_x, screen_y, color, ctrl->game);
 		}
@@ -436,10 +455,6 @@ int	draw_loop(t_ctrl *ctrl)
 		i = 0;
 		while (i < ctrl->map.enemies_counter)
 		{
-			if (ctrl->map.enemies[i].is_dead)
-			{
-				i++;
-			}
 			update_enemy_state(&ctrl->map.enemies[i], &ctrl->game->player, ctrl,
 				delta_time);
 			ctrl->game->enemy.current_frame = ctrl->map.enemies[i].frame;

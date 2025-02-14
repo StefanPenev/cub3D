@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/14 09:13:50 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/14 14:20:24 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # define COLOR_RED "\033[31m"
 # define COLOR_GREEN "\033[32m"
 # define COLOR_RESET "\033[0m"
-// # define COLOR_BLUE      "\033[34m"
-// # define COLOR_YELLOW    "\033[33m"
+# define COLOR_BLUE      "\033[34m"
+# define COLOR_YELLOW    "\033[33m"
 
 // map values
 # define WALL '1'
@@ -40,7 +40,7 @@
 # define EAST 'E'
 # define WEST 'W'
 # define DOOR 'D'
-# define COLLECTIBLE 'C'
+# define CORPSE 'C'
 # define ENEMY 'M'
 
 // keys
@@ -93,7 +93,7 @@
 
 // fight
 # define PLAYER_HP 100
-# define PLAYER_DAMAGE 50
+# define PLAYER_DAMAGE 25
 # define ENEMY_HP 100
 # define ENEMY_DAMAGE 20
 
@@ -529,5 +529,7 @@ int					check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl);
 void				enemy_attack(t_ctrl *ctrl);
 float				compute_distance(float x1, float y1, float x2, float y2);
 void				draw_skybox(t_game *gm);
+void				shoot(t_ctrl *ctrl);
+t_enemy *get_enemy(size_t x, size_t y, t_map *map);
 
 #endif

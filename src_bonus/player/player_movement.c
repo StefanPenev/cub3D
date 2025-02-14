@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:10:00 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/06 14:42:54 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/14 14:12:03 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ static int	is_valid_position(float x, float y, t_map *map)
 	size_t	grid_x;
 	size_t	grid_y;
 	char	tile;
-	//t_door	*door;
+	//t_enemy *enemy = NULL;
 
+	// t_door	*door;
 	// Ensure the position is within map boundaries
 	if (!in_map_bounds(x, y, map))
 		return (0);
@@ -46,10 +47,21 @@ static int	is_valid_position(float x, float y, t_map *map)
 	// 	door_open(door->x, door->y, map);
 	// }
 	// Return whether the tile is walkable (valid for movement)
+	// if (tile == 'M')
+	// {
+	// 	enemy = get_enemy(grid_x, grid_y, map);
+	// 	if (enemy)
+	// 	{
+	// 		printf(COLOR_GREEN "[DEBUG] Enemy found at (%zu, %zu)\n" COLOR_RESET, grid_x, grid_y);
+	// 	}
+	// 	else
+	// 	{
+	// 		printf(COLOR_RED "[DEBUG] ERROR: get_enemy() returned NULL for (%zu, %zu)\n" COLOR_RESET, grid_x, grid_y);
+	// 	}
+	// }
 	return (tile == '0' || tile == 'W' || tile == 'N' || tile == 'S'
-		|| tile == 'E');
+		|| tile == 'E' || tile == 'C');
 }
-
 
 // // Checks if a position is valid for movement and handles door opening
 // static int	is_valid_position(float x, float y, t_map *map)
