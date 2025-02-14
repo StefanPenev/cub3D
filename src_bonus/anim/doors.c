@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:38:18 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/10 16:47:41 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:50:45 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,40 +49,6 @@ void	update_doors(t_door *door, t_ctrl *ctrl, double delta_time)
 	}
 }
 
-// void	update_doors(t_door *door, t_ctrl *ctrl, double delta_time)
-// {
-// 	int	x;
-// 	int	y;
-
-// 	if (door->state == DOOR_OPENING)
-// 	{
-// 		door->state = DOOR_OPEN;
-// 		ctrl->map.full_map[door->y][door->x] = EMPTY;
-// 		return ;
-// 	}
-// 	if (door->state == DOOR_OPEN)
-// 	{
-// 		x = (int)(ctrl->game->player.x / TILE_SIZE);
-// 		y = (int)(ctrl->game->player.y / TILE_SIZE);
-// 		if (x == door->x && y == door->y)
-// 		{
-// 			door->timer = 3.0;
-// 			return ;
-// 		}
-// 		else
-// 		{
-// 			door->timer -= delta_time;
-// 			if (door->timer <= 0)
-// 				door->state = DOOR_CLOSING;
-// 		}
-// 	}
-// 	if (door->state == DOOR_CLOSING)
-// 	{
-// 		door->state = DOOR_CLOSED;
-// 		ctrl->map.full_map[door->y][door->x] = DOOR;
-// 	}
-// }
-
 // Retrieves the door object from the map based on grid coordinates
 t_door	*get_door(int grid_x, int grid_y, t_map *map)
 {
@@ -93,11 +59,11 @@ t_door	*get_door(int grid_x, int grid_y, t_map *map)
 	{
 		if (map->doors[i].x == grid_x && map->doors[i].y == grid_y)
 		{
-			return (&map->doors[i]); // Returns the door if found
+			return (&map->doors[i]);
 		}
 		i++;
 	}
-	return (NULL); // Returns NULL if no door is found
+	return (NULL);
 }
 
 void	door_state(t_ctrl *ctrl)

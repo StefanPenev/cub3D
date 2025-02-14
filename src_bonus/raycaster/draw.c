@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/14 14:17:57 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:49:58 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,7 @@ void	update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl,
 
 	if (enemy->is_dead)
 	{
-		enemy->frame = 6;  
+		//enemy->frame = 6;  
 		//printf(COLOR_YELLOW "[DEBUG] Enemy at (%.2f, %.2f) is dead, rendering corpse.\n" COLOR_RESET, enemy->x, enemy->y);
 		return; 
 	}
@@ -294,7 +294,7 @@ void	update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl,
 			if (check_enemy_visibility(enemy, ctrl))
 			{
 				enemy_visible = 1;
-				enemy_attack(ctrl);
+				enemy_attack(ctrl, enemy);
 			}
 			ctrl->game->fight.fight_started = enemy_visible;
 		}
@@ -337,16 +337,22 @@ void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 	int		color;
 	t_texture *sprite_texture;
 
+	// if (enemy->is_dead)
+	// {
+	// 	//printf(COLOR_YELLOW "[DEBUG] Enemy at (%.2f, %.2f) is now a corpse.\n" COLOR_RESET, enemy->x, enemy->y);
+	// 	sprite_texture = &ctrl->game->enemy;  
+	// 	enemy->frame = 6; 
+	// }
+	// else
+	// {
+	// 	sprite_texture = &ctrl->game->enemy; 
+	// }
 	if (enemy->is_dead)
 	{
-		//printf(COLOR_YELLOW "[DEBUG] Enemy at (%.2f, %.2f) is now a corpse.\n" COLOR_RESET, enemy->x, enemy->y);
-		sprite_texture = &ctrl->game->enemy;  
-		enemy->frame = 6; 
+		//printf(COLOR_YELLOW "[DEBUG] Skipping dead enemy at (%.2f, %.2f)\n" COLOR_RESET, enemy->x, enemy->y);
+		return;
 	}
-	else
-	{
-		sprite_texture = &ctrl->game->enemy; 
-	}
+	sprite_texture = &ctrl->game->enemy; 
 	// Calculate enemy's world position relative to the player.
 	enemy_world_x = enemy->x;
 	enemy_world_y = enemy->y;
@@ -473,6 +479,12 @@ int	draw_loop(t_ctrl *ctrl)
 			ctrl->game->lose_img.frames[0], 0, 0);
 		return (0);
 	}
+	// else if (ctrl->game->fight.win_flag)
+	// {
+	// 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
+	// 		ctrl->game->win_img.frames[0], 0, 0);
+	// 	return (0);
+	// }
 	else
 		mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
 			ctrl->game->img, 0, 0);

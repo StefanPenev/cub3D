@@ -6,17 +6,20 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:05:08 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/14 14:14:03 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:58:05 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
 
-void enemy_take_damage(t_game *game, t_enemy *enemy)
+void enemy_take_damage(t_ctrl *ctrl, t_enemy *enemy)
 {
+	// static int corpse_count;
+	// corpse_count = (int)ctrl->map.enemies_counter;
+
     if (!enemy)
     {
-        printf(COLOR_RED "Error: enemy_take_damage() received NULL pointer!\n" COLOR_RESET);
+       // printf(COLOR_RED "Error: enemy_take_damage() received NULL pointer!\n" COLOR_RESET);
         return;
     }
 
@@ -25,9 +28,14 @@ void enemy_take_damage(t_game *game, t_enemy *enemy)
     {
         enemy->enemy_hp = 0;
         enemy->is_dead = 1;
-		enemy->frame = 6;  
-		game->fight.fight_started = 0;
-        printf(COLOR_GREEN "Enemy is dead!\n" COLOR_RESET);
+		//enemy->frame = 6;  
+		ctrl->game->fight.fight_started = 0;
+		//corpse_count--;
+        printf(COLOR_GREEN "Enemy %d is dead!\n" COLOR_RESET, enemy->id);
+		// if (corpse_count == 0)
+		// {
+		// 	ctrl->game->fight.win_flag = 1;
+		// }
     }
 }
 
@@ -35,41 +43,38 @@ t_enemy *find_enemy_by_position(t_ctrl *ctrl, int x, int y)
 {
     size_t i;
 
-    printf(COLOR_YELLOW "[DEBUG] Searching for enemy at (%d, %d)\n" COLOR_RESET, x, y);
+   // printf(COLOR_YELLOW "[DEBUG] Searching for enemy at (%d, %d)\n" COLOR_RESET, x, y);
 
     for (i = 0; i < ctrl->map.enemies_counter; i++)
     {
         int enemy_map_x = (int)(ctrl->map.enemies[i].x / TILE_SIZE);
         int enemy_map_y = (int)(ctrl->map.enemies[i].y / TILE_SIZE);
 
-        printf(COLOR_YELLOW "[DEBUG] Checking enemy at (%.2f, %.2f) -> Map cell: (%d, %d)\n" COLOR_RESET,
-               ctrl->map.enemies[i].x, ctrl->map.enemies[i].y, enemy_map_x, enemy_map_y);
+       // printf(COLOR_YELLOW "[DEBUG] Checking enemy at (%.2f, %.2f) -> Map cell: (%d, %d)\n" COLOR_RESET,
+         //      ctrl->map.enemies[i].x, ctrl->map.enemies[i].y, enemy_map_x, enemy_map_y);
 
-        // 🔹 Проверяем попадание в клетку карты
+
         if (enemy_map_x == x && enemy_map_y == y)
         {
-            printf(COLOR_GREEN "[DEBUG] Enemy FOUND at (%d, %d)!\n" COLOR_RESET, x, y);
-            return &ctrl->map.enemies[i]; // Враг найден!
+          //  printf(COLOR_GREEN "[DEBUG] Enemy FOUND at (%d, %d)!\n" COLOR_RESET, x, y);
+            return &ctrl->map.enemies[i]; 
         }
     }
 
-    printf(COLOR_RED "[ERROR] Enemy NOT found at (%d, %d)\n" COLOR_RESET, x, y);
-    return NULL; // Враг не найден
+   // printf(COLOR_RED "[ERROR] Enemy NOT found at (%d, %d)\n" COLOR_RESET, x, y);
+    return NULL; 
 }
 
+// float calculate_distance(float x1, float y1, float x2, float y2)
+// {
+//     int tile_size = TILE_SIZE; 
 
-float calculate_distance(float x1, float y1, float x2, float y2)
-{
-    int tile_size = TILE_SIZE;  // Размер тайла (если у тебя другой — измени)
+//     float dx = x2 - x1;
+//     float dy = y2 - y1;
+//     float distance = sqrtf((dx * dx) + (dy * dy));
 
-    float dx = x2 - x1;
-    float dy = y2 - y1;
-    float distance = sqrtf((dx * dx) + (dy * dy));
-
-    return distance / tile_size;  // Переводим из пикселей в тайлы
-}
-
-
+//     return distance / tile_size; 
+// }
 
 void cast_ray(t_ctrl *ctrl, t_raycast *ray, float start_x, float start_y, float angle)
 {
@@ -82,8 +87,8 @@ void cast_ray(t_ctrl *ctrl, t_raycast *ray, float start_x, float start_y, float 
     ray->map_y = (int)(start_y / tile_size);
     ray->hit = 0;
 
-    printf(COLOR_YELLOW "[DEBUG] Casting ray from (%.2f, %.2f) | Map cell: (%d, %d) | Dir: (%.2f, %.2f)\n" COLOR_RESET,
-           start_x, start_y, ray->map_x, ray->map_y, ray->ray_dir_x, ray->ray_dir_y);
+    //printf(COLOR_YELLOW "[DEBUG] Casting ray from (%.2f, %.2f) | Map cell: (%d, %d) | Dir: (%.2f, %.2f)\n" COLOR_RESET,
+    //      start_x, start_y, ray->map_x, ray->map_y, ray->ray_dir_x, ray->ray_dir_y);
 
     float delta_dist_x = fabs(1 / ray->ray_dir_x);
     float delta_dist_y = fabs(1 / ray->ray_dir_y);
@@ -94,7 +99,7 @@ void cast_ray(t_ctrl *ctrl, t_raycast *ray, float start_x, float start_y, float 
         if (ray->map_x < 0 || ray->map_x >= (int)ctrl->map.columns ||
             ray->map_y < 0 || ray->map_y >= (int)ctrl->map.rows)
         {
-            printf(COLOR_RED "[ERROR] Ray exited map bounds at (%d, %d)\n" COLOR_RESET, ray->map_x, ray->map_y);
+          //  printf(COLOR_RED "[ERROR] Ray exited map bounds at (%d, %d)\n" COLOR_RESET, ray->map_x, ray->map_y);
             ray->hit = 1;
             return;
         }
@@ -111,20 +116,20 @@ void cast_ray(t_ctrl *ctrl, t_raycast *ray, float start_x, float start_y, float 
             delta_dist_y += fabs(1 / ray->ray_dir_y);
         }
 
-        printf(COLOR_YELLOW "[DEBUG] Ray moved to: (%d, %d)\n" COLOR_RESET, ray->map_x, ray->map_y);
+        //printf(COLOR_YELLOW "[DEBUG] Ray moved to: (%d, %d)\n" COLOR_RESET, ray->map_x, ray->map_y);
 
         char hit_object = ctrl->map.full_map[ray->map_y][ray->map_x];
 
         if (hit_object == '1') 
         {
             ray->hit = 1;
-            printf(COLOR_YELLOW "[DEBUG] Ray hit a wall at (%d, %d)\n" COLOR_RESET, ray->map_x, ray->map_y);
+           // printf(COLOR_YELLOW "[DEBUG] Ray hit a wall at (%d, %d)\n" COLOR_RESET, ray->map_x, ray->map_y);
         }
 
         if (hit_object == 'M') 
         {
             ray->hit = 1;
-            printf(COLOR_GREEN "[DEBUG] Ray hit an enemy at (%d, %d)\n" COLOR_RESET, ray->map_x, ray->map_y);
+          //  printf(COLOR_GREEN "[DEBUG] Ray hit an enemy at (%d, %d)\n" COLOR_RESET, ray->map_x, ray->map_y);
         }
     }
 }
@@ -133,25 +138,26 @@ void shoot(t_ctrl *ctrl)
 {
     t_raycast ray;
     t_enemy *enemy;
-    float enemy_distance;
+    //float enemy_distance;
+	double enemy_distance;
 
 
     float cross_x = ctrl->game->player.x + cos(ctrl->game->player.angle) * 1.0;
     float cross_y = ctrl->game->player.y + sin(ctrl->game->player.angle) * 1.0;
 
-    printf(COLOR_YELLOW "[DEBUG] Player Position: (%.2f, %.2f) | Angle: %.2f\n" COLOR_RESET,
-           ctrl->game->player.x, ctrl->game->player.y, ctrl->game->player.angle);
-    printf(COLOR_YELLOW "[DEBUG] Crosshair Position: (%.2f, %.2f)\n" COLOR_RESET, cross_x, cross_y);
+    //printf(COLOR_YELLOW "[DEBUG] Player Position: (%.2f, %.2f) | Angle: %.2f\n" COLOR_RESET,
+      //     ctrl->game->player.x, ctrl->game->player.y, ctrl->game->player.angle);
+   // printf(COLOR_YELLOW "[DEBUG] Crosshair Position: (%.2f, %.2f)\n" COLOR_RESET, cross_x, cross_y);
 
     cast_ray(ctrl, &ray, cross_x, cross_y, ctrl->game->player.angle);
 
-    printf(COLOR_YELLOW "[DEBUG] Ray Stopped At: (%d, %d) | Hit: %d\n" COLOR_RESET, ray.map_x, ray.map_y, ray.hit);
+    //printf(COLOR_YELLOW "[DEBUG] Ray Stopped At: (%d, %d) | Hit: %d\n" COLOR_RESET, ray.map_x, ray.map_y, ray.hit);
 
 
     if (ray.map_x < 0 || ray.map_x >= (int)ctrl->map.columns ||
         ray.map_y < 0 || ray.map_y >= (int)ctrl->map.rows)
     {
-        printf(COLOR_RED "[ERROR] Ray out of bounds: (%d, %d)\n" COLOR_RESET, ray.map_x, ray.map_y);
+       // printf(COLOR_RED "[ERROR] Ray out of bounds: (%d, %d)\n" COLOR_RESET, ray.map_x, ray.map_y);
         return;
     }
 
@@ -161,36 +167,36 @@ void shoot(t_ctrl *ctrl)
 
         if (!enemy)
         {
-            printf(COLOR_RED "[ERROR] Enemy not found at (%d, %d)\n" COLOR_RESET, ray.map_x, ray.map_y);
+          //  printf(COLOR_RED "[ERROR] Enemy not found at (%d, %d)\n" COLOR_RESET, ray.map_x, ray.map_y);
             return;
         }
 
-        printf(COLOR_YELLOW "[DEBUG] Enemy Found at: (%.2f, %.2f) | HP: %d | Dead: %d\n" COLOR_RESET,
-               enemy->x, enemy->y, enemy->enemy_hp, enemy->is_dead);
+        //printf(COLOR_YELLOW "[DEBUG] Enemy Found at: (%.2f, %.2f) | HP: %d | Dead: %d\n" COLOR_RESET,
+       //        enemy->x, enemy->y, enemy->enemy_hp, enemy->is_dead);
 
 
         if (enemy->is_dead)
         {
-            printf(COLOR_RED "[INFO] Enemy already dead!\n" COLOR_RESET);
+           // printf(COLOR_RED "[INFO] Enemy already dead!\n" COLOR_RESET);
             return;
         }
 
-
-        enemy_distance = calculate_distance(ctrl->game->player.x, ctrl->game->player.y, enemy->x, enemy->y);
-        printf(COLOR_YELLOW "[DEBUG] Distance to Enemy: %.2f tiles\n" COLOR_RESET, enemy_distance);
+        enemy_distance = compute_distance(ctrl->game->player.x, ctrl->game->player.y, enemy->x, enemy->y) / TILE_SIZE;
+        //enemy_distance = calculate_distance(ctrl->game->player.x, ctrl->game->player.y, enemy->x, enemy->y);
+       // printf(COLOR_YELLOW "[DEBUG] Distance to Enemy: %.2f tiles\n" COLOR_RESET, enemy_distance);
 
         if (enemy_distance > 2.0)
         {
-            printf(COLOR_RED "[INFO] Miss! Enemy is too far (%.2f tiles)\n" COLOR_RESET, enemy_distance);
+            printf(COLOR_RED "Miss! Enemy is too far (%.2f tiles)\n" COLOR_RESET, enemy_distance);
             return;
         }
 
-        enemy_take_damage(ctrl->game, enemy);
-        printf(COLOR_GREEN "[INFO] Hit enemy! HP left: %d\n" COLOR_RESET, enemy->enemy_hp);
+        enemy_take_damage(ctrl, enemy);
+        printf(COLOR_GREEN "Hit enemy!\n" COLOR_RESET);//, enemy->enemy_hp);
     }
     else
     {
-        printf(COLOR_RED "[INFO] Miss! No enemy at ray destination.\n" COLOR_RESET);
+        printf(COLOR_RED "Miss!\n" COLOR_RESET);
     }
 }
 

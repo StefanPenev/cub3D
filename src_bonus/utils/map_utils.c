@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:55:23 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/10 14:39:05 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:57:01 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,4 +71,16 @@ char	*remove_inner_spaces(char *str, t_ctrl *ctrl)
 	}
 	free(str);
 	return (trimmed_str);
+}
+
+void	assign_enemy(t_enemy *enemy, int y, int x, int id)
+{
+	enemy->x = x * TILE_SIZE + TILE_SIZE / 2;
+	enemy->y = y * TILE_SIZE + TILE_SIZE / 2;
+	enemy->state = ENEMY_IDLE;
+	enemy->frame = 0;
+	enemy->frame_time = 0.0f;
+	enemy->enemy_hp = ENEMY_HP;
+	enemy->is_dead = 0;
+	enemy->id = id;
 }

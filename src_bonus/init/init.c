@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/14 14:20:27 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/14 15:38:10 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	init_game(t_game *game)
 	game->fight.player_shoot = 0;
 	game->fight.shoot_delay = 80;
 	game->fight.lose_flag = 0;
+	game->fight.win_flag = 0;
 }
 
 void	init_map(t_map *map)

@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/14 14:20:24 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:57:13 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@
 # define COLOR_RED "\033[31m"
 # define COLOR_GREEN "\033[32m"
 # define COLOR_RESET "\033[0m"
-# define COLOR_BLUE      "\033[34m"
-# define COLOR_YELLOW    "\033[33m"
+# define COLOR_BLUE "\033[34m"
+# define COLOR_YELLOW "\033[33m"
 
 // map values
 # define WALL '1'
@@ -120,6 +120,7 @@ typedef struct s_fight
 	int				player_shoot;
 	int				shoot_delay;
 	int				lose_flag;
+	int				win_flag;
 }					t_fight;
 
 typedef struct s_enemy
@@ -132,7 +133,8 @@ typedef struct s_enemy
 	float			frame_time;
 	float			frame_duration;
 	int				enemy_hp;
-	int 			is_dead;
+	int				is_dead;
+	int				id;
 }					t_enemy;
 
 typedef struct s_anim
@@ -373,6 +375,7 @@ char				*merge_map_arr(t_ctrl *ctrl, char *line_tmp, char *map_tmp);
 void				free_and_exit(char *msg, char *line, char **tmp_arr,
 						t_ctrl *ctrl);
 char				*remove_inner_spaces(char *str, t_ctrl *ctrl);
+void				assign_enemy(t_enemy *enemy, int y, int x, int id);
 
 /* ************************************************************************** */
 /*              					read_map.c                                */
@@ -526,10 +529,12 @@ t_trig_tables		*init_trig_tables(void);
 void				free_trig_tables(t_trig_tables *tables);
 void				draw_hp_bar(t_game *game, double delta_time);
 int					check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl);
-void				enemy_attack(t_ctrl *ctrl);
+// void				enemy_attack(t_ctrl *ctrl);
+void				enemy_attack(t_ctrl *ctrl, t_enemy *enemy);
 float				compute_distance(float x1, float y1, float x2, float y2);
 void				draw_skybox(t_game *gm);
 void				shoot(t_ctrl *ctrl);
-t_enemy *get_enemy(size_t x, size_t y, t_map *map);
+t_enemy				*get_enemy(size_t x, size_t y, t_map *map);
+float				calculate_distance(float x1, float y1, float x2, float y2);
 
 #endif

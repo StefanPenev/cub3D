@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:30:11 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/12 14:18:00 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/14 16:56:50 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,15 +101,8 @@ void	create_enemy_array(t_ctrl *ctrl)
 		{
 			if (ctrl->map.full_map[i][j] == ENEMY)
 			{
-				ctrl->map.enemies[enemy_index].x = j * TILE_SIZE + TILE_SIZE
-					/ 2;
-				ctrl->map.enemies[enemy_index].y = i * TILE_SIZE + TILE_SIZE
-					/ 2;
-				ctrl->map.enemies[enemy_index].state = ENEMY_IDLE;
-				ctrl->map.enemies[enemy_index].frame = 0;
-				ctrl->map.enemies[enemy_index].frame_time = 0.0f;
-				ctrl->map.enemies[enemy_index].enemy_hp = ENEMY_HP;
-				ctrl->map.enemies[enemy_index].is_dead = 0;
+				assign_enemy(&ctrl->map.enemies[enemy_index], i, j,
+					enemy_index);
 				enemy_index++;
 			}
 			j++;
