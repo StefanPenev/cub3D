@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/13 20:34:26 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/14 09:18:28 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -423,6 +423,7 @@ int	draw_loop(t_ctrl *ctrl)
 		i++;
 	}
 	clear_image(ctrl->game);
+	draw_skybox(ctrl->game);
 	move_player(ctrl, delta_time);
 	if (ctrl->game->debug)
 		draw_debug(ctrl);

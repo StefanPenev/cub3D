@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/14 00:37:42 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/14 09:13:50 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,10 @@ typedef struct s_player
 	bool			left_rotate;
 	bool			right_rotate;
 	int				hp;
+	float			dir_x;
+	float			dir_y;
+	float			plane_x;
+	float			plane_y;
 }					t_player;
 
 typedef struct s_texture
@@ -229,6 +233,8 @@ typedef struct s_game
 	t_texture		enemy;
 	t_texture		crosshair;
 	t_texture		lose_img;
+	t_texture		floor_texture;
+	t_texture		ceiling_texture;
 	float			*zbuffer;
 	t_fight			fight;
 	int				game_over;
@@ -522,5 +528,6 @@ void				draw_hp_bar(t_game *game, double delta_time);
 int					check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl);
 void				enemy_attack(t_ctrl *ctrl);
 float				compute_distance(float x1, float y1, float x2, float y2);
+void				draw_skybox(t_game *gm);
 
 #endif

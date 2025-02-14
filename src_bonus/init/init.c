@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/12 14:17:16 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/14 09:38:04 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ void	init_player(t_player *player, float start_x, float start_y,
 	player->left_rotate = false;
 	player->right_rotate = false;
 	player->hp = PLAYER_HP;
+	player->dir_x = cos(player->angle);
+	player->dir_y = sin(player->angle);
+	player->plane_x = -player->dir_y * 0.66;
+	player->plane_y = player->dir_x * 0.66;
 }
 
 void	init_texture(t_texture *texture, int max_frames)
@@ -33,8 +37,6 @@ void	init_texture(t_texture *texture, int max_frames)
 
 	i = 0;
 	ft_memset(texture, 0, sizeof(t_texture));
-	texture->width = TEX_WIDTH;
-	texture->height = TEX_HEIGHT;
 	texture->path = NULL;
 	texture->frames = malloc(max_frames * sizeof(void *));
 	texture->paths = malloc(max_frames * sizeof(void *));

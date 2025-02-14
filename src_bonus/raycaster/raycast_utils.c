@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:39:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/10 20:10:54 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/14 09:36:36 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,15 +93,46 @@ void	draw_wall(t_game *gm, t_raycast *rc, int col)
 	}
 }
 
+void	draw_skybox(t_game *gm)
+{
+	int		x;
+	int		y;
+	int		tex_x;
+	int		tex_y;
+	int		color;
+	float	total_fov = M_PI;
+	float	vertical_fov = M_PI / 3.0f;
+    float	offset = gm->player.angle;
+	float	sample_angle;
+	float	v_ratio;
+	float	vertical_angle;
+
+	y = 0;
+	while (y < HEIGHT / 2)
+	{
+		v_ratio = (float)y / (HEIGHT / 2.0f);
+		vertical_angle = (v_ratio - 0.5f) * vertical_fov;
+		tex_y = (int)((vertical_angle + (vertical_fov / 2.0f)) / vertical_fov
+				* gm->ceiling_texture.height) % gm->ceiling_texture.height;
+		x = 0;
+		while (x < WIDTH)
+		{
+			sample_angle = offset + ((float)x / (float)WIDTH) * total_fov;
+			sample_angle = fmodf(sample_angle, 2.0f * M_PI);
+			if (sample_angle < 0)
+				sample_angle += 2.0f * M_PI;
+			tex_x = (int)((sample_angle / (2.0f * M_PI))
+					* gm->ceiling_texture.width) % gm->ceiling_texture.width;
+			color = get_texture_color(&gm->ceiling_texture, tex_x, tex_y);
+			put_pixel(x, y, color, gm);
+			x++;
+		}
+		y++;
+	}
+}
+
 void	draw_ceil_floor(t_game *gm, t_raycast *rc, int col)
 {
-	rc->y = 0;
-	while (rc->y < rc->draw_start)
-	{
-		put_pixel(col, rc->y, gm->ceiling_color, gm);
-		rc->y++;
-	}
-	rc->y = rc->draw_end;
 	while (rc->y < HEIGHT)
 	{
 		put_pixel(col, rc->y, gm->floor_color, gm);

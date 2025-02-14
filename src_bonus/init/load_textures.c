@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/12 13:22:10 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/14 09:39:16 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,21 @@ void	load_lose_texture(t_game *game)
 	}
 }
 
+void	load_ceiling_texture(t_game *game)
+{
+	char	*ceiling_frames[2];
+
+	init_texture(&game->ceiling_texture, 2);
+	game->ceiling_texture.path = "./textures/sky.xpm";
+	ceiling_frames[0] = game->ceiling_texture.path;
+	ceiling_frames[1] = NULL;
+	if (!load_texture(game, &game->ceiling_texture, ceiling_frames))
+	{
+		printf("ERROR: Failed to load 'Ceiling' texture.\n");
+		game->ceiling_texture.frames[0] = NULL;
+	}
+}
+
 void	load_all_textures(t_game *game, t_ctrl *ctrl)
 {
 	load_wall_textures(ctrl);
@@ -110,4 +125,5 @@ void	load_all_textures(t_game *game, t_ctrl *ctrl)
 	load_crosshair(game);
 	load_enemy_textures(game);
 	load_lose_texture(game);
+	load_ceiling_texture(game);
 }
