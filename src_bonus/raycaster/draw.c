@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/14 15:49:58 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:51:16 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -310,112 +310,101 @@ void	update_enemy_state(t_enemy *enemy, t_player *player, t_ctrl *ctrl,
 
 void	draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy)
 {
-	float	enemy_world_x;
-	float	enemy_world_y;
-	float	dx;
-	float	dy;
-	float	distance;
-	float	enemy_angle;
-	float	angle_diff;
-	float	half_fov;
-	float	enemy_perp_distance;
-	float	fov;
-	float	dist_plane;
-	int		sprite_height;
-	int		sprite_width;
-	int		sprite_screen_x;
-	int		sprite_screen_y;
-	float	ray_x;
-	float	ray_y;
-	float	step_x;
-	float	step_y;
-	float	ray_dist;
-	int		screen_x;
-	int		screen_y;
-	int		tex_x;
-	int		tex_y;
-	int		color;
-	t_texture *sprite_texture;
+    float	enemy_world_x;
+    float	enemy_world_y;
+    float	dx;
+    float	dy;
+    float	distance;
+    float	enemy_angle;
+    float	angle_diff;
+    float	half_fov;
+    float	enemy_perp_distance;
+    float	fov;
+    float	dist_plane;
+    int		sprite_height;
+    int		sprite_width;
+    int		sprite_screen_x;
+    int		sprite_screen_y;
+    float	ray_x;
+    float	ray_y;
+    float	step_x;
+    float	step_y;
+    float	ray_dist;
+    int		screen_x;
+    int		screen_y;
+    int		tex_x;
+    int		tex_y;
+    int		color;
+    t_texture	*sprite_texture;
 
-	// if (enemy->is_dead)
-	// {
-	// 	//printf(COLOR_YELLOW "[DEBUG] Enemy at (%.2f, %.2f) is now a corpse.\n" COLOR_RESET, enemy->x, enemy->y);
-	// 	sprite_texture = &ctrl->game->enemy;  
-	// 	enemy->frame = 6; 
-	// }
-	// else
-	// {
-	// 	sprite_texture = &ctrl->game->enemy; 
-	// }
-	if (enemy->is_dead)
-	{
-		//printf(COLOR_YELLOW "[DEBUG] Skipping dead enemy at (%.2f, %.2f)\n" COLOR_RESET, enemy->x, enemy->y);
-		return;
-	}
-	sprite_texture = &ctrl->game->enemy; 
-	// Calculate enemy's world position relative to the player.
-	enemy_world_x = enemy->x;
-	enemy_world_y = enemy->y;
-	dx = enemy_world_x - player->x;
-	dy = enemy_world_y - player->y;
-	distance = sqrtf(dx * dx + dy * dy);
-	enemy_angle = atan2f(dy, dx);
-	// Calculate angle difference between enemy and player's view.
-	angle_diff = enemy_angle - player->angle;
-	while (angle_diff > M_PI)
-		angle_diff -= 2 * M_PI;
-	while (angle_diff < -M_PI)
-		angle_diff += 2 * M_PI;
-	// If the enemy is outside the player's field of view, do not draw.
-	half_fov = (M_PI / 3) / 2;
-	if (fabs(angle_diff) > half_fov)
-		return ;
-	// Compute the perpendicular distance to the enemy.
-	// float enemy_perp_distance = distance * cos(angle_diff);
-	enemy_perp_distance = distance;
-	fov = M_PI / 3;
-	dist_plane = (WIDTH / 2) / tanf(fov / 2);
-	// Calculate the sprite's size and screen position.
-	sprite_height = abs((int)((TILE_SIZE / enemy_perp_distance) * dist_plane));
-	sprite_width = sprite_height;
-	sprite_screen_x = (int)((WIDTH / 2) + (tanf(angle_diff) * dist_plane))
-		- sprite_width / 2;
-	sprite_screen_y = (HEIGHT / 2) - sprite_height / 2;
-	// Raycasting: Check if a wall blocks the enemy's view.
-	ray_x = player->x;
-	ray_y = player->y;
-	step_x = dx / distance * TILE_SIZE;
-	step_y = dy / distance * TILE_SIZE;
-	ray_dist = 0;
-	while (ray_dist < distance)
-	{
-		ray_x += step_x;
-		ray_y += step_y;
-		ray_dist += TILE_SIZE;
-		if (is_wall(ctrl, ray_x, ray_y))
-			return ;
-	}
-	for (int x = 0; x < sprite_width; x++)
-	{
-		screen_x = sprite_screen_x + x;
-		if (screen_x < 0 || screen_x >= WIDTH)
-			continue ;
-		if (ctrl->game->zbuffer
-			&& (enemy_perp_distance > ctrl->game->zbuffer[screen_x]))
-			continue ;
-		for (int y = 0; y < sprite_height; y++)
-		{
-			screen_y = sprite_screen_y + y;
-			if (screen_y < 0 || screen_y >= HEIGHT)
-				continue ;
-			tex_x = x * TEX_WIDTH / sprite_width;
-			tex_y = y * TEX_HEIGHT / sprite_height;
-			// color = get_texture_color(&ctrl->game->enemy, tex_x, tex_y);
-			color = get_texture_color(sprite_texture, tex_x, tex_y);
-			if (color != 0)
-				put_pixel(screen_x, screen_y, color, ctrl->game);
-		}
-	}
+    if (enemy->is_dead)
+        return;  
+    sprite_texture = &ctrl->game->enemy;
+    enemy_world_x = enemy->x;
+    enemy_world_y = enemy->y;
+    dx = enemy_world_x - player->x;
+    dy = enemy_world_y - player->y;
+    distance = sqrtf(dx * dx + dy * dy);
+    enemy_angle = atan2f(dy, dx);
+    while (enemy_angle < 0.0f)
+        enemy_angle += 2.0f * M_PI;
+    while (enemy_angle >= 2.0f * M_PI)
+        enemy_angle -= 2.0f * M_PI;
+    angle_diff = enemy_angle - player->angle;
+    while (angle_diff > M_PI)
+        angle_diff -= 2.0f * M_PI;
+    while (angle_diff < -M_PI)
+        angle_diff += 2.0f * M_PI;
+    half_fov = (M_PI / 3.0f) / 2.0f;
+    if (fabsf(angle_diff) > half_fov)
+        return;
+    enemy_perp_distance = distance * cosf(angle_diff);
+    fov = M_PI / 3.0f;
+    dist_plane = (WIDTH / 2) / tanf(fov / 2.0f);
+    sprite_height = abs((int)((TILE_SIZE / enemy_perp_distance) * dist_plane));
+    sprite_width = sprite_height;
+    sprite_screen_x = (int)((WIDTH / 2) + tanf(angle_diff) * dist_plane)
+        - (sprite_width / 2);
+    sprite_screen_y = (HEIGHT / 2) - (sprite_height / 2);
+    ray_x = player->x;
+    ray_y = player->y;
+    step_x = (dx / distance) * (TILE_SIZE / 16.0f);
+    step_y = (dy / distance) * (TILE_SIZE / 16.0f);
+    ray_dist = 0.0f;
+    while (ray_dist < distance)
+    {
+        ray_x += step_x;
+        ray_y += step_y;
+        ray_dist += TILE_SIZE / 16.0f;
+        if (is_wall(ctrl, ray_x, ray_y))
+            return;
+    }
+    {
+        int mid_col = sprite_screen_x + sprite_width / 2;
+        if (mid_col >= 0 && mid_col < WIDTH)
+        {
+            if (ctrl->game->zbuffer &&
+                (enemy_perp_distance > ctrl->game->zbuffer[mid_col]))
+                return;
+        }
+    }
+    for (int x = 0; x < sprite_width; x++)
+    {
+        screen_x = sprite_screen_x + x;
+        if (screen_x < 0 || screen_x >= WIDTH)
+            continue;
+        for (int y = 0; y < sprite_height; y++)
+        {
+            screen_y = sprite_screen_y + y;
+            if (screen_y < 0 || screen_y >= HEIGHT)
+                continue;
+            tex_x = x * TEX_WIDTH / sprite_width;
+            tex_y = y * TEX_HEIGHT / sprite_height;
+            color = get_texture_color(sprite_texture, tex_x, tex_y);
+            if (color != 0)
+                put_pixel(screen_x, screen_y, color, ctrl->game);
+        }
+    }
 }
 
 int	draw_loop(t_ctrl *ctrl)
