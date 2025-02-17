@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 08:23:44 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/14 14:15:06 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/17 08:30:39 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,60 +59,6 @@ static void	compute_minimap_data(t_map *map, t_game *game, t_minimap_data *data)
 		data->start_y = (int)map->rows - data->minimap_tiles;
 }
 
-void	draw_map_tiles(t_map *map, t_game *game, t_minimap_data *data)
-{
-	int	y;
-	int	x;
-	int	map_x;
-	int	map_y;
-	int	color;
-	t_enemy	*enemy;
-
-	enemy = NULL;
-	y = 0;
-	while (y++ < data->minimap_tiles)
-	{
-		x = 0;
-		while (x++ < data->minimap_tiles)
-		{
-			map_x = (int)(data->start_x + x);
-			map_y = (int)(data->start_y + y);
-			if (map_x >= 0 && map_x < (int)map->columns && map_y >= 0
-				&& map_y < (int)map->rows)
-			{
-				color = FLOOR_COLOR;
-				if (map->full_map[map_y][map_x] == '1')
-					color = WALL_COLOR;
-				draw_square((t_square){
-					MINIMAP_OFFSET_X + x * data->block_size,
-					MINIMAP_OFFSET_Y + y * data->block_size,
-					data->block_size, color}, game);
-					if (map->full_map[map_y][map_x] == 'M' || map->full_map[map_y][map_x] == 'C')
-					{
-						enemy = get_enemy(map_x, map_y, map);
-						if (enemy != NULL && enemy->is_dead)
-						{
-							//printf(COLOR_YELLOW "[DEBUG] Enemy at (%d, %d) is now a corpse.\n" COLOR_RESET, map_x, map_y);
-							map->full_map[map_y][map_x] = 'C'; 
-							color = CORPSE_COLOR;
-						}
-						else
-						{
-							color = ENEMY_COLOR;  
-						}
-					draw_square((t_square){
-						MINIMAP_OFFSET_X + x * data->block_size
-						+ data->block_size / 4,
-						MINIMAP_OFFSET_Y + y * data->block_size
-						+ data->block_size / 4,
-						data->block_size / 2, color}, game);
-				}
-			}
-		}
-	}
-}
-
-
 // void	draw_map_tiles(t_map *map, t_game *game, t_minimap_data *data)
 // {
 // 	int	y;
@@ -120,7 +66,9 @@ void	draw_map_tiles(t_map *map, t_game *game, t_minimap_data *data)
 // 	int	map_x;
 // 	int	map_y;
 // 	int	color;
+// 	t_enemy	*enemy;
 
+// 	enemy = NULL;
 // 	y = 0;
 // 	while (y++ < data->minimap_tiles)
 // 	{
@@ -139,9 +87,19 @@ void	draw_map_tiles(t_map *map, t_game *game, t_minimap_data *data)
 // 					MINIMAP_OFFSET_X + x * data->block_size,
 // 					MINIMAP_OFFSET_Y + y * data->block_size,
 // 					data->block_size, color}, game);
-// 				if (map->full_map[map_y][map_x] == 'M')
-// 				{
-// 					color = ENEMY_COLOR;
+// 					if (map->full_map[map_y][map_x] == 'M' || map->full_map[map_y][map_x] == 'C')
+// 					{
+// 						enemy = get_enemy(map_x, map_y, map);
+// 						if (enemy != NULL && enemy->is_dead)
+// 						{
+// 							//printf(COLOR_YELLOW "[DEBUG] Enemy at (%d, %d) is now a corpse.\n" COLOR_RESET, map_x, map_y);
+// 							map->full_map[map_y][map_x] = 'C'; 
+// 							color = CORPSE_COLOR;
+// 						}
+// 						else
+// 						{
+// 							color = ENEMY_COLOR;  
+// 						}
 // 					draw_square((t_square){
 // 						MINIMAP_OFFSET_X + x * data->block_size
 // 						+ data->block_size / 4,
@@ -153,6 +111,62 @@ void	draw_map_tiles(t_map *map, t_game *game, t_minimap_data *data)
 // 		}
 // 	}
 // }
+
+void	draw_map_tiles(t_map *map, t_game *game, t_minimap_data *data)
+{
+	int		x;
+	int		y;
+	int		map_x;
+	int		map_y;
+	int		color;
+	t_enemy	*enemy;
+
+	enemy = NULL;
+	y = 0;
+	while (y < data->minimap_tiles)
+	{
+		x = 0;
+		while (x < data->minimap_tiles)
+		{
+			map_x = (int)(data->start_x + x);
+			map_y = (int)(data->start_y + y);
+			if (map_x >= 0 && map_x < (int)map->columns && map_y >= 0
+				&& map_y < (int)map->rows)
+			{
+				color = FLOOR_COLOR;
+				if (map->full_map[map_y][map_x] == '1')
+					color = WALL_COLOR;
+				draw_square((t_square)
+				{
+					MINIMAP_OFFSET_X + x * data->block_size,
+					MINIMAP_OFFSET_Y + y * data->block_size,
+					data->block_size, color}, game);
+				if (map->full_map[map_y][map_x] == 'M'
+						|| map->full_map[map_y][map_x] == 'C')
+				{
+					enemy = get_enemy(map_x, map_y, map);
+					if (enemy != NULL && enemy->is_dead)
+					{
+						map->full_map[map_y][map_x] = 'C';
+						color = CORPSE_COLOR;
+					}
+					else
+						color = ENEMY_COLOR;
+					draw_square((t_square)
+					{
+						MINIMAP_OFFSET_X + x * data->block_size
+						+ data->block_size / 4,
+						MINIMAP_OFFSET_Y + y * data->block_size
+						+ data->block_size / 4,
+						data->block_size / 2, color}, game);
+				}
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
 
 static void	draw_player_marker(t_game *game, t_minimap_data *data)
 {
@@ -167,6 +181,45 @@ static void	draw_player_marker(t_game *game, t_minimap_data *data)
 		PLAYER_COLOR}, game);
 }
 
+static void	draw_minimap_frame(t_game *game, t_minimap_data *data)
+{
+	int	x;
+	int	y;
+	int	frame_color;
+	int	minimap_width;
+	int	minimap_height;
+
+	frame_color = 0xA6A6A6;
+	minimap_width = data->minimap_tiles * data->block_size;
+	minimap_height = minimap_width;
+	x = 0;
+	while (x <= minimap_width)
+	{
+		put_pixel(MINIMAP_OFFSET_X + x, MINIMAP_OFFSET_Y, frame_color, game);
+		x++;
+	}
+	x = 0;
+	while (x <= minimap_width)
+	{
+		put_pixel(MINIMAP_OFFSET_X + x, MINIMAP_OFFSET_Y + minimap_height,
+			frame_color, game);
+		x++;
+	}
+	y = 0;
+	while (y <= minimap_height)
+	{
+		put_pixel(MINIMAP_OFFSET_X, MINIMAP_OFFSET_Y + y, frame_color, game);
+		y++;
+	}
+	y = 0;
+	while (y <= minimap_height)
+	{
+		put_pixel(MINIMAP_OFFSET_X + minimap_width, MINIMAP_OFFSET_Y + y,
+			frame_color, game);
+		y++;
+	}
+}
+
 void	draw_minimap(t_map *map, t_game *game)
 {
 	t_minimap_data	data;
@@ -174,4 +227,5 @@ void	draw_minimap(t_map *map, t_game *game)
 	compute_minimap_data(map, game, &data);
 	draw_map_tiles(map, game, &data);
 	draw_player_marker(game, &data);
+	draw_minimap_frame(game, &data);
 }
