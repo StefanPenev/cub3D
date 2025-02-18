@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/14 16:57:13 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 00:01:03 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ typedef struct s_fight
 	int				shoot_delay;
 	int				lose_flag;
 	int				win_flag;
+	int				alive_enemies;
 }					t_fight;
 
 typedef struct s_enemy
@@ -235,6 +236,7 @@ typedef struct s_game
 	t_texture		enemy;
 	t_texture		crosshair;
 	t_texture		lose_img;
+	t_texture		win_img;
 	t_texture		floor_texture;
 	t_texture		ceiling_texture;
 	float			*zbuffer;

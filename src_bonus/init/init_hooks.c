@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_hooks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/14 17:00:01 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 00:11:29 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ void	init_game_window(t_ctrl *ctrl)
 		mlx_destroy_window(ctrl->game->mlx, ctrl->game->win);
 		clean_exit("Error: Image data not initialized.\n", ctrl);
 	}
+	ctrl->game->fight.alive_enemies = ctrl->map.enemies_counter;
 	ctrl->game->debug = 0;
 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win, ctrl->game->img,
 		0, 0);

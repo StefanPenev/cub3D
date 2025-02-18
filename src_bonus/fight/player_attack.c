@@ -3,40 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   player_attack.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:05:08 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/14 16:58:05 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/18 23:44:31 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
 
-void enemy_take_damage(t_ctrl *ctrl, t_enemy *enemy)
+void    enemy_take_damage(t_ctrl *ctrl, t_enemy *enemy)
 {
-	// static int corpse_count;
-	// corpse_count = (int)ctrl->map.enemies_counter;
-
-    if (!enemy)
-    {
-       // printf(COLOR_RED "Error: enemy_take_damage() received NULL pointer!\n" COLOR_RESET);
-        return;
-    }
-
-    enemy->enemy_hp -= PLAYER_DAMAGE;
-    if (enemy->enemy_hp <= 0)
-    {
-        enemy->enemy_hp = 0;
-        enemy->is_dead = 1;
-		//enemy->frame = 6;  
+	if (!enemy)
+	{
+		// printf(COLOR_RED "Error: enemy_take_damage() received NULL pointer!\n" COLOR_RESET);
+		return ;
+	}
+	enemy->enemy_hp -= PLAYER_DAMAGE;
+	if (enemy->enemy_hp <= 0)
+	{
+		enemy->enemy_hp = 0;
+		enemy->is_dead = 1;
 		ctrl->game->fight.fight_started = 0;
-		//corpse_count--;
-        printf(COLOR_GREEN "Enemy %d is dead!\n" COLOR_RESET, enemy->id);
-		// if (corpse_count == 0)
-		// {
-		// 	ctrl->game->fight.win_flag = 1;
-		// }
-    }
+		ctrl->game->fight.alive_enemies--;
+		printf(COLOR_GREEN "Enemy %d is dead!\n" COLOR_RESET, enemy->id);
+		if (ctrl->game->fight.alive_enemies <= 0)
+		{
+			ctrl->game->fight.win_flag = 1;
+			printf(COLOR_GREEN "All enemies defeated! You win!\n" COLOR_RESET);
+		}
+	}
 }
 
 t_enemy *find_enemy_by_position(t_ctrl *ctrl, int x, int y)

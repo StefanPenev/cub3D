@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/17 14:51:16 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/18 23:46:58 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -468,12 +468,12 @@ int	draw_loop(t_ctrl *ctrl)
 			ctrl->game->lose_img.frames[0], 0, 0);
 		return (0);
 	}
-	// else if (ctrl->game->fight.win_flag)
-	// {
-	// 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
-	// 		ctrl->game->win_img.frames[0], 0, 0);
-	// 	return (0);
-	// }
+	else if (ctrl->game->fight.win_flag)
+	{
+		mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
+			ctrl->game->win_img.frames[0], 0, 0);
+		return (0);
+	}
 	else
 		mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win,
 			ctrl->game->img, 0, 0);
