@@ -6,11 +6,16 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:52:25 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/14 14:11:40 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:52:52 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
+
+// Validates the command-line arguments provided to the game.
+// - Ensures that exactly one argument is passed (the map file).
+// - Checks if the map file has a ".cub" extension.
+// - Calls clean_exit() if any validation fails.
 
 void	check_args(int argc, char *argv[], t_ctrl *ctrl)
 {
@@ -28,6 +33,10 @@ void	check_args(int argc, char *argv[], t_ctrl *ctrl)
 			ctrl);
 }
 
+// Saves the player's position and orientation on the map.
+// - Calculates pixel-based coordinates based on tile indices.
+// - Sets the orientation depending on the character found in the map
+
 void	save_position(t_ctrl *ctrl, size_t i, size_t j, char c)
 {
 	ctrl->map.player_index.x = i;
@@ -43,6 +52,9 @@ void	save_position(t_ctrl *ctrl, size_t i, size_t j, char c)
 	else if (c == 'W')
 		ctrl->map.player_position.orientation = M_PI;
 }
+
+// Scans the entire map to find and save the player's position and orientation.
+// - Calls save_position() when a valid player character (N, S, E, W) is found.
 
 void	find_players_pos(t_ctrl *ctrl)
 {
@@ -65,6 +77,13 @@ void	find_players_pos(t_ctrl *ctrl)
 		i++;
 	}
 }
+
+// Validates all characters in the map for correctness.
+// - Only known characters are allowed (walls, empty spaces, player, doors,
+//	enemies).
+// - Counts the number of players, doors, and enemies.
+// - Ensures that exactly one player position exists.
+// - Calls find_players_pos() after validation.
 
 void	check_valid_characters(t_ctrl *ctrl)
 {
@@ -94,6 +113,10 @@ void	check_valid_characters(t_ctrl *ctrl)
 		clean_exit("Invalid input:\nSingle player position expected.\n", ctrl);
 	find_players_pos(ctrl);
 }
+
+// Verifies that the map is completely enclosed by walls.
+// - Checks the top, bottom, left, and right borders for WALL characters.
+// - Calls clean_exit() if any part of the boundary is invalid.
 
 void	check_map_closed(t_ctrl *ctrl)
 {

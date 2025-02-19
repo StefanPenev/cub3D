@@ -6,11 +6,16 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:09:47 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/10 14:53:27 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:59:19 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
+
+// Creates a duplicate of the first 'n' characters from a given string.
+// - Allocates memory for the new string, including the null-terminator.
+// - Copies up to 'n' characters from the source string into the new one.
+// - Returns a pointer to the newly allocated string or NULL on failure.
 
 char	*ft_strndup(const char *s, size_t n)
 {
@@ -29,6 +34,12 @@ char	*ft_strndup(const char *s, size_t n)
 	res[i] = '\0';
 	return (res);
 }
+
+// Concatenates three strings into a single newly allocated string.
+// - Calculates the total length of all three strings.
+// - Allocates memory for the combined string.
+// - Copies each string into the new memory block using ft_memcpy.
+// - Returns a pointer to the combined string or NULL if all inputs are NULL.
 
 char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3)
 {
@@ -53,6 +64,11 @@ char	*ft_strjoin_three(const char *s1, const char *s2, const char *s3)
 	return (res);
 }
 
+// Checks if a given line defines a texture path for the map.
+// - Returns 1 if the line starts with "NO ", "SO ", "WE ", or "EA "
+//(texture prefixes).
+// - Returns 0 otherwise.
+
 int	is_texture_definition(char *line_tmp)
 {
 	if (ft_strncmp("NO ", line_tmp, 3) == 0 || ft_strncmp("SO ", line_tmp,
@@ -63,6 +79,12 @@ int	is_texture_definition(char *line_tmp)
 	}
 	return (0);
 }
+
+// Assigns a texture path to the corresponding texture object.
+// - Checks for duplicate texture definitions and exits on error.
+// - Verifies that the texture path ends with "0.xpm".
+// - Extracts the base path and generates frame paths for animated textures.
+// - Handles memory allocation failures gracefully.
 
 void	assign_path(t_texture *tex, char *path, char *line, t_ctrl *ctrl)
 {
@@ -91,6 +113,12 @@ void	assign_path(t_texture *tex, char *path, char *line, t_ctrl *ctrl)
 	create_frame_paths(tex, base_path, ctrl);
 	free(base_path);
 }
+
+// Processes and assigns texture paths based on map configuration lines.
+// - Extracts and cleans the texture path from the input line.
+// - Validates that the texture file has a ".xpm" extension.
+// - Calls assign_path() to link the path to the correct texture slot
+// - Exits with an error if the path format or extension is invalid.
 
 void	keep_textures_path(char *line, t_ctrl *ctrl)
 {

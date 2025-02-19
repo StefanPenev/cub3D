@@ -1,16 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   load_textures.c                                    :+:      :+:    :+:   */
+/*   load_main_textures.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/19 00:01:43 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/19 15:49:42 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
+
+// Loads the textures for the player's weapon in both idle and shooting states.
+// - Initializes texture structures for both states.
+// - Loads frames for each state from corresponding XPM files.
+// - Outputs an error message if loading fails.
 
 void	load_weapon_textures(t_game *game)
 {
@@ -39,6 +44,11 @@ void	load_weapon_textures(t_game *game)
 	}
 }
 
+// Loads textures for all walls (north, south, east,
+//	west) of the game environment.
+// - Uses previously defined file paths stored in texture structures.
+// - Calls load_texture for each wall direction.
+
 void	load_wall_textures(t_ctrl *ctrl)
 {
 	load_texture(ctrl->game, &ctrl->game->north_texture,
@@ -51,11 +61,14 @@ void	load_wall_textures(t_ctrl *ctrl)
 		ctrl->game->west_texture.paths);
 }
 
+// Loads the texture frames for enemy animations.
+// - Initializes the enemy texture structure with 7 frames.
+// - Loads each animation frame from the ./textures/enemy/ directory.
+
 void	load_enemy_textures(t_game *game)
 {
 	char	*enemy_frames[7];
 
-	// char	*enemy_frames[8];
 	init_texture(&game->enemy, 7);
 	game->enemy.paths[0] = ft_strdup("./textures/enemy/e_0.xpm");
 	game->enemy.paths[1] = ft_strdup("./textures/enemy/e_1.xpm");
@@ -71,27 +84,12 @@ void	load_enemy_textures(t_game *game)
 	enemy_frames[4] = game->enemy.paths[4];
 	enemy_frames[5] = game->enemy.paths[5];
 	enemy_frames[6] = NULL;
-	// enemy_frames[6] = "./textures/enemy/e_corpse.xpm";
-	// enemy_frames[7] = NULL;
 	load_texture(game, &game->enemy, enemy_frames);
 }
 
-// void	load_enemy_textures(t_game *game)
-// {
-// 	//char	*enemy_frames[8];
-// 	char	*enemy_frames[7];
-// 	init_texture(&game->enemy, 7);
-// 	enemy_frames[0] = "./textures/enemy/e_0.xpm";
-// 	enemy_frames[1] = "./textures/enemy/e_1.xpm";
-// 	enemy_frames[2] = "./textures/enemy/e_2.xpm";
-// 	enemy_frames[3] = "./textures/enemy/e_3.xpm";
-// 	enemy_frames[4] = "./textures/enemy/e_4.xpm";
-// 	enemy_frames[5] = "./textures/enemy/e_5.xpm";
-// 	enemy_frames[6] = NULL;
-// 	//enemy_frames[6] = "./textures/enemy/e_corpse.xpm";
-// 	//enemy_frames[7] = NULL;
-// 	load_texture(game, &game->enemy, enemy_frames);
-// }
+// Loads the texture for doors in the game.
+// - Initializes the door texture structure.
+// - Loads the door texture from a single XPM file.
 
 void	load_door_textures(t_game *game)
 {
@@ -105,51 +103,9 @@ void	load_door_textures(t_game *game)
 	load_texture(game, &game->door, door_frames);
 }
 
-void	load_crosshair(t_game *game)
-{
-	char	*crosshair_frames[2];
-
-	init_texture(&game->crosshair, 2);
-	game->crosshair.paths[0] = ft_strdup("./textures/crosshair.xpm");
-	game->crosshair.paths[1] = NULL;
-	game->crosshair.width = 40;
-	game->crosshair.height = 24;
-	crosshair_frames[0] = game->crosshair.paths[0];
-	crosshair_frames[1] = NULL;
-	load_texture(game, &game->crosshair, crosshair_frames);
-}
-
-void	load_lose_texture(t_game *game)
-{
-	char	*lose_frames[2];
-
-	init_texture(&game->lose_img, 2);
-	game->lose_img.path = "./textures/you_lose.xpm";
-	lose_frames[0] = game->lose_img.path;
-	lose_frames[1] = NULL;
-	if (!load_texture(game, &game->lose_img, lose_frames))
-	{
-		printf("ERROR: Failed to load 'You Lose' texture: %s\n",
-			game->lose_img.path);
-		game->lose_img.frames[0] = NULL;
-	}
-}
-
-void	load_win_texture(t_game *game)
-{
-	char	*win_frames[2];
-
-	init_texture(&game->win_img, 2);
-	game->win_img.path = "./textures/win.xpm";
-	win_frames[0] = game->win_img.path;
-	win_frames[1] = NULL;
-	if (!load_texture(game, &game->win_img, win_frames))
-	{
-		printf("ERROR: Failed to load 'You Lose' texture: %s\n",
-			game->win_img.path);
-		game->win_img.frames[0] = NULL;
-	}
-}
+// Loads the ceiling texture, typically representing the sky
+// - Initializes the ceiling_texture structure.
+// - Loads the texture from an XPM file and handles errors.
 
 void	load_ceiling_texture(t_game *game)
 {
@@ -165,16 +121,4 @@ void	load_ceiling_texture(t_game *game)
 		printf("ERROR: Failed to load 'Ceiling' texture.\n");
 		game->ceiling_texture.frames[0] = NULL;
 	}
-}
-
-void	load_all_textures(t_game *game, t_ctrl *ctrl)
-{
-	load_wall_textures(ctrl);
-	load_weapon_textures(game);
-	load_door_textures(game);
-	load_crosshair(game);
-	load_enemy_textures(game);
-	load_lose_texture(game);
-	load_win_texture(game);
-	load_ceiling_texture(game);
 }

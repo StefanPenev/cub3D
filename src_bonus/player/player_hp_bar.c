@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   player_hp_bar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:14:03 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/17 08:12:14 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/19 16:49:55 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
+
+#define X 10
+#define BAR_HEIGHT 20
+
+// Handles the player taking damage from an enemy attack.
+// Reduces player HP by ENEMY_DAMAGE, prints the updated HP.
+// If HP drops to 0 or below, sets the lose_flag and prints a losing message.
 
 void	get_hit(t_game *game)
 {
@@ -20,160 +27,107 @@ void	get_hit(t_game *game)
 	game->fight.enemy_shoot = 0;
 	if (game->player.hp <= 0)
 	{
-		printf(COLOR_RED "You lose! Try again.\n" COLOR_RESET);
 		game->player.hp = 0;
+		printf(COLOR_RED "You lose! Try again.\n" COLOR_RESET);
 		game->fight.lose_flag = 1;
 	}
 }
 
-// void restore_hp()
-// {
-// }
+// Draws the outline (frame) of the health bar.
+// The frame is drawn in a gray color around the health bar area.
 
-// void	draw_hp_bar(t_game *game, double delta_time)
-// {
-// 	static double	restore_timer = 5.0;
-// 	int				x;
-// 	int				y;
-// 	int				width;
-// 	int				height;
-// 	int				color;
-// 	int				hp_width;
-// 	int				i;
-// 	int				j;
-// 	static int		msg_printed = 0;
-
-// 	x = 10;
-// 	y = HEIGHT - 20;
-// 	width = WIDTH / 4;
-// 	height = 10;
-// 	color = 0xFF0000;
-// 	if (game->fight.lose_flag)
-// 		return ;
-// 	hp_width = (width * game->player.hp) / 100;
-// 	if (game->fight.fight_started && game->fight.enemy_shoot)
-// 		get_hit(game);
-// 	if (!game->fight.fight_started && game->player.hp < PLAYER_HP)
-// 	{
-// 		if (msg_printed == 0)
-// 		{
-// 			msg_printed = 1;
-// 			printf(COLOR_GREEN "Restoring HP...\n" COLOR_RESET);
-// 		}
-// 		restore_timer -= delta_time * 10;
-// 		// increase this value if want to restore
-// 		// hp faster
-// 		if (restore_timer <= 0)
-// 		{
-// 			game->player.hp += 10;
-// 			// increase this value if want to restore bigger count of hp
-// 			if (game->player.hp >= PLAYER_HP)
-// 			{
-// 				printf(COLOR_GREEN "Your HP fully restored!\n" COLOR_RESET);
-// 				msg_printed = 0;
-// 				game->player.hp = PLAYER_HP;
-// 			}
-// 			restore_timer = 5.0;
-// 		}
-// 	}
-// 	for (i = 0; i < hp_width; i++)
-// 	{
-// 		for (j = 0; j < height; j++)
-// 		{
-// 			put_pixel(x + i, y + j, color, game);
-// 		}
-// 	}
-// }
-
-void	draw_hp_bar(t_game *game, double delta_time)
+void	draw_bar_frame(int width, int y, t_game *game)
 {
-	static double	restore_timer = 5.0;
-	int				x;
-	int				y;
-	int				width;
-	int				height;
-	int				red;
-	int				hp_width;
-	int				i;
-	int				j;
-	static int		msg_printed = 0;
-	int				frame_color;
-	int				background_color;
+	int	frame_color;
+	int	j;
+	int	i;
 
-	x = 10;
-	y = HEIGHT - 30;
-	width = WIDTH / 4;
-	height = 20;
-	red = 0xFF0000;
-	frame_color = 0xA6A6A6;
-	background_color = 0x444444;
-
-	if (game->fight.lose_flag)
-		return ;
-	hp_width = (width * game->player.hp) / 100;
-	if (game->fight.fight_started && game->fight.enemy_shoot)
-		get_hit(game);
-	if (!game->fight.fight_started && game->player.hp < PLAYER_HP)
-	{
-		if (msg_printed == 0)
-		{
-			msg_printed = 1;
-			printf(COLOR_GREEN "Restoring HP...\n" COLOR_RESET);
-		}
-		restore_timer -= delta_time * 10;
-		// increase this value if want to restore hp faster
-		if (restore_timer <= 0)
-		{
-			game->player.hp += 10;
-			// increase this value if want to restore bigger count of hp
-			if (game->player.hp >= PLAYER_HP)
-			{
-				printf(COLOR_GREEN "Your HP fully restored!\n" COLOR_RESET);
-				msg_printed = 0;
-				game->player.hp = PLAYER_HP;
-			}
-			restore_timer = 5.0;
-		}
-	}
-	// Draw the background of the full health bar area
 	i = 0;
+	frame_color = 0xA6A6A6;
+	while (i < width)
+	{
+		put_pixel(X + i, y, frame_color, game);
+		put_pixel(X + i, y + BAR_HEIGHT - 1, frame_color, game);
+		i++;
+	}
+	j = 0;
+	while (j < BAR_HEIGHT)
+	{
+		put_pixel(X, y + j, frame_color, game);
+		put_pixel(X + width - 1, y + j, frame_color, game);
+		j++;
+	}
+}
+
+// Draws the background of the HP bar.
+// Fills the HP bar area with a dark color representing empty HP.
+
+void	draw_bar_background(int width, int y, t_game *game)
+{
+	int	i;
+	int	j;
+	int	background_color;
+
+	i = 0;
+	background_color = 0x444444;
 	while (i < width)
 	{
 		j = 0;
-		while (j < height)
+		while (j < BAR_HEIGHT)
 		{
-			put_pixel(x + i, y + j, background_color, game);
+			put_pixel(X + i, y + j, background_color, game);
 			j++;
 		}
 		i++;
 	}
-	// Draw the current hp bar in red
+}
+
+// Draws the red section of the HP bar representing current HP.
+// Renders a red rectangle proportional to the player’s remaining HP.
+
+void	draw_red_bar(int hp_width, int y, t_game *game)
+{
+	int	red;
+	int	i;
+	int	j;
+
 	i = 0;
+	red = 0xFF0000;
 	while (i < hp_width)
 	{
 		j = 0;
-		while (j < height)
+		while (j < BAR_HEIGHT)
 		{
-			put_pixel(x + i, y + j, red, game);
+			put_pixel(X + i, y + j, red, game);
 			j++;
 		}
 		i++;
 	}
-	// Draw the frame (outline)
-	// Top and bottom borders
-	i = 0;
-	while (i < width)
+}
+
+// Gradually restores player’s HP when not in combat.
+// Displays messages during restoration and resets values when HP is full.
+
+void	restore_hp(t_game *game, double delta_time)
+{
+	static int		msg_printed = 0;
+	static double	restore_timer = 5.0;
+
+	if (msg_printed == 0)
 	{
-		put_pixel(x + i, y, frame_color, game);
-		put_pixel(x + i, y + height - 1, frame_color, game);
-		i++;
+		msg_printed = 1;
+		printf(COLOR_GREEN "Restoring HP...\n" COLOR_RESET);
 	}
-	// Left and right borders
-	j = 0;
-	while (j < height)
+	restore_timer -= delta_time * 10;
+	if (restore_timer <= 0)
 	{
-		put_pixel(x, y + j, frame_color, game);
-		put_pixel(x + width - 1, y + j, frame_color, game);
-		j++;
+		game->player.hp += 10;
+		if (game->player.hp >= PLAYER_HP)
+		{
+			printf(COLOR_GREEN "Your HP fully restored!\n" COLOR_RESET);
+			msg_printed = 0;
+			game->player.hp = PLAYER_HP;
+		}
+		restore_timer = 5.0;
 	}
 }

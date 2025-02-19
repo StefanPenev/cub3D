@@ -6,11 +6,15 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:06:05 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 14:40:56 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:59:50 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
+
+// Checks if a given line defines a floor (F) or ceiling (C) color.
+// - Returns 1 if the line starts with 'F ' or 'C '.
+// - Returns 0 otherwise.
 
 int	is_color_definition(char *line_tmp)
 {
@@ -21,6 +25,10 @@ int	is_color_definition(char *line_tmp)
 	}
 	return (0);
 }
+
+// Validates that the RGB color line contains only digits, commas, and spaces.
+// - Iterates through each character in the cleaned line.
+// - Exits with an error if any invalid character is found.
 
 void	validate_rgb_line(char *clean_line_tmp, char *line, t_ctrl *ctrl)
 {
@@ -39,6 +47,11 @@ void	validate_rgb_line(char *clean_line_tmp, char *line, t_ctrl *ctrl)
 		i++;
 	}
 }
+
+// Splits the RGB color definition line by commas and validates its structure.
+// - Removes extra spaces within each RGB component.
+// - Ensures that exactly three components (R, G, B) are present.
+// - Exits with an error if validation fails or memory allocation issues occur.
 
 char	**split_and_check(char *line, t_ctrl *ctrl)
 {
@@ -67,6 +80,14 @@ char	**split_and_check(char *line, t_ctrl *ctrl)
 			ctrl);
 	return (tmp_arr);
 }
+
+// Parses and assigns floor (F) or ceiling (C) colors
+// from a map configuration line.
+// - Extracts and validates RGB values from the line.
+// - Converts RGB values to a single integer using bit-shifting.
+// - Updates the corresponding color field (floor or ceiling)
+// in the game structure.
+// - Ensures RGB values are within the valid range (0-255).
 
 void	define_fc_colors(char *line, t_ctrl *ctrl)
 {

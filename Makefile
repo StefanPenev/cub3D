@@ -91,7 +91,9 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/map_parsing/read_map.c \
 SRCS_BONUS += $(SRC_BONUS_DIR)/init/init.c \
 			$(SRC_BONUS_DIR)/init/init_hooks.c \
 			$(SRC_BONUS_DIR)/init/init_square.c \
-			$(SRC_BONUS_DIR)/init/load_textures.c \
+			$(SRC_BONUS_DIR)/init/load_all_textures.c \
+			$(SRC_BONUS_DIR)/init/load_main_textures.c \
+			$(SRC_BONUS_DIR)/init/load_UI_textures.c \
 			$(SRC_BONUS_DIR)/init/load_textures_utils.c \
 
 # Player
@@ -115,12 +117,12 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/utils/gnl.c \
 			$(SRC_BONUS_DIR)/utils/utils.c \
 			$(SRC_BONUS_DIR)/utils/map_utils.c \
 
-# Anim
-SRCS_BONUS += $(SRC_BONUS_DIR)/anim/doors.c \
+# Gameplay_elements
+SRCS_BONUS += $(SRC_BONUS_DIR)/gameplay_elements/doors.c \
+			$(SRC_BONUS_DIR)/gameplay_elements/enemy_attack.c \
+			$(SRC_BONUS_DIR)/gameplay_elements/player_attack.c \
+			$(SRC_BONUS_DIR)/gameplay_elements/player_attack_utils.c \
 
-# Fight
-SRCS_BONUS += $(SRC_BONUS_DIR)/fight/enemy_attack.c \
-			 $(SRC_BONUS_DIR)/fight/player_attack.c \
 
 # **************************************************************************** #
 #                           Converting .c to .o                                 #

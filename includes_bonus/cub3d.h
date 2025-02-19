@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 00:01:03 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/19 16:46:37 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@
 # define KEY_RIGHT 65363
 # define MOUSE_CLICK 1
 # define SPACE 32
+# define KEY_H 104
 
 # define WIDTH 800
 # define HEIGHT 600
@@ -239,6 +240,8 @@ typedef struct s_game
 	t_texture		win_img;
 	t_texture		floor_texture;
 	t_texture		ceiling_texture;
+	t_texture		controls;
+	t_texture		controls_button;
 	float			*zbuffer;
 	t_fight			fight;
 	int				game_over;
@@ -336,6 +339,7 @@ typedef struct s_ctrl
 	t_texture		texture;
 	t_anim			anim;
 	t_trig_tables	*trig_tables;
+	int				show_controls;
 }					t_ctrl;
 
 /* ************************************************************************** */
@@ -402,6 +406,7 @@ void				create_frame_paths(t_texture *tex, char *base_path,
 int					key_release(int keycode, t_ctrl *ctrl);
 int					key_press(int keycode, t_ctrl *ctrl);
 bool				in_map_bounds(float x, float y, t_map *map);
+void				draw_hp_bar(t_game *game, double delta_time);
 
 /* ************************************************************************** */
 /*								player_movement.c  								*/
@@ -499,6 +504,16 @@ t_square			init_square(int x, int y, int size, int color);
 /*              				load_textures.c                               */
 /* ************************************************************************** */
 
+void				load_crosshair(t_game *game);
+void				load_controls(t_game *game);
+void				load_controls_button(t_game *game);
+void				load_lose_texture(t_game *game);
+void				load_win_texture(t_game *game);
+void				load_weapon_textures(t_game *game);
+void				load_wall_textures(t_ctrl *ctrl);
+void				load_enemy_textures(t_game *game);
+void				load_door_textures(t_game *game);
+void				load_ceiling_texture(t_game *game);
 void				load_all_textures(t_game *game, t_ctrl *ctrl);
 int					load_texture(t_game *game, t_texture *texture,
 						char **frames);
@@ -510,10 +525,27 @@ void				init_texture(t_texture *texture, int max_frames);
 
 void				init_hooks(t_ctrl *ctrl);
 void				init_game_window(t_ctrl *ctrl);
+int					space_press(int keycode, t_ctrl *ctrl);
 
-// bonus
 /* ************************************************************************** */
-/*              						anim.c   								*/
+/*              			player_attack_utils.c   								*/
+/* ************************************************************************** */
+
+void				cast_ray(t_ctrl *ctrl, t_raycast *ray, float angle);
+int					is_ray_in_bounds(t_ctrl *ctrl, t_raycast *ray);
+int					enemy_in_range(t_ctrl *ctrl, t_enemy *enemy);
+
+/* ************************************************************************** */
+/*              				player_hp_bar.c   								*/
+/* ************************************************************************** */
+void				get_hit(t_game *game);
+void			draw_bar_frame(int width, int y, t_game *game);
+void			draw_bar_background(int width, int y, t_game *game);
+void			draw_red_bar(int hp_width, int y, t_game *game);
+void				restore_hp(t_game *game, double delta_time);
+
+/* ************************************************************************** */
+/*              				player_hp_bar.c   								*/
 /* ************************************************************************** */
 
 void				select_frame(t_ctrl *ctrl);
@@ -525,11 +557,10 @@ t_door				*get_door(int grid_x, int grid_y, t_map *map);
 void				door_open(int grid_x, int grid_y, t_map *map);
 
 void				draw_minimap(t_map *map, t_game *game);
-int					space_press(int keycode, t_ctrl *ctrl);
 void				door_state(t_ctrl *ctrl);
 t_trig_tables		*init_trig_tables(void);
 void				free_trig_tables(t_trig_tables *tables);
-void				draw_hp_bar(t_game *game, double delta_time);
+
 int					check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl);
 // void				enemy_attack(t_ctrl *ctrl);
 void				enemy_attack(t_ctrl *ctrl, t_enemy *enemy);

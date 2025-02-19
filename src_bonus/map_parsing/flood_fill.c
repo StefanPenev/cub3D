@@ -6,11 +6,16 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:31:18 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/27 14:40:50 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:55:01 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
+
+// Creates a deep copy of the game's map for validation purposes.
+// - Allocates memory for the copy of the map.
+// - Copies each row from the original map to the new map.
+// - Handles memory allocation errors and exits if allocation fails.
 
 char	**create_map_copy(t_ctrl *ctrl)
 {
@@ -34,6 +39,12 @@ char	**create_map_copy(t_ctrl *ctrl)
 	return (copy);
 }
 
+// Recursively checks if the player has accessible paths
+// in the map using flood fill.
+// - Marks visited cells to avoid infinite loops.
+// - Stops recursion when encountering walls or out-of-bounds indices.
+// - Sets the `has_free_way` flag if a free path is found.
+
 void	flood_fill(char **map, size_t x, size_t y, t_ctrl *ctrl)
 {
 	if (x >= ctrl->map.rows || y >= ctrl->map.columns)
@@ -51,6 +62,12 @@ void	flood_fill(char **map, size_t x, size_t y, t_ctrl *ctrl)
 	flood_fill(map, x, y + 1, ctrl);
 	flood_fill(map, x, y - 1, ctrl);
 }
+
+// Validates the entire map to ensure the player has accessible space to move.
+// - Uses `create_map_copy` to generate a copy of the map for safe validation.
+// - Calls `flood_fill` to explore accessible areas from the player's position.
+// - Frees the copied map after validation.
+// - Terminates the program if the player is trapped with no valid moves.
 
 void	check_map_valid(t_ctrl *ctrl)
 {

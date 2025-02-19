@@ -6,11 +6,16 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:50:43 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/14 16:55:45 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:58:58 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
+
+// Frees memory allocated for a 2D map array.
+// Iterates through each row and frees it if allocated.
+// Finally, frees the pointer to the array itself.
+// If the map pointer is NULL, the function exits immediately.
 
 void	free_map(char **map, size_t rows)
 {
@@ -28,24 +33,29 @@ void	free_map(char **map, size_t rows)
 	free(map);
 }
 
-// void	free_single_texture(t_game *game)
-// {
-// 	if (game->door.img)
-// 	{
-// 		mlx_destroy_image(game->mlx, game->door.img);
-// 		game->door.img = NULL;
-// 	}
-// 	if (game->weapon_idle.img)
-// 	{
-// 		mlx_destroy_image(game->mlx, game->weapon_idle.img);
-// 		game->weapon_idle.img = NULL;
-// 	}
-// 	if (game->weapon_shoot.img)
-// 	{
-// 		mlx_destroy_image(game->mlx, game->weapon_shoot.img);
-// 		game->weapon_shoot.img = NULL;
-// 	}
-// }
+// Frees memory for a single frame of a texture.
+// Destroys the image in the MLX context if it exists,
+// and sets its pointer to NULL.
+// Frees the corresponding file path string if it exists and sets it to NULL.
+
+void	free_frame(t_game *game, t_texture *texture, int i)
+{
+	if (texture->frames[i])
+	{
+		mlx_destroy_image(game->mlx, texture->frames[i]);
+		texture->frames[i] = NULL;
+	}
+	if (texture->paths && texture->paths[i])
+	{
+		free(texture->paths[i]);
+		texture->paths[i] = NULL;
+	}
+}
+
+// Frees all resources associated with a framed texture.
+// Iterates through each frame, freeing the image and its associated file path.
+// Frees the arrays that store the frames, paths, and frame addresses.
+// Sets all freed pointers to NULL to avoid dangling references.
 
 void	free_framed_texture(t_game *game, t_texture *texture)
 {
@@ -58,16 +68,7 @@ void	free_framed_texture(t_game *game, t_texture *texture)
 		i = 0;
 		while (texture->frames[i] != NULL)
 		{
-			if (texture->frames[i])
-			{
-				mlx_destroy_image(game->mlx, texture->frames[i]);
-				texture->frames[i] = NULL;
-			}
-			if (texture->paths && texture->paths[i])
-			{
-				free(texture->paths[i]);
-				texture->paths[i] = NULL;
-			}
+			free_frame(game, texture, i);
 			i++;
 		}
 		free(texture->frames);

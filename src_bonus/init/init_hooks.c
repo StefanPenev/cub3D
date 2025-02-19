@@ -3,14 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   init_hooks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/19 00:11:29 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/19 15:33:14 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
+
+// Handles the event when the spacebar key is pressed.
+// If the spacebar (SPACE) is detected, sets the shooting flag to 1
+// and calls the shoot() function to process the shooting logic.
+// Returns 0 on success, or 1 if the game controller is NULL.
 
 int	space_press(int keycode, t_ctrl *ctrl)
 {
@@ -23,6 +28,12 @@ int	space_press(int keycode, t_ctrl *ctrl)
 	}
 	return (0);
 }
+
+// Handles the event when a mouse click is detected.
+// If the primary mouse button (MOUSE_CLICK) is clicked,
+// sets the shooting flag
+// and calls the shoot() function to execute the shooting action.
+// The x and y parameters are unused and explicitly cast to void.
 
 int	mouse_click(int button, int x, int y, t_ctrl *ctrl)
 {
@@ -38,6 +49,12 @@ int	mouse_click(int button, int x, int y, t_ctrl *ctrl)
 	return (0);
 }
 
+// Initializes all the necessary event hooks for the game window.
+// - Hides the mouse cursor and centers it on the window.
+// - Sets up key press/release, mouse movement, and click hooks.
+// - Links the draw_loop function to the main rendering loop.
+// - Ensures that the window closes properly on exit signals.
+
 void	init_hooks(t_ctrl *ctrl)
 {
 	mlx_mouse_hide(ctrl->game->mlx, ctrl->game->win);
@@ -49,6 +66,13 @@ void	init_hooks(t_ctrl *ctrl)
 	mlx_mouse_hook(ctrl->game->win, mouse_click, ctrl);
 	mlx_hook(ctrl->game->win, 17, 0, close_window, ctrl);
 }
+
+// Initializes the main game window and rendering image buffer.
+// - Sets up the MLX graphical context.
+// - Creates the main window with specified WIDTH and HEIGHT.
+// - Initializes the image buffer for rendering frames.
+// - Sets pointers to image data for direct pixel manipulation.
+// - Handles cleanup and exits if initialization fails at any step.
 
 void	init_game_window(t_ctrl *ctrl)
 {

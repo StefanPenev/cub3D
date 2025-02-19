@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/18 23:46:58 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/19 14:15:22 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,83 @@ void	draw_map(t_map *mapp, t_game *game)
 		y++;
 	}
 }
+
+void draw_controls_button (t_game *game)
+{
+    int x, y, i, j;
+    size_t color;
+
+    if (!game)// || !game->controls.img)
+    {
+        printf("ERROR: Controls texture not loaded!\n");
+        return;
+    }
+
+    // ✅ Position at the top-right corner with 10px padding
+    x = WIDTH - game->controls_button.width - 10;
+    y = 10;
+
+    // ⚡️ Debug output to ensure coordinates are correct
+    // printf("Drawing controls at x: %d, y: %d, width: %d, height: %d\n",
+    //        x, y, game->controls.width, game->controls.height);
+
+    for (i = 0; i < game->controls_button.height; i++)
+    {
+        for (j = 0; j < game->controls_button.width; j++)
+        {
+            color = get_texture_color(&game->controls_button, j, i);
+
+            // 🔄 Relax color check in case of slight background differences
+            if ((color & 0xFFFFFF) != 0x000000 && (color & 0xFFFFFF) > 0x010101)
+            {
+                if ((x + j) >= 0 && (x + j) < WIDTH && (y + i) >= 0 && (y + i) < HEIGHT)
+                    put_pixel(x + j, y + i, color, game);
+            }
+        }
+    }
+  //  printf("Controls rendering finished.\n");
+}
+
+
+void draw_controls(t_game *game)
+{
+    int x, y, i, j;
+    size_t color;
+
+    if (!game)// || !game->controls.img)
+    {
+        printf("ERROR: Controls texture not loaded!\n");
+        return;
+    }
+
+    // ✅ Position at the top-right corner with 10px padding
+    // x = WIDTH - game->controls.width - 10;
+    // y = 10;
+	x = (WIDTH / 2) - (game->controls.width / 2);
+	y = (HEIGHT / 2) - (game->controls.height / 2);
+
+    // ⚡️ Debug output to ensure coordinates are correct
+    // printf("Drawing controls at x: %d, y: %d, width: %d, height: %d\n",
+    //        x, y, game->controls.width, game->controls.height);
+
+    for (i = 0; i < game->controls.height; i++)
+    {
+        for (j = 0; j < game->controls.width; j++)
+        {
+            color = get_texture_color(&game->controls, j, i);
+
+            // 🔄 Relax color check in case of slight background differences
+            if ((color & 0xFFFFFF) != 0x000000 && (color & 0xFFFFFF) > 0x010101)
+            {
+                if ((x + j) >= 0 && (x + j) < WIDTH && (y + i) >= 0 && (y + i) < HEIGHT)
+                    put_pixel(x + j, y + i, color, game);
+            }
+        }
+    }
+  //  printf("Controls rendering finished.\n");
+}
+
+
 
 void	draw_crosshair(t_game *game)
 {
@@ -459,6 +536,11 @@ int	draw_loop(t_ctrl *ctrl)
 		}
 	}
 	draw_minimap(&ctrl->map, ctrl->game);
+	draw_controls_button(ctrl->game);
+	if (ctrl->show_controls)
+	{
+		draw_controls(ctrl->game);
+	}
 	choose_weapon(ctrl->game);
 	draw_hp_bar(ctrl->game, delta_time);
 	draw_crosshair(ctrl->game);

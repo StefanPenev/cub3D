@@ -6,11 +6,20 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:17:15 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/28 13:56:34 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:05:24 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
+
+// Determines the type of line (texture, color,
+//	or map) and processes it accordingly.
+// - Handles texture path definitions if textures are not yet defined.
+// - Handles floor/ceiling color definitions if colors are not yet defined.
+//- Updates the map parsing state once all required textures
+// and colors are defined.
+//- Exits with an error if the line format is unexpected or
+// required elements are missing.
 
 static void	handle_line_based_on_state(char *trimmed_line, t_ctrl *ctrl,
 		int *is_map_started)
@@ -41,6 +50,14 @@ static void	handle_line_based_on_state(char *trimmed_line, t_ctrl *ctrl,
 			NULL, ctrl);
 }
 
+// Validates the format of a single line from the map file.
+// - Trims leading and trailing spaces from the line.
+//- Checks for empty lines and handles them based
+// on the current parsing state.
+//- Passes the trimmed line to handle_line_based_on_state()
+// for further processing.
+// - Exits if memory allocation fails or line format is incorrect.
+
 static void	check_line_format(char *line, t_ctrl *ctrl, int *is_map_started)
 {
 	char	*trimmed_line;
@@ -60,6 +77,10 @@ static void	check_line_format(char *line, t_ctrl *ctrl, int *is_map_started)
 	free(trimmed_line);
 }
 
+// Allocates and initializes an empty string for the map's temporary storage.
+// - Returns an empty string to be used for accumulating map data.
+// - Exits with an error if memory allocation fails.
+
 static char	*initialize_map_memory(t_ctrl *ctrl)
 {
 	char	*map_tmp;
@@ -69,6 +90,12 @@ static char	*initialize_map_memory(t_ctrl *ctrl)
 		clean_exit("Memory allocation failed\n", ctrl);
 	return (map_tmp);
 }
+
+// Processes a line based on the current parsing state of the map.
+// - Checks the line's format using check_line_format().
+// - If the map parsing has started,
+//	appends the line to the map's temporary storage.
+// - Increments the row count for each valid map line.
 
 static void	process_line(char *line_tmp, int *is_map_started, t_ctrl *ctrl)
 {
@@ -81,6 +108,13 @@ static void	process_line(char *line_tmp, int *is_map_started, t_ctrl *ctrl)
 		ctrl->map.rows++;
 	}
 }
+
+// Reads the entire map file line by line and processes its contents.
+//- Opens the specified map file and reads it using a
+// custom gnl (get_next_line) function.
+// - For each line, calls process_line() to parse and store relevant data.
+// - Handles file closing and memory cleanup after reading.
+// - Exits with an error if the map file is empty or missing required content.
 
 char	*read_map(char *filename, t_ctrl *ctrl)
 {

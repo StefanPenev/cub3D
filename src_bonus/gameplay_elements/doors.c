@@ -6,11 +6,17 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:38:18 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/14 15:50:45 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 14:52:53 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
+
+// Handles the door behavior after the player opens it.
+// If the player remains on the door tile, the door stays open by
+// resetting the timer.
+// If the player moves away, the timer decreases based on delta_time.
+// Once the timer reaches zero, the door begins closing.
 
 void	handle_open_door(t_door *door, t_ctrl *ctrl, double delta_time)
 {
@@ -32,6 +38,11 @@ void	handle_open_door(t_door *door, t_ctrl *ctrl, double delta_time)
 	}
 }
 
+// Updates the current state of the door based on its behavior:
+// - If the door is opening, set it to open and update the map.
+// - If the door is open, manage its open duration with a timer.
+// - If the door should close, revert its state and update the map grid.
+
 void	update_doors(t_door *door, t_ctrl *ctrl, double delta_time)
 {
 	if (door->state == DOOR_OPENING)
@@ -49,7 +60,12 @@ void	update_doors(t_door *door, t_ctrl *ctrl, double delta_time)
 	}
 }
 
-// Retrieves the door object from the map based on grid coordinates
+// Retrieves the door object from the map based on the provided
+// grid coordinates.
+// Iterates through all doors in the map until it finds a door that matches
+// the given position.
+// Returns a pointer to the door if found; otherwise, returns NULL.
+
 t_door	*get_door(int grid_x, int grid_y, t_map *map)
 {
 	size_t	i;
@@ -65,6 +81,11 @@ t_door	*get_door(int grid_x, int grid_y, t_map *map)
 	}
 	return (NULL);
 }
+
+// Manages the state of a door when the player interacts with it.
+// Checks adjacent tiles (up, down, left, right) for the presence of a door.
+// If a closed door is found next to the player, it begins the opening sequence
+// and the door's timer is set for automatic closing after a delay.
 
 void	door_state(t_ctrl *ctrl)
 {

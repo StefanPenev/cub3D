@@ -6,11 +6,16 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/14 16:10:24 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 15:01:45 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
+
+// Cleans up all dynamically allocated memory related to the game controller.
+// Frees the map, doors, enemies, trigonometric tables,
+// the game structure itself, and finally the controller.
+// Sets pointers to NULL after freeing to avoid dangling references.
 
 void	game_cleanup(t_ctrl *ctrl)
 {
@@ -36,6 +41,10 @@ void	game_cleanup(t_ctrl *ctrl)
 	ctrl = NULL;
 }
 
+// Handles a clean exit from the game with an optional message.
+// If a message is provided,
+// it is printed before closing the window and exiting.
+
 void	clean_exit(char *str, t_ctrl *ctrl)
 {
 	if (str != NULL)
@@ -44,6 +53,11 @@ void	clean_exit(char *str, t_ctrl *ctrl)
 	}
 	close_window(ctrl);
 }
+
+// Frees all textures associated with the game.
+// Iterates through each framed texture (including player, enemy, UI textures)
+// and frees them.
+// Also destroys the main image buffer if it exists.
 
 void	cleanup_textures(t_game *game)
 {
@@ -58,9 +72,17 @@ void	cleanup_textures(t_game *game)
 	free_framed_texture(game, &game->weapon_shoot);
 	free_framed_texture(game, &game->door);
 	free_framed_texture(game, &game->lose_img);
+	free_framed_texture(game, &game->win_img);
+	free_framed_texture(game, &game->controls);
+	free_framed_texture(game, &game->controls_button);
 	if (game->img)
 		mlx_destroy_image(game->mlx, game->img);
 }
+
+// Completely shuts down the game and releases all allocated resources.
+// - Cleans up all textures and memory allocations.
+// - Ends the MLX loop and destroys the window.
+// - Cleans up the MLX display and exits the program successfully.
 
 int	close_window(t_ctrl *ctrl)
 {

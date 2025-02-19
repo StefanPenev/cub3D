@@ -6,11 +6,22 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:59 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/12 14:20:56 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:53:04 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
+
+int	game_activities(int keycode, t_ctrl *ctrl)
+{
+	if (keycode == SPACE)
+		space_press(keycode, ctrl);
+	if (keycode == KEY_E)
+		door_state(ctrl);
+	if (keycode == KEY_H)
+		ctrl->show_controls = !ctrl->show_controls;
+	return (0);
+}
 
 int	key_press(int keycode, t_ctrl *ctrl)
 {
@@ -31,12 +42,10 @@ int	key_press(int keycode, t_ctrl *ctrl)
 		player->left_rotate = true;
 	if (keycode == KEY_RIGHT)
 		player->right_rotate = true;
-	if (keycode == SPACE)
-		space_press(keycode, ctrl);
 	if (keycode == KEY_ESC)
 		close_window(ctrl);
-	if (keycode == KEY_E)
-		door_state(ctrl);
+	else
+		game_activities(keycode, ctrl);
 	return (0);
 }
 
@@ -75,4 +84,31 @@ bool	in_map_bounds(float x, float y, t_map *map)
 		return (false);
 	}
 	return (true);
+}
+
+// Renders the player's HP bar on the screen.
+// Calculates the width of the HP portion based on the current HP percentage.
+// Handles damage if the player is attacked (get_hit).
+// Restores HP when not in combat (restore_hp).
+// Calls functions to draw the background (draw_bar_background),
+// the red HP portion (draw_red_bar), and the frame (draw_bar_frame).
+
+void	draw_hp_bar(t_game *game, double delta_time)
+{
+	int	hp_width;
+	int	y;
+	int	width;
+
+	y = HEIGHT - 30;
+	width = WIDTH / 4;
+	if (game->fight.lose_flag || game->fight.win_flag)
+		return ;
+	hp_width = (width * game->player.hp) / 100;
+	if (game->fight.fight_started && game->fight.enemy_shoot)
+		get_hit(game);
+	if (!game->fight.fight_started && game->player.hp < PLAYER_HP)
+		restore_hp(game, delta_time);
+	draw_bar_background(width, y, game);
+	draw_red_bar(hp_width, y, game);
+	draw_bar_frame(width, y, game);
 }

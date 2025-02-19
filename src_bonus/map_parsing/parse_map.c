@@ -6,19 +6,18 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:30:11 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/14 16:56:50 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/19 16:02:27 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
 
-// static bool	data_completed(t_ctrl *ctrl)
-// {
-// 	return (ctrl->game->north_texture.path && ctrl->game->south_texture.path
-// 		&& ctrl->game->west_texture.path && ctrl->game->east_texture.path
-// 		&& ctrl->game->ceiling_color != 0xFFFFFFFF
-// 		&& ctrl->game->floor_color != 0xFFFFFFFF);
-// }
+// Ensures each row of the map has the correct width by
+// filling missing spaces with walls.
+// - Allocates a new line with the correct width (ctrl->map.columns).
+// - Copies the original row's content and fills the remaining part
+// with WALL characters.
+// - Frees the old line and replaces it with the new one.
 
 void	complete_map(t_ctrl *ctrl, size_t i, size_t len)
 {
@@ -35,6 +34,12 @@ void	complete_map(t_ctrl *ctrl, size_t i, size_t len)
 	free(ctrl->map.full_map[i]);
 	ctrl->map.full_map[i] = new_line;
 }
+
+// Adjusts all rows in the map to match the longest row's
+// length and replaces empty spaces with walls.
+// - Calls complete_map() to ensure consistent row length.
+// - Replaces any ' ' (space) character in the map with a WALL
+// character for consistency.
 
 void	explore_map(t_ctrl *ctrl)
 {
@@ -59,6 +64,11 @@ void	explore_map(t_ctrl *ctrl)
 	}
 }
 
+// Scans the map for door positions and creates an array of door objects.
+// - Allocates memory for the doors array based on the number of doors found.
+// - Populates the array with t_door structures, each representing a
+// door's location and state.
+
 void	create_doors_array(t_ctrl *ctrl)
 {
 	size_t	i;
@@ -82,6 +92,11 @@ void	create_doors_array(t_ctrl *ctrl)
 		i++;
 	}
 }
+
+// Scans the map for enemy positions and creates an array of enemy objects.
+//- Allocates memory for the enemies array based
+// on the number of enemies found.
+// - Initializes each enemy using assign_enemy() with its position and index.
 
 void	create_enemy_array(t_ctrl *ctrl)
 {
@@ -111,6 +126,12 @@ void	create_enemy_array(t_ctrl *ctrl)
 	}
 	printf("Enemies successfully allocated and positioned.\n");
 }
+
+// Parses the map file and prepares all necessary map-related data structures.
+// - Reads the map file into a temporary string.
+// - Splits the map into rows and processes it with explore_map().
+// - Validates the map structure and checks for valid characters and enclosure.
+// - Initializes doors and enemies arrays if any are found during parsing.
 
 void	parse_map(char *filename, t_ctrl *ctrl)
 {

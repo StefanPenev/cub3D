@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/19 00:08:42 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/19 15:37:00 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
+
+// Initializes the player structure with starting position, orientation,
+// and default values.
+// - start_x, start_y: Starting coordinates of the player.
+// - orientation: The angle at which the player initially faces.
+// Sets default movement flags to false, player HP, direction vector,
+// and camera plane for rendering.
 
 void	init_player(t_player *player, float start_x, float start_y,
 		float orientation)
@@ -30,6 +37,12 @@ void	init_player(t_player *player, float start_x, float start_y,
 	player->plane_x = -player->dir_y * 0.66;
 	player->plane_y = player->dir_x * 0.66;
 }
+
+// Initializes the texture structure and allocates memory for frame data.
+// - texture: Pointer to the texture structure to initialize.
+// - max_frames: The maximum number of frames the texture can hold.
+// Allocates memory for frames, paths, and frame addresses.
+// Exits on allocation failure.
 
 void	init_texture(t_texture *texture, int max_frames)
 {
@@ -55,6 +68,11 @@ void	init_texture(t_texture *texture, int max_frames)
 	}
 }
 
+// Initializes the main game structure with default values and textures.
+// Sets default colors for floor and ceiling, initializes
+// shooting and fight parameters,
+// and prepares directional textures with a predefined frame count
+
 void	init_game(t_game *game)
 {
 	ft_memset(game, 0, sizeof(t_game));
@@ -73,6 +91,10 @@ void	init_game(t_game *game)
 	game->fight.lose_flag = 0;
 	game->fight.win_flag = 0;
 }
+
+// Initializes the map structure with default values.
+// Resets map properties like size, player positions,
+// enemy/door counters, and sets pointers to NULL.
 
 void	init_map(t_map *map)
 {
@@ -94,9 +116,16 @@ void	init_map(t_map *map)
 	map->doors = NULL;
 }
 
+// Initializes the main control structure (t_ctrl).
+// - Sets up the map, game, and trigonometric tables.
+// - Allocates memory for the game structure and handles
+// allocation failures gracefully.
+// - Returns 0 on success, 1 on failure.
+
 int	init_ctrl(t_ctrl *ctrl)
 {
 	init_map(&ctrl->map);
+	ctrl->show_controls = 0;
 	ctrl->anim.fc = 0;
 	ctrl->anim.ac = 0;
 	ctrl->gnl.save = NULL;

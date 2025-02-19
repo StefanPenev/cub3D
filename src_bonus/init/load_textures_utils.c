@@ -3,14 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 20:13:30 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/11 23:52:29 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/19 15:39:42 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
+
+// Loads a single frame of a texture from an XPM
+// file using the MiniLibX library.
+// - game: Pointer to the t_game structure containing the MLX instance.
+// - texture: Pointer to the texture structure where the frame will be stored.
+// - path: File path to the XPM texture file.
+// - index: Index in the texture's frame array where the
+// loaded image will be stored.
+// Returns 1 if the frame is successfully loaded, otherwise returns 0.
 
 static int	load_frame(t_game *game, t_texture *texture, char *path, int index)
 {
@@ -29,12 +38,16 @@ static int	load_frame(t_game *game, t_texture *texture, char *path, int index)
 	if (!texture->frames_addr[index])
 	{
 		printf("ERROR: Failed to get texture data at %s\n", path);
-		// mlx_destroy_image(game->mlx, texture->frames[index]);
-		// texture->frames[index] = NULL;
 		return (0);
 	}
 	return (1);
 }
+
+// Loads all frames for a given texture from an array of file paths.
+// - game: Pointer to the t_game structure containing the MLX instance.
+// - texture: Pointer to the texture structure where frames will be stored.
+// - frames: Array of file paths to XPM texture files.
+// Returns 1 if all frames are successfully loaded, otherwise returns 0.
 
 int	load_texture(t_game *game, t_texture *texture, char **frames)
 {
@@ -46,11 +59,7 @@ int	load_texture(t_game *game, t_texture *texture, char **frames)
 	while (frames[i])
 	{
 		if (!load_frame(game, texture, frames[i], i))
-		{
-			//free_textures(game, texture);
-			//close_window(ctrl);
 			return (0);
-		}
 		printf("TEXTURES: %s\n", frames[i]);
 		loaded++;
 		i++;
