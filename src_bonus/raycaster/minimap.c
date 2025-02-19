@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 08:23:44 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/17 08:30:39 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/19 08:41:40 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,18 +167,92 @@ void	draw_map_tiles(t_map *map, t_game *game, t_minimap_data *data)
 	}
 }
 
+void	draw_minimap_line(int x0, int y0, int x1, int y1, int color, t_game *game)
+{
+	float	dx;
+	float	dy;
+	int		steps;
+	float	x_inc;
+	float	y_inc;
+	float	x;
+	float	y;
+
+	dx = x1 - x0;
+	dy = y1 - y0;
+	if (fabsf(dx) > fabsf(dy))
+		steps = fabsf(dx);
+	else
+		steps = fabsf(dy);
+	x_inc = dx / (float)steps;
+	y_inc = dy / (float)steps;
+	x = x0;
+	y = y0;
+	while (steps-- > 0)
+	{
+		put_pixel((int)x, (int)y, color, game);
+		x += x_inc;
+		y += y_inc;
+	}
+}
+
+// Square with line
+// static void	draw_player_marker(t_game *game, t_minimap_data *data)
+// {
+//     int	player_x;
+//     int	player_y;
+
+//     player_x = MINIMAP_OFFSET_X + (data->player_tile_x - data->start_x)
+//         * data->block_size;
+//     player_y = MINIMAP_OFFSET_Y + (data->player_tile_y - data->start_y)
+//         * data->block_size;
+//     draw_square((t_square){player_x, player_y, data->block_size / 2,
+//         PLAYER_COLOR}, game);
+
+//     // Draw direction line (assuming game->player.angle in radians)
+//     int center_x = player_x + data->block_size / 4;
+//     int center_y = player_y + data->block_size / 4;
+//     int dir_x = center_x + cosf(game->player.angle) * (data->block_size / 1.2);
+//     int dir_y = center_y + sinf(game->player.angle) * (data->block_size / 1.2);
+//     draw_minimap_line(center_x, center_y, dir_x, dir_y, 0xFFFFFF, game);
+// }
+
+// Circle with line
+static void	draw_circle(int center_x, int center_y, int radius, int color, t_game *game)
+{
+	int	y;
+	int	x;
+
+	y = -radius;
+	while (y <= radius)
+	{
+		x = -radius;
+		while (x <= radius)
+		{
+			if (x * x + y * y <= radius * radius)
+				put_pixel(center_x + x, center_y + y, color, game);
+			x++;
+		}
+		y++;
+	}
+}
 
 static void	draw_player_marker(t_game *game, t_minimap_data *data)
 {
-	int	player_x;
-	int	player_y;
+	int	center_x;
+	int	center_y;
+	int	radius;
+	int	dir_x;
+	int	dir_y;
 
-	player_x = MINIMAP_OFFSET_X + (data->player_tile_x - data->start_x)
-		* data->block_size;
-	player_y = MINIMAP_OFFSET_Y + (data->player_tile_y - data->start_y)
-		* data->block_size;
-	draw_square((t_square){player_x, player_y, data->block_size / 2,
-		PLAYER_COLOR}, game);
+	center_x = MINIMAP_OFFSET_X + (data->player_tile_x - data->start_x)
+		* data->block_size + data->block_size / 2;
+	center_y = MINIMAP_OFFSET_Y + (data->player_tile_y - data->start_y)
+		* data->block_size + data->block_size / 2;
+	radius = data->block_size / 4;
+	draw_circle(center_x, center_y, radius, PLAYER_COLOR, game);
+	dir_x = center_x + cosf(game->player.angle) * (data->block_size / 1.2);
+	dir_y = center_y + sinf(game->player.angle) * (data->block_size / 1.2);
+	draw_minimap_line(center_x, center_y, dir_x, dir_y, 0xFFFFFF, game);
 }
 
 static void	draw_minimap_frame(t_game *game, t_minimap_data *data)
