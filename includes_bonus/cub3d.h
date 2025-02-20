@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 16:46:37 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:14:44 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,10 +100,10 @@
 
 typedef enum enemy_state
 {
-	ENEMY_IDLE,        // Default idle animation
-	ENEMY_TRIGGERED,   // Play 5-frame alert animation once
-	ENEMY_ACTIVE,      // Loop 2-frame animation while player is in range
-	ENEMY_RETURN_IDLE, // Transition back to idle when player leaves
+	ENEMY_IDLE,
+	ENEMY_TRIGGERED,
+	ENEMY_ACTIVE,
+	ENEMY_RETURN_IDLE,
 }					t_enemy_state;
 
 typedef struct s_door
@@ -539,9 +539,9 @@ int					enemy_in_range(t_ctrl *ctrl, t_enemy *enemy);
 /*              				player_hp_bar.c   								*/
 /* ************************************************************************** */
 void				get_hit(t_game *game);
-void			draw_bar_frame(int width, int y, t_game *game);
-void			draw_bar_background(int width, int y, t_game *game);
-void			draw_red_bar(int hp_width, int y, t_game *game);
+void				draw_bar_frame(int width, int y, t_game *game);
+void				draw_bar_background(int width, int y, t_game *game);
+void				draw_red_bar(int hp_width, int y, t_game *game);
 void				restore_hp(t_game *game, double delta_time);
 
 /* ************************************************************************** */

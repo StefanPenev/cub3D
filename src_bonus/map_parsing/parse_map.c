@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:30:11 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 16:02:27 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:27:44 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ void	create_enemy_array(t_ctrl *ctrl)
 		}
 		i++;
 	}
-	printf("Enemies successfully allocated and positioned.\n");
 }
 
 // Parses the map file and prepares all necessary map-related data structures.

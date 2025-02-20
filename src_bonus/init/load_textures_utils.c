@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 20:13:30 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/19 15:39:42 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:28:03 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ int	load_texture(t_game *game, t_texture *texture, char **frames)
 	{
 		if (!load_frame(game, texture, frames[i], i))
 			return (0);
-		printf("TEXTURES: %s\n", frames[i]);
 		loaded++;
 		i++;
 	}

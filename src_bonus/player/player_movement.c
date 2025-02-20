@@ -6,100 +6,37 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:10:00 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/14 14:12:03 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:10:18 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes_bonus/cub3d.h"
 
-// Checks if a position is valid for movement and handles door opening
+// Checks if the player's new position is within valid map boundaries.
+// Converts the player's floating-point coordinates into grid indices.
+// Determines if the grid cell corresponds to a walkable tile
+// Returns 1 if the position is valid for movement, otherwise returns 0.
+
 static int	is_valid_position(float x, float y, t_map *map)
 {
 	size_t	grid_x;
 	size_t	grid_y;
 	char	tile;
-	//t_enemy *enemy = NULL;
 
-	// t_door	*door;
-	// Ensure the position is within map boundaries
 	if (!in_map_bounds(x, y, map))
 		return (0);
-	// Convert floating-point position to grid coordinates
 	grid_x = (size_t)(x / TILE_SIZE);
 	grid_y = (size_t)(y / TILE_SIZE);
 	tile = map->full_map[grid_y][grid_x];
-	// // Check for nearby doors and get door object if present
-	// if (map->full_map[grid_y + 1][grid_x] == DOOR)
-	// 	door = get_door(grid_x, grid_y + 1, map);
-	// else if (map->full_map[grid_y - 1][grid_x] == DOOR)
-	// 	door = get_door(grid_x, grid_y - 1, map);
-	// else if (map->full_map[grid_y][grid_x + 1] == DOOR)
-	// 	door = get_door(grid_x + 1, grid_y, map);
-	// else if (map->full_map[grid_y][grid_x - 1] == DOOR)
-	// 	door = get_door(grid_x - 1, grid_y, map);
-	// else
-	// 	door = NULL;
-	// // If a closed door is detected, open it
-	// if (door && door->state == DOOR_CLOSED)
-	// {
-	// 	printf("hello from if\n");
-	// 	printf("DEBUG: Opening door at (%d, %d)\n", door->x, door->y);
-	// 	door_open(door->x, door->y, map);
-	// }
-	// Return whether the tile is walkable (valid for movement)
-	// if (tile == 'M')
-	// {
-	// 	enemy = get_enemy(grid_x, grid_y, map);
-	// 	if (enemy)
-	// 	{
-	// 		printf(COLOR_GREEN "[DEBUG] Enemy found at (%zu, %zu)\n" COLOR_RESET, grid_x, grid_y);
-	// 	}
-	// 	else
-	// 	{
-	// 		printf(COLOR_RED "[DEBUG] ERROR: get_enemy() returned NULL for (%zu, %zu)\n" COLOR_RESET, grid_x, grid_y);
-	// 	}
-	// }
 	return (tile == '0' || tile == 'W' || tile == 'N' || tile == 'S'
 		|| tile == 'E' || tile == 'C');
 }
 
-// // Checks if a position is valid for movement and handles door opening
-// static int	is_valid_position(float x, float y, t_map *map)
-// {
-// 	size_t	grid_x;
-// 	size_t	grid_y;
-// 	char	tile;
-// 	t_door	*door;
-
-// 	// Ensure the position is within map boundaries
-// 	if (!in_map_bounds(x, y, map))
-// 		return (0);
-// 	// Convert floating-point position to grid coordinates
-// 	grid_x = (size_t)(x / TILE_SIZE);
-// 	grid_y = (size_t)(y / TILE_SIZE);
-// 	tile = map->full_map[grid_y][grid_x];
-// 	// Check for nearby doors and get door object if present
-// 	if (map->full_map[grid_y + 1][grid_x] == DOOR)
-// 		door = get_door(grid_x, grid_y + 1, map);
-// 	else if (map->full_map[grid_y - 1][grid_x] == DOOR)
-// 		door = get_door(grid_x, grid_y - 1, map);
-// 	else if (map->full_map[grid_y][grid_x + 1] == DOOR)
-// 		door = get_door(grid_x + 1, grid_y, map);
-// 	else if (map->full_map[grid_y][grid_x - 1] == DOOR)
-// 		door = get_door(grid_x - 1, grid_y, map);
-// 	else
-// 		door = NULL;
-// 	// If a closed door is detected, open it
-// 	if (door && door->state == DOOR_CLOSED)
-// 	{
-// 		printf("hello from if\n");
-// 		printf("DEBUG: Opening door at (%d, %d)\n", door->x, door->y);
-// 		door_open(door->x, door->y, map);
-// 	}
-// 	// Return whether the tile is walkable (valid for movement)
-// 	return (tile == '0' || tile == 'W' || tile == 'N' || tile == 'S'
-// 		|| tile == 'E');
-// }
+// Updates the player's facing angle based on rotation input.
+// Adjusts the angle based on whether the player rotates left or right.
+// Ensures the angle remains within the 0 to 2*PI
+// range (wrap-around behavior).
+// Uses delta_time to make the rotation frame-rate independent.
 
 static void	update_player_angle(t_player *player, double delta_time)
 {
@@ -115,6 +52,12 @@ static void	update_player_angle(t_player *player, double delta_time)
 	else if (player->angle < 0)
 		player->angle += 2 * M_PI;
 }
+
+// Calculates the player's new potential position based on movement input.
+// Uses trigonometric functions (cos and sin) to move in the direction
+// of the player's angle. Supports forward, backward, left, and right
+// movement relative to the player's orientation.  Modifies new_x and
+// new_y pointers with the computed displacement based on move_speed.
 
 static void	apply_movement(float *new_x, float *new_y, t_player *player,
 		float move_speed)
@@ -146,6 +89,13 @@ static void	apply_movement(float *new_x, float *new_y, t_player *player,
 	}
 }
 
+// Attempts to move the player to a new position based on current
+// movement input.
+// Calls `apply_movement` to calculate the new position.
+// Verifies the new position is valid using `is_valid_position`.
+// Updates the player's position only if the movement does not
+// collide with walls or invalid tiles.
+
 static void	update_player_position(t_ctrl *ctrl, float move_speed)
 {
 	float	new_x;
@@ -160,6 +110,12 @@ static void	update_player_position(t_ctrl *ctrl, float move_speed)
 		ctrl->game->player.y = new_y;
 	}
 }
+
+// Handles the complete player movement logic per frame.
+// First, updates the player's angle based on rotation input
+// (`update_player_angle`). Then, calculates and updates the
+// player's position (`update_player_position`). Adjusts movement speed
+// based on delta_time to ensure consistent behavior regardless of frame rate.
 
 void	move_player(t_ctrl *ctrl, double delta_time)
 {
