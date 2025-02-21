@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 12:17:46 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:00:50 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -329,6 +329,10 @@ typedef struct s_minimap_data
 	float			player_tile_y;
 	float			start_x;
 	float			start_y;
+	int				x0;
+	int				x1;
+	int				y0;
+	int				y1;
 }					t_minimap_data;
 
 typedef struct s_ctrl
@@ -556,7 +560,7 @@ void				update_doors(t_door *door, t_ctrl *ctrl, double delta_time);
 t_door				*get_door(int grid_x, int grid_y, t_map *map);
 void				door_open(int grid_x, int grid_y, t_map *map);
 
-void				draw_minimap(t_map *map, t_game *game);
+
 void				door_state(t_ctrl *ctrl);
 t_trig_tables		*init_trig_tables(void);
 void				free_trig_tables(t_trig_tables *tables);
@@ -570,8 +574,18 @@ void				shoot(t_ctrl *ctrl);
 t_enemy				*get_enemy(size_t x, size_t y, t_map *map);
 float				calculate_distance(float x1, float y1, float x2, float y2);
 void				draw_floor(t_game *gm, t_raycast *rc, int col);
-void				load_floor_texture(t_game *game);
 void				draw_floor_with_colour(t_game *gm, t_raycast *rc, int col);
 void				draw_ceiling_with_colour(t_game *gm);
+
+//Raycaster
+//minimap_utils.c
+void				draw_circle(int center_x, int center_y, int radius,
+						t_game *game);
+void				draw_minimap_line(t_minimap_data *data, t_game *game);
+void				draw_minimap_edges(t_game *game, int end_x, int end_y);
+//minimap.c
+void				draw_minimap(t_ctrl *ctrl);
+//minimap_helper.c
+void				draw_map_tiles(t_ctrl *ctrl, t_minimap_data *data);
 
 #endif

@@ -6,12 +6,13 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 22:45:05 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 15:37:11 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 14:21:44 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes_bonus/cub3d.h"
+#include "../../../includes_bonus/cub3d.h"
 
+// Initializes line drawing parameters based on start and end points
 void	init_line_params(int start[], int x_end, int y_end, t_line_params *lp)
 {
 	int	x_start;
@@ -32,6 +33,7 @@ void	init_line_params(int start[], int x_end, int y_end, t_line_params *lp)
 	lp->error_val = lp->delta_x - lp->delta_y;
 }
 
+// Draws a line on the screen by iterating through pixels and marking them
 void	draw_line_coords(int block_size, int x_end, int y_end, t_game *game)
 {
 	t_line_params	lp;
@@ -59,6 +61,7 @@ void	draw_line_coords(int block_size, int x_end, int y_end, t_game *game)
 	}
 }
 
+// Performs a raycasting step loop until a wall is hit
 void	ray_step_loop(t_raycast_debug *rc, t_map *map)
 {
 	while (!rc->hit && rc->grid_x < map->columns && rc->grid_y < map->rows)
@@ -84,6 +87,7 @@ void	ray_step_loop(t_raycast_debug *rc, t_map *map)
 	}
 }
 
+// Initializes step directions and distances for raycasting
 static void	init_raycast_data_steps(t_raycast_debug *rc, t_game *game)
 {
 	float	px;
@@ -113,6 +117,7 @@ static void	init_raycast_data_steps(t_raycast_debug *rc, t_game *game)
 	}
 }
 
+// Initializes raycasting data including direction, grid position, and distances
 void	init_raycast_data(t_raycast_debug *rc, t_game *game)
 {
 	rc->hit = 0;

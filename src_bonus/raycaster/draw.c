@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 10:43:58 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 17:04:31 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -636,7 +636,7 @@ int	draw_loop(t_ctrl *ctrl)
 			i++;
 		}
 	}
-	draw_minimap(&ctrl->map, ctrl->game);
+	draw_minimap(ctrl);
 	draw_controls_button(ctrl->game);
 	if (ctrl->show_controls)
 	{

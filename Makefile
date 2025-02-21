@@ -103,13 +103,15 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/player/player.c \
 			$(SRC_BONUS_DIR)/player/player_hp_bar.c \
 
 # Raycaster
-SRCS_BONUS += $(SRC_BONUS_DIR)/raycaster/debug.c \
-			$(SRC_BONUS_DIR)/raycaster/debug_utils.c \
+SRCS_BONUS += $(SRC_BONUS_DIR)/raycaster/debug/debug.c \
+			$(SRC_BONUS_DIR)/raycaster/debug/debug_utils.c \
 			$(SRC_BONUS_DIR)/raycaster/raycaster.c \
 			$(SRC_BONUS_DIR)/raycaster/raycaster_utils.c \
 			$(SRC_BONUS_DIR)/raycaster/raycast_utils.c \
 			$(SRC_BONUS_DIR)/raycaster/draw.c \
-			$(SRC_BONUS_DIR)/raycaster/minimap.c \
+			$(SRC_BONUS_DIR)/raycaster/minimap/minimap.c \
+			$(SRC_BONUS_DIR)/raycaster/minimap/minimap_utils.c \
+			$(SRC_BONUS_DIR)/raycaster/minimap/minimap_tiles.c \
 			$(SRC_BONUS_DIR)/raycaster/trig_tables.c \
 
 # Utils

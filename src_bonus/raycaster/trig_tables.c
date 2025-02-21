@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   trig_tables.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 14:01:17 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/10 14:16:44 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 13:34:02 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes_bonus/cub3d.h"
 
-static t_trig_tables *allocate_trig_tables(void)
+static t_trig_tables	*allocate_trig_tables(void)
 {
 	t_trig_tables	*tables;
 
@@ -68,36 +68,3 @@ void	free_trig_tables(t_trig_tables *tables)
 		free(tables);
 	}
 }
-
-// t_trig_tables	*init_trig_tables(void)
-// {
-// 	t_trig_tables	*tables;
-// 	int				i;
-// 	double			angle_rad;
-
-// 	tables = malloc(sizeof(t_trig_tables));
-// 	if (!tables)
-// 	{
-// 		printf("Error: Memory allocation failed for trig tables.\n");
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	tables->sin_table = malloc(ANGLE_TABLE_SIZE * sizeof(double));
-// 	tables->cos_table = malloc(ANGLE_TABLE_SIZE * sizeof(double));
-// 	if (!tables->sin_table || !tables->cos_table)
-// 	{
-// 		printf("Error: Memory allocation failed for trig arrays.\n");
-// 		free(tables->sin_table);
-// 		free(tables->cos_table);
-// 		free(tables);
-// 		exit(EXIT_FAILURE);
-// 	}
-// 	i = 0;
-// 	while (i < ANGLE_TABLE_SIZE)
-// 	{
-// 		angle_rad = i * (M_PI / 1800.0);
-// 		tables->sin_table[i] = sin(angle_rad);
-// 		tables->cos_table[i] = cos(angle_rad);
-// 		i++;
-// 	}
-// 	return (tables);
-// }

@@ -6,12 +6,14 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:22:45 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 15:37:40 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 14:26:51 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes_bonus/cub3d.h"
+#include "../../../includes_bonus/cub3d.h"
 
+// Draws the debug representation of the map grid, coloring walls and empty
+// spaces
 static void	draw_map_debug(t_game *game, t_map *map, int block_size)
 {
 	size_t	y;
@@ -36,6 +38,7 @@ static void	draw_map_debug(t_game *game, t_map *map, int block_size)
 	}
 }
 
+// Draws the player's position on the debug map
 static void	draw_player_debug(t_game *game, int block_size)
 {
 	int	player_x;
@@ -47,6 +50,7 @@ static void	draw_player_debug(t_game *game, int block_size)
 			player_y - block_size / 8, block_size / 4, 0x00FF00), game);
 }
 
+// Draws the raycast hit point as a line from the player to the hit location
 static void	draw_hit_line(t_game *game, t_raycast_debug rc, int block_size)
 {
 	float	hit_pos_x;
@@ -61,6 +65,7 @@ static void	draw_hit_line(t_game *game, t_raycast_debug rc, int block_size)
 	draw_line_coords(block_size, hit_x, hit_y, game);
 }
 
+// Casts rays for debugging purposes, iterating over a field of view
 static void	cast_rays_debug(t_ctrl *ctrl, int block_size)
 {
 	t_raycast_debug	rc;
@@ -87,6 +92,8 @@ static void	cast_rays_debug(t_ctrl *ctrl, int block_size)
 	}
 }
 
+// Main function to draw the debug visualization, including the map,
+// player, and rays
 void	draw_debug(t_ctrl *ctrl)
 {
 	t_game	*game;

@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 12:20:10 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 13:12:17 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,20 +120,5 @@ void	load_ceiling_texture(t_game *game)
 	{
 		printf("ERROR: Failed to load 'Ceiling' texture.\n");
 		game->ceiling_texture.frames[0] = NULL;
-	}
-}
-
-void	load_floor_texture(t_game *game)
-{
-	char	*floor_frames[2];
-
-	init_texture(&game->floor_texture, 2);
-	game->floor_texture.path = "./textures/floor_tex2.xpm";
-	floor_frames[0] = game->floor_texture.path;
-	floor_frames[1] = NULL;
-	if (!load_texture(game, &game->floor_texture, floor_frames))
-	{
-		printf("ERROR: Failed to load 'Floor' texture.\n");
-		game->floor_texture.frames[0] = NULL;
 	}
 }
