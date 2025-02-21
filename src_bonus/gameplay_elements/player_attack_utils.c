@@ -6,7 +6,7 @@
 /*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:18:02 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 15:27:46 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 12:47:44 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	cast_ray(t_ctrl *ctrl, t_raycast *ray, float angle)
 		}
 		advance_ray(ray);
 		hit_object = ctrl->map.full_map[ray->map_y][ray->map_x];
-		if (hit_object == '1' || hit_object == 'M')
+		if (hit_object == '1' || hit_object == 'M' ||hit_object == 'D')
 			ray->hit = 1;
 	}
 }
