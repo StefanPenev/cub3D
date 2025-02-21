@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   init_square.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 12:43:26 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/19 15:34:02 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:09:03 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Initializes and returns a t_square structure with the specified parameters.
 // - x: The x-coordinate of the top-left corner of the square.

@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 17:04:31 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:10:54 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 void	put_pixel(int x, int y, int color, t_game *game)
 {

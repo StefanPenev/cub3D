@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 14:01:17 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 13:34:02 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:11:20 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 static t_trig_tables	*allocate_trig_tables(void)
 {

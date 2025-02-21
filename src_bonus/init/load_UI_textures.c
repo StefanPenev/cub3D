@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   load_UI_textures.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:41:00 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 15:48:50 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:09:35 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Loads the texture for the player's crosshair.
 // - Initializes the crosshair texture structure with width and height settings.

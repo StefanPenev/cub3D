@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   game_cleanup_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:50:43 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 14:58:58 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:08:20 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Frees memory allocated for a 2D map array.
 // Iterates through each row and frees it if allocated.

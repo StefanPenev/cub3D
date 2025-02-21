@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_attack.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:16:47 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 14:48:23 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:08:44 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Computes the angle and distance between the player and the enemy
 // This function calculates :

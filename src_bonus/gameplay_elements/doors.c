@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   doors.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:38:18 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 14:52:53 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:08:41 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Handles the door behavior after the player opens it.
 // If the player remains on the door tile, the door stays open by

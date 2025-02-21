@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:42:56 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 13:13:21 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:09:14 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Loads the floor texture, typically representing the sky
 // - Initializes the floor_texture structure.

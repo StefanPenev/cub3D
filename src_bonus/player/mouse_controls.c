@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   mouse_controls.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/29 13:12:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/19 16:07:00 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:10:06 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Handles mouse movement events to rotate the player's view angle.
 // - Tracks the horizontal movement of the mouse and adjusts

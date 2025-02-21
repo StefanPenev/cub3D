@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 08:23:44 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 17:58:10 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:10:45 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 #include "minimap.h"
 
 static void	compute_minimap_data(t_map *map, t_game *game, t_minimap_data *data)

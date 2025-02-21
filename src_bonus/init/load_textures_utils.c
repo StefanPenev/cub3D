@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   load_textures_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 20:13:30 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/20 13:28:03 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:09:27 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Loads a single frame of a texture from an XPM
 // file using the MiniLibX library.

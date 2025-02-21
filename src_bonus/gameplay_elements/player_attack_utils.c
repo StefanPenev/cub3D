@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   player_attack_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:18:02 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 12:49:40 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:08:48 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Calculates the delta distances for the ray direction along the X and Y axes.
 // Delta distances represent how much distance the

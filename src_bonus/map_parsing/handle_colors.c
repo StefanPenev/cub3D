@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_colors.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:06:05 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 15:59:50 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:09:48 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Checks if a given line defines a floor (F) or ceiling (C) color.
 // - Returns 1 if the line starts with 'F ' or 'C '.

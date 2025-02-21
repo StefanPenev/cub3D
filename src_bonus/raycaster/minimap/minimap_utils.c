@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 13:41:30 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 18:03:19 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:10:40 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 #include "minimap.h"
 
 t_enemy	*get_enemy(size_t x, size_t y, t_map *map)

@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:22:45 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 14:26:51 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:10:28 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Draws the debug representation of the map grid, coloring walls and empty
 // spaces

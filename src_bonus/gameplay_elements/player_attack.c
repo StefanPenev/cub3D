@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   player_attack.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:05:08 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 15:25:10 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:08:52 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Reduces the enemy's HP by a fixed amount (PLAYER_DAMAGE).
 // If HP reaches zero or below, marks the enemy as dead,

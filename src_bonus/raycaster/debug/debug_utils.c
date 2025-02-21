@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 22:45:05 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 14:21:44 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:12:23 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Initializes line drawing parameters based on start and end points
 void	init_line_params(int start[], int x_end, int y_end, t_line_params *lp)

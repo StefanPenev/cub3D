@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 12:15:40 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 18:11:11 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 void	initialize_raycast(t_raycast *rc, t_player *pl, t_ctrl *ctrl,
 	float angle)

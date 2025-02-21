@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   player_hp_bar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 13:14:03 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 16:49:55 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:10:10 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 #define X 10
 #define BAR_HEIGHT 20

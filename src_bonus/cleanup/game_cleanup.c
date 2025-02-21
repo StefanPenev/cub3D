@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   game_cleanup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 15:01:45 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 18:08:32 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes_bonus/cub3d.h"
+#include "cub3d_bonus.h"
 
 // Cleans up all dynamically allocated memory related to the game controller.
 // Frees the map, doors, enemies, trigonometric tables,
