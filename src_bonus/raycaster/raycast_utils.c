@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:39:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/14 09:36:36 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 10:36:11 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,11 +131,32 @@ void	draw_skybox(t_game *gm)
 	}
 }
 
-void	draw_ceil_floor(t_game *gm, t_raycast *rc, int col)
+void draw_floor(t_game *gm, t_raycast *rc, int col)
 {
-	while (rc->y < HEIGHT)
+	int		y;
+	float	row_dist;
+	float	floor_x;
+	float	floor_y;
+	float	weight;
+	float	scale_factor;
+	int		tex_x;
+	int		tex_y;
+	int		color;
+
+	scale_factor = 2.5f;
+	y = rc->draw_end;
+	while (y < HEIGHT)
 	{
-		put_pixel(col, rc->y, gm->floor_color, gm);
-		rc->y++;
+		row_dist = (0.5f * HEIGHT) / (y - HEIGHT / 2);
+		weight = row_dist / rc->perp_dist;
+		floor_x = weight * rc->hit_x + (1.0f - weight) * gm->player.x
+			/ TILE_SIZE;
+		floor_y = weight * rc->hit_y + (1.0f - weight) * gm->player.y
+			/ TILE_SIZE;
+		tex_x = (int)(floor_x * TEX_WIDTH * scale_factor) % TEX_WIDTH;
+		tex_y = (int)(floor_y * TEX_HEIGHT * scale_factor) % TEX_HEIGHT;
+		color = get_texture_color(&gm->floor_texture, tex_x, tex_y);
+		put_pixel(col, y, color, gm);
+		y++;
 	}
 }

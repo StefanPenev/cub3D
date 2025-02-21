@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   load_all_textures.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:42:56 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/19 15:46:18 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 10:40:13 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,4 +29,5 @@ void	load_all_textures(t_game *game, t_ctrl *ctrl)
 	load_ceiling_texture(game);
 	load_controls(game);
 	load_controls_button(game);
+	load_floor_texture(game);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/20 13:14:44 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/21 10:39:41 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -569,5 +569,7 @@ void				draw_skybox(t_game *gm);
 void				shoot(t_ctrl *ctrl);
 t_enemy				*get_enemy(size_t x, size_t y, t_map *map);
 float				calculate_distance(float x1, float y1, float x2, float y2);
+void				draw_floor(t_game *gm, t_raycast *rc, int col);
+void				load_floor_texture(t_game *game);
 
 #endif

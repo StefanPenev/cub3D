@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/08 15:08:22 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 10:38:50 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -182,7 +182,7 @@ void	draw_line(t_player *player, t_ctrl *ctrl, float ray_angle,
 		choose_texture(&rc, ctrl);
 		draw_wall(ctrl->game, &rc, screen_column);
 	}
-	draw_ceil_floor(ctrl->game, &rc, screen_column);
+	draw_floor(ctrl->game, &rc, screen_column);
 }
 
 void	handle_rays(t_ctrl *ctrl, float start_angle, float angle_step)
