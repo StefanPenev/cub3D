@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 10:39:41 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 12:17:46 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -571,5 +571,7 @@ t_enemy				*get_enemy(size_t x, size_t y, t_map *map);
 float				calculate_distance(float x1, float y1, float x2, float y2);
 void				draw_floor(t_game *gm, t_raycast *rc, int col);
 void				load_floor_texture(t_game *game);
+void				draw_floor_with_colour(t_game *gm, t_raycast *rc, int col);
+void				draw_ceiling_with_colour(t_game *gm);
 
 #endif

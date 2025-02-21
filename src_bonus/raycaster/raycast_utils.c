@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:39:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 10:36:11 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 12:16:46 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,11 @@ void	draw_skybox(t_game *gm)
 	float	v_ratio;
 	float	vertical_angle;
 
+	if (gm->ceiling_texture.frames_count <= 0)
+	{
+		draw_ceiling_with_colour(gm);
+		return ;
+	}
 	y = 0;
 	while (y < HEIGHT / 2)
 	{
@@ -143,6 +148,11 @@ void draw_floor(t_game *gm, t_raycast *rc, int col)
 	int		tex_y;
 	int		color;
 
+	if (gm->floor_texture.frames_count <= 0)
+	{
+		draw_floor_with_colour(gm, rc, col);
+		return ;
+	}
 	scale_factor = 2.5f;
 	y = rc->draw_end;
 	while (y < HEIGHT)

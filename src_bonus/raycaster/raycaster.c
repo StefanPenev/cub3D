@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 10:38:50 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/21 12:15:40 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,6 @@ void	draw_line(t_player *player, t_ctrl *ctrl, float ray_angle,
 		rc.step = 1.0f * TEX_HEIGHT / rc.wall_height;
 		rc.tex_pos = (rc.draw_start - HEIGHT / 2 + rc.wall_height / 2)
 			* rc.step;
-		//apply_door_offset(&rc, &ctrl->map);
 		draw_door(ctrl, &rc, screen_column);
 	}
 	else
@@ -201,4 +200,34 @@ void	handle_rays(t_ctrl *ctrl, float start_angle, float angle_step)
 		draw_line(&ctrl->game->player, ctrl, ray_angle, i);
 		i++;
 	}
+}
+
+void draw_ceiling_with_colour(t_game *gm)
+{
+    int x;
+    int y;
+
+    y = 0;
+    while (y < HEIGHT / 2)
+    {
+        x = 0;
+        while (x < WIDTH)
+        {
+            put_pixel(x, y, gm->ceiling_color, gm);
+            x++;
+        }
+        y++;
+    }
+}
+
+void draw_floor_with_colour(t_game *gm, t_raycast *rc, int col)
+{
+    int y;
+
+    y = rc->draw_end;
+    while (y < HEIGHT)
+    {
+        put_pixel(col, y, gm->floor_color, gm);
+        y++;
+    }
 }
