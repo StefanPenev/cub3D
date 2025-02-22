@@ -105,10 +105,19 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/player/player.c \
 # Raycaster
 SRCS_BONUS += $(SRC_BONUS_DIR)/raycaster/debug/debug.c \
 			$(SRC_BONUS_DIR)/raycaster/debug/debug_utils.c \
-			$(SRC_BONUS_DIR)/raycaster/raycaster.c \
-			$(SRC_BONUS_DIR)/raycaster/raycaster_utils.c \
-			$(SRC_BONUS_DIR)/raycaster/raycast_utils.c \
-			$(SRC_BONUS_DIR)/raycaster/draw.c \
+			$(SRC_BONUS_DIR)/raycaster/raycast/raycaster.c \
+			$(SRC_BONUS_DIR)/raycaster/raycast/raycaster_utils.c \
+			$(SRC_BONUS_DIR)/raycaster/raycast/raycast_utils.c \
+			$(SRC_BONUS_DIR)/raycaster/draw/draw.c \
+			$(SRC_BONUS_DIR)/raycaster/draw/draw_wall.c \
+			$(SRC_BONUS_DIR)/raycaster/draw/draw_door.c \
+			$(SRC_BONUS_DIR)/raycaster/draw/draw_utils.c \
+			$(SRC_BONUS_DIR)/raycaster/draw/draw_floor.c \
+			$(SRC_BONUS_DIR)/raycaster/draw/draw_enemy.c \
+			$(SRC_BONUS_DIR)/raycaster/draw/draw_enemy_utils.c \
+			$(SRC_BONUS_DIR)/raycaster/draw/draw_weapon.c \
+			$(SRC_BONUS_DIR)/raycaster/draw/draw_ceiling.c \
+			$(SRC_BONUS_DIR)/raycaster/draw/draw_controls.c \
 			$(SRC_BONUS_DIR)/raycaster/minimap/minimap.c \
 			$(SRC_BONUS_DIR)/raycaster/minimap/minimap_utils.c \
 			$(SRC_BONUS_DIR)/raycaster/minimap/minimap_tiles.c \
@@ -121,6 +130,7 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/utils/gnl.c \
 
 # Gameplay_elements
 SRCS_BONUS += $(SRC_BONUS_DIR)/gameplay_elements/doors.c \
+			$(SRC_BONUS_DIR)/gameplay_elements/enemy_states.c \
 			$(SRC_BONUS_DIR)/gameplay_elements/enemy_attack.c \
 			$(SRC_BONUS_DIR)/gameplay_elements/player_attack.c \
 			$(SRC_BONUS_DIR)/gameplay_elements/player_attack_utils.c \

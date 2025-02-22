@@ -6,26 +6,20 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 10:57:32 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 18:11:05 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/22 15:42:42 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-double	compute_delta_time(void)
+void	put_pixel(int x, int y, int color, t_game *game)
 {
-	struct timeval			current_time;
-	double					delta_time;
-	static struct timeval	last_time = {0};
+	char	*dst;
 
-	gettimeofday(&current_time, NULL);
-	if (last_time.tv_sec == 0 && last_time.tv_usec == 0)
-		last_time = current_time;
-	delta_time = (double)(current_time.tv_sec - last_time.tv_sec);
-	delta_time += (double)(current_time.tv_usec
-			- last_time.tv_usec) / 1000000.0;
-	last_time = current_time;
-	return (delta_time);
+	if (x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT)
+		return ;
+	dst = game->img_data + (y * game->size_line + x * (game->bpp / 8));
+	*(unsigned int *)dst = color;
 }
 
 int	get_texture_color(t_texture *texture, int tex_x, int tex_y)

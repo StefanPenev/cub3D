@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3d.h                                            :+:      :+:    :+:   */
+/*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 18:00:50 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/22 18:10:29 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -587,5 +587,20 @@ void				draw_minimap_edges(t_game *game, int end_x, int end_y);
 void				draw_minimap(t_ctrl *ctrl);
 //minimap_helper.c
 void				draw_map_tiles(t_ctrl *ctrl, t_minimap_data *data);
+//draw/draw_enemy.c
+void				draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy);
+
+//gameplay_elements.c
+void				update_enemy_state(t_enemy *enemy, t_player *player,
+						t_ctrl *ctrl, double delta_time);
+
+void draw_controls_button (t_game *game);
+void draw_controls(t_game *game);
+void	draw_crosshair(t_game *game);
+void	clear_image(t_game *game);
+void	choose_weapon(t_game *game);
+void	animate(t_ctrl *ctrl);
+void	animate_doors(t_ctrl *ctrl, double delta_time);
+void	draw_door(t_ctrl *ctrl, t_raycast *rc, int col);
 
 #endif
