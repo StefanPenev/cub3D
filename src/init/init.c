@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/25 10:26:34 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 14:52:55 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 void	init_player(t_player *player, float start_x, float start_y,
 		float orientation)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   gnl.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 13:27:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/23 14:43:18 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/23 14:54:42 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define BUFFER_SIZE 1000000
 #endif
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 static char	*gnl_joining_to_save(char *save, char *buffer)
 {

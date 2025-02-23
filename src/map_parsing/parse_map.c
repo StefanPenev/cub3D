@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 14:30:11 by anilchen          #+#    #+#             */
-/*   Updated: 2025/01/23 15:17:40 by anilchen         ###   ########.fr       */
+/*   Updated: 2025/02/23 14:53:39 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
-#include <ctype.h>
-
-// static bool	data_completed(t_ctrl *ctrl)
-// {
-// 	return (ctrl->game->north_texture.path && ctrl->game->south_texture.path
-// 		&& ctrl->game->west_texture.path && ctrl->game->east_texture.path
-// 		&& ctrl->game->ceiling_color != 0xFFFFFFFF
-// 		&& ctrl->game->floor_color != 0xFFFFFFFF);
-// }
+#include "cub3d.h"
 
 void	complete_map(t_ctrl *ctrl, size_t i, size_t len)
 {

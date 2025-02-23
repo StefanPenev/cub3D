@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:22:45 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 11:24:30 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 14:54:00 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 static void	draw_map_debug(t_game *game, t_map *map, int block_size)
 {

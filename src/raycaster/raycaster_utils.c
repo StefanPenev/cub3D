@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 10:57:32 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/27 11:00:19 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 14:54:13 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 double	compute_delta_time(void)
 {

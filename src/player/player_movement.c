@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 19:10:00 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/22 20:53:24 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 14:53:47 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 static int	is_valid_position(float x, float y, t_map *map)
 {

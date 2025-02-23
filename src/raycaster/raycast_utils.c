@@ -6,11 +6,11 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 10:25:11 by stefan            #+#    #+#             */
-/*   Updated: 2025/01/30 10:27:03 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 14:54:09 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3d.h"
+#include "cub3d.h"
 
 void	compute_wall_dimensions(t_raycast *rc, t_player *pl)
 {
