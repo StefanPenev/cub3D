@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 18:08:32 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 17:15:16 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void	cleanup_textures(t_game *game)
 	free_framed_texture(game, &game->enemy);
 	free_framed_texture(game, &game->crosshair);
 	free_framed_texture(game, &game->ceiling_texture);
+	free_framed_texture(game, &game->floor_texture);
 	free_framed_texture(game, &game->weapon_idle);
 	free_framed_texture(game, &game->weapon_shoot);
 	free_framed_texture(game, &game->door);
