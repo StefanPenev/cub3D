@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:42:56 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 18:09:14 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/22 19:20:17 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	load_floor_texture(t_game *game)
 	char	*floor_frames[2];
 
 	init_texture(&game->floor_texture, 2);
-	game->floor_texture.path = "./textures/floor_tex2.xpm";
+	game->floor_texture.path = "./textures/floor_tex.xpm";
 	floor_frames[0] = game->floor_texture.path;
 	floor_frames[1] = NULL;
 	if (!load_texture(game, &game->floor_texture, floor_frames))

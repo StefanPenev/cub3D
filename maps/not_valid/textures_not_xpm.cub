@@ -1,7 +1,7 @@
 NO textures/n_wall.txt
-SO textures/test/south.xpm
-WE textures/test/west.xpm
-EA textures/test/east.xpm
+SO ./textures/walls/s_walls_0.xpm
+WE ./textures/walls/w_walls_0.xpm
+EA ./textures/walls/e_walls_0.xpm
 
 F 20,20,20
 C 200,200,200

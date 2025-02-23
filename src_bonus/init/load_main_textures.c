@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:07:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 18:09:20 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 11:05:26 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	load_weapon_textures(t_game *game)
 	char	*weapon_shoot_frames[2];
 
 	init_texture(&game->weapon_idle, 2);
-	game->weapon_idle.paths[0] = ft_strdup("./textures/gun_idle.xpm");
+	game->weapon_idle.paths[0] = ft_strdup("./textures/gun/gun_idle.xpm");
 	game->weapon_idle.paths[1] = NULL;
 	weapon_idle_frames[0] = game->weapon_idle.paths[0];
 	weapon_idle_frames[1] = NULL;
@@ -33,7 +33,7 @@ void	load_weapon_textures(t_game *game)
 		return ;
 	}
 	init_texture(&game->weapon_shoot, 2);
-	game->weapon_shoot.paths[0] = ft_strdup("./textures/gun_shoot.xpm");
+	game->weapon_shoot.paths[0] = ft_strdup("./textures/gun/gun_shoot.xpm");
 	game->weapon_shoot.paths[1] = NULL;
 	weapon_shoot_frames[0] = game->weapon_shoot.paths[0];
 	weapon_shoot_frames[1] = NULL;

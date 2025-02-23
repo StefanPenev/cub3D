@@ -1,7 +1,7 @@
-NO textures/n_wall.xpm
-SO textures/s_wall.xpm
-WE textures/w_wall.xpm
-EA textures/e_wall.xpm
+NO ./textures/walls/n_walls_0.xpm
+SO ./textures/walls/s_walls_0.xpm
+WE ./textures/walls/w_walls_0.xpm
+EA ./textures/walls/e_walls_0.xpm
 
 F 20,20,20
 C 200,200,200
