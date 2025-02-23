@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:16:47 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 18:08:44 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 13:01:33 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static void	compute_ray_properties(t_enemy *enemy, t_ctrl *ctrl,
 //  return (int Returns 1 if the path is clear); 0 if blocked by a wall or
 // closed door.
 
-int	check_line_of_sight(t_ctrl *ctrl, double cur_x, double cur_y)
+static int	check_line_of_sight(t_ctrl *ctrl, double cur_x, double cur_y)
 {
 	t_door	*door;
 	int		grid_x;
@@ -140,48 +140,3 @@ void	enemy_attack(t_ctrl *ctrl, t_enemy *enemy)
 		frame_count = 0;
 	}
 }
-
-// int	check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl)
-// {
-// 	double	cur_x;
-// 	double	cur_y;
-// 	double	enemy_px;
-// 	double	enemy_py;
-// 	double	player_px;
-// 	double	player_py;
-// 	double	dx;
-// 	double	dy;
-// 	double	distance;
-// 	double	ray_angle;
-// 	double	step;
-// 	double	cur_dist;
-// 	int		grid_x;
-// 	int		grid_y;
-// 	t_door	*door;
-
-// 	door = NULL;
-// 	enemy_px = enemy->x;
-// 	enemy_py = enemy->y;
-// 	player_px = ctrl->game->player.x;
-// 	player_py = ctrl->game->player.y;
-// 	dx = player_px - enemy_px;
-// 	dy = player_py - enemy_py;
-// 	distance = compute_distance(player_px, player_py, enemy_px, enemy_py);
-// 	ray_angle = atan2(dy, dx);
-// 	step = TILE_SIZE / 8.0;
-// 	cur_dist = 0;
-// 	while (cur_dist < distance)
-// 	{
-// 		cur_x = enemy_px + cur_dist * cos(ray_angle);
-// 		cur_y = enemy_py + cur_dist * sin(ray_angle);
-// 		grid_x = (int)(cur_x / TILE_SIZE);
-// 		grid_y = (int)(cur_y / TILE_SIZE);
-// 		if (ctrl->map.full_map[grid_y][grid_x] == '1')
-// 			return (0);
-// 		door = get_door(grid_x, grid_y, &ctrl->map);
-// 		if (door != NULL && door->state == DOOR_CLOSED)
-// 			return (0);
-// 		cur_dist += step;
-// 	}
-// 	return (1);
-// }

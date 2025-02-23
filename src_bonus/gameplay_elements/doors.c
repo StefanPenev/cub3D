@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 14:38:18 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 18:08:41 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 12:59:36 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // If the player moves away, the timer decreases based on delta_time.
 // Once the timer reaches zero, the door begins closing.
 
-void	handle_open_door(t_door *door, t_ctrl *ctrl, double delta_time)
+static void	handle_open_door(t_door *door, t_ctrl *ctrl, double delta_time)
 {
 	int	x;
 	int	y;

@@ -6,13 +6,13 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/22 14:51:58 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 12:38:57 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
-void	initialize_raycast(t_raycast *rc, t_player *pl, t_ctrl *ctrl,
+static void	initialize_raycast(t_raycast *rc, t_player *pl, t_ctrl *ctrl,
 	float angle)
 {
 	int	index;
@@ -42,7 +42,7 @@ void	initialize_raycast(t_raycast *rc, t_player *pl, t_ctrl *ctrl,
 	rc->is_door = 0;
 }
 
-void	setup_steps(t_raycast *rc, t_player *pl)
+static void	setup_steps(t_raycast *rc, t_player *pl)
 {
 	if (rc->ray_dir_x < 0.0f)
 	{
@@ -69,7 +69,7 @@ void	setup_steps(t_raycast *rc, t_player *pl)
 }
 
 // Performs raycasting to detect walls or doors along a ray's path.
-void	raycast_wall_hit(t_raycast *rc, t_map *map)
+static void	raycast_wall_hit(t_raycast *rc, t_map *map)
 {
 	while (!rc->hit)
 	{
@@ -98,7 +98,7 @@ void	raycast_wall_hit(t_raycast *rc, t_map *map)
 	}
 }
 
-void	draw_line(t_player *player, t_ctrl *ctrl, float ray_angle,
+static void	draw_line(t_player *player, t_ctrl *ctrl, float ray_angle,
 		int screen_column)
 {
 	t_raycast	rc;

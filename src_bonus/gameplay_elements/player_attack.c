@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:05:08 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 18:08:52 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 13:10:32 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // decreases the count of alive enemies, and checks for player victory.
 // Prints appropriate messages when an enemy dies or all enemies are defeated.
 
-void	enemy_take_damage(t_ctrl *ctrl, t_enemy *enemy)
+static void	enemy_take_damage(t_ctrl *ctrl, t_enemy *enemy)
 {
 	if (!enemy)
 		return ;
@@ -42,7 +42,7 @@ void	enemy_take_damage(t_ctrl *ctrl, t_enemy *enemy)
 // Converts the enemy's world position to grid coordinates for comparison.
 // Returns a pointer to the enemy if found; otherwise, returns NULL.
 
-t_enemy	*find_enemy_by_position(t_ctrl *ctrl, int x, int y)
+static t_enemy	*find_enemy_by_position(t_ctrl *ctrl, int x, int y)
 {
 	size_t	i;
 	int		enemy_map_x;
@@ -96,80 +96,3 @@ void	shoot(t_ctrl *ctrl)
 	else
 		printf(COLOR_RED "Miss!\n" COLOR_RESET);
 }
-
-// void	cast_ray(t_ctrl *ctrl, t_raycast *ray, float start_x, float start_y,
-// 		float angle)
-// {
-// 	int		tile_size;
-// 	float	delta_dist_x;
-// 	float	delta_dist_y;
-// 	char	hit_object;
-
-// 	tile_size = TILE_SIZE;
-// 	ray->ray_dir_x = cos(angle);
-// 	ray->ray_dir_y = sin(angle);
-// 	ray->map_x = (int)(start_x / tile_size);
-// 	ray->map_y = (int)(start_y / tile_size);
-// 	ray->hit = 0;
-// 	delta_dist_x = fabs(1 / ray->ray_dir_x);
-// 	delta_dist_y = fabs(1 / ray->ray_dir_y);
-// 	while (!ray->hit)
-// 	{
-// 		if (ray->map_x < 0 || ray->map_x >= (int)ctrl->map.columns
-// 			|| ray->map_y < 0 || ray->map_y >= (int)ctrl->map.rows)
-// 		{
-// 			ray->hit = 1;
-// 			return ;
-// 		}
-// 		if (delta_dist_x < delta_dist_y)
-// 		{
-// 			ray->map_x += (ray->ray_dir_x > 0) ? 1 : -1;
-// 			delta_dist_x += fabs(1 / ray->ray_dir_x);
-// 		}
-// 		else
-// 		{
-// 			ray->map_y += (ray->ray_dir_y > 0) ? 1 : -1;
-// 			delta_dist_y += fabs(1 / ray->ray_dir_y);
-// 		}
-// 		hit_object = ctrl->map.full_map[ray->map_y][ray->map_x];
-// 		if (hit_object == '1' || hit_object == 'M')
-// 			ray->hit = 1;
-// 	}
-// }
-
-// void	shoot(t_ctrl *ctrl)
-// {
-// 	t_raycast	ray;
-// 	t_enemy		*enemy;
-// 	double		enemy_distance;
-// 	float		cross_x;
-// 	float		cross_y;
-
-// 	cross_x = ctrl->game->player.x + cos(ctrl->game->player.angle) * 1.0;
-// 	cross_y = ctrl->game->player.y + sin(ctrl->game->player.angle) * 1.0;
-// 	cast_ray(ctrl, &ray, cross_x, cross_y, ctrl->game->player.angle);
-// 	if (ray.map_x < 0 || ray.map_x >= (int)ctrl->map.columns || ray.map_y < 0
-// 		|| ray.map_y >= (int)ctrl->map.rows)
-// 		return ;
-// 	if (ray.hit && ctrl->map.full_map[ray.map_y][ray.map_x] == 'M')
-// 	{
-// 		enemy = find_enemy_by_position(ctrl, ray.map_x, ray.map_y);
-// 		if (!enemy)
-// 			return ;
-// 		if (enemy->is_dead)
-// 			return ;
-// 		enemy_distance = compute_distance(ctrl->game->player.x,
-// 				ctrl->game->player.y, enemy->x, enemy->y) / TILE_SIZE;
-// 		if (enemy_distance > 2.0)
-// 		{
-// 			printf(COLOR_RED "Miss! Enemy is too far)\n" COLOR_RESET);
-// 			return ;
-// 		}
-// 		enemy_take_damage(ctrl, enemy);
-// 		if (ctrl->game->fight.win_flag)
-// 			return ;
-// 		printf(COLOR_GREEN "Hit enemy!\n" COLOR_RESET);
-// 	}
-// 	else
-// 		printf(COLOR_RED "Miss!\n" COLOR_RESET);
-// }

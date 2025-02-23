@@ -6,7 +6,7 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:41:00 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/23 11:06:17 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 11:39:50 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ void	load_controls_button(t_game *game)
 	char	*controls_b_frames[2];
 
 	init_texture(&game->controls_button, 2);
-	game->controls_button.paths[0] = ft_strdup("./textures/controls/controls3.xpm");
+	game->controls_button.paths[0]
+		= ft_strdup("./textures/controls/controls3.xpm");
 	game->controls_button.paths[1] = NULL;
 	game->controls_button.width = 128;
 	game->controls_button.height = 22;

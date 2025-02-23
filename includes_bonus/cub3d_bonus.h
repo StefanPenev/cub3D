@@ -6,12 +6,12 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/22 18:10:29 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 13:15:15 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUB3D_H
-# define CUB3D_H
+#ifndef CUB3D_BONUS_H
+# define CUB3D_BONUS_H
 
 # include "../libft/libft.h"
 # include <X11/X.h>
@@ -394,7 +394,7 @@ void				assign_enemy(t_enemy *enemy, int y, int x, int id);
 char				*read_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									utils.c										*/
+/*									utils.c									  */
 /* ************************************************************************** */
 
 int					ft_strcmp(const char *s1, const char *s2);
@@ -404,7 +404,7 @@ void				create_frame_paths(t_texture *tex, char *base_path,
 						t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									player.c									*/
+/*									player.c								  */
 /* ************************************************************************** */
 
 int					key_release(int keycode, t_ctrl *ctrl);
@@ -413,25 +413,31 @@ bool				in_map_bounds(float x, float y, t_map *map);
 void				draw_hp_bar(t_game *game, double delta_time);
 
 /* ************************************************************************** */
-/*								player_movement.c  								*/
+/*								player_movement.c  							  */
 /* ************************************************************************** */
 
 void				move_player(t_ctrl *ctrl, double delta_time);
 
 /* ************************************************************************** */
-/*									parse_map.c  								*/
+/*								mouse_controls.c  							  */
+/* ************************************************************************** */
+
+int					mouse_move(int x, int y, t_ctrl *ctrl);
+
+/* ************************************************************************** */
+/*									parse_map.c  							  */
 /* ************************************************************************** */
 
 void				parse_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*										gnl.c  									*/
+/*										gnl.c  								  */
 /* ************************************************************************** */
 
 char				*gnl(int fd, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*								error_checks.c  								*/
+/*								error_checks.c  							  */
 /* ************************************************************************** */
 
 void				check_args(int argc, char *argv[], t_ctrl *ctrl);
@@ -439,61 +445,92 @@ void				check_valid_characters(t_ctrl *ctrl);
 void				check_map_closed(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									flood_fill.c  								*/
+/*									flood_fill.c  							  */
 /* ************************************************************************** */
 
 void				check_map_valid(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*              				raycaster.c                                   */
+/*              				  Raycaster                                   */
 /* ************************************************************************** */
 
-void				handle_rays(t_ctrl *ctrl, float start_angle,
-						float angle_step);
-
-/* ************************************************************************** */
-/*              				raycaster_utils.c                             */
-/* ************************************************************************** */
-
-double				compute_delta_time(void);
-void				normalize_angle(float *angle);
-int					clamp(int value, int min, int max);
-bool				touch(size_t grid_x, size_t grid_y, t_map *map);
-int					get_texture_color(t_texture *texture, int tex_x, int tex_y);
-
-/* ************************************************************************** */
-/*              				raycast_utils.c                               */
-/* ************************************************************************** */
-
-void				compute_wall_x(t_raycast *rc);
-void				choose_texture(t_raycast *rc, t_ctrl *ctrl);
-void				draw_wall(t_game *gm, t_raycast *rc, int col);
-void				draw_ceil_floor(t_game *gm, t_raycast *rc, int col);
-void				compute_wall_dimensions(t_raycast *rc, t_player *pl);
-
-/* ************************************************************************** */
-/*              					debug.c                                   */
-/* ************************************************************************** */
-
+// debug/debug.c
 void				draw_debug(t_ctrl *ctrl);
 
-/* ************************************************************************** */
-/*              					debug_utils.c                             */
-/* ************************************************************************** */
-
+// debug/debug_utils.c
 void				ray_step_loop(t_raycast_debug *rc, t_map *map);
 void				init_raycast_data(t_raycast_debug *rc, t_game *game);
 void				draw_line_coords(int block_size, int x_end, int y_end,
 						t_game *game);
 
-/* ************************************************************************** */
-/*              						draw.c                                */
-/* ************************************************************************** */
+// draw/draw_ceiling.c
+void				draw_skybox(t_game *gm);
+void				draw_ceiling_with_colour(t_game *gm);
 
-int					draw_loop(t_ctrl *ctrl);
-void				draw_map(t_map *mapp, t_game *game);
-void				put_pixel(int x, int y, int color, t_game *game);
+// draw/draw_controls.c
+void				draw_controls(t_game *game);
+void				draw_controls_button(t_game *game);
+
+// draw/draw_door.c
+void				draw_door(t_ctrl *ctrl, t_raycast *rc, int col);
+
+// draw/draw_enemy.c
+void				draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy);
+
+// draw/draw_floor.c
+void				draw_floor(t_game *gm, t_raycast *rc, int col);
+void				draw_floor_with_colour(t_game *gm, t_raycast *rc, int col);
+
+// draw/draw_utils.c
+void				animate(t_ctrl *ctrl);
+void				clear_image(t_game *game);
 void				draw_square(t_square square, t_game *game);
+void				animate_doors(t_ctrl *ctrl, double delta_time);
+float				compute_distance(float x1, float y1, float x2, float y2);
+
+// draw/draw_wall
+void				draw_wall(t_game *gm, t_raycast *rc, int col);
+
+// draw/draw_weapon.c
+void				choose_weapon(t_game *game);
+void				draw_crosshair(t_game *game);
+
+// draw/draw.c
+int					draw_loop(t_ctrl *ctrl);
+
+// minimap/minimap_tile.c
+void				draw_map_tiles(t_ctrl *ctrl, t_minimap_data *data);
+
+// minimap/minimap_utils.c
+t_enemy				*get_enemy(size_t x, size_t y, t_map *map);
+void				draw_circle(int center_x, int center_y, int radius,
+						t_game *game);
+void				draw_minimap_line(t_minimap_data *data, t_game *game);
+void				draw_minimap_edges(t_game *game, int end_x, int end_y);
+
+// minimap/minimap.c
+void				draw_minimap(t_ctrl *ctrl);
+
+// raycast/raycast_utils.c
+double				compute_delta_time(void);
+void				compute_wall_x(t_raycast *rc);
+void				choose_texture(t_raycast *rc, t_ctrl *ctrl);
+void				compute_wall_dimensions(t_raycast *rc, t_player *pl);
+
+// raycast/raycaster_utils.c
+void				normalize_angle(float *angle);
+int					clamp(int value, int min, int max);
+bool				touch(size_t grid_x, size_t grid_y, t_map *map);
+void				put_pixel(int x, int y, int color, t_game *game);
+int					get_texture_color(t_texture *texture, int tex_x, int tex_y);
+
+// raycast/raycaster.c
+void				handle_rays(t_ctrl *ctrl, float start_angle,
+						float angle_step);
+
+// raycaster/trig_tables.c
+t_trig_tables		*init_trig_tables(void);
+void				free_trig_tables(t_trig_tables *tables);
 
 /* ************************************************************************** */
 /*              					init.c                                    */
@@ -532,15 +569,7 @@ void				init_game_window(t_ctrl *ctrl);
 int					space_press(int keycode, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*              			player_attack_utils.c   								*/
-/* ************************************************************************** */
-
-void				cast_ray(t_ctrl *ctrl, t_raycast *ray, float angle);
-int					is_ray_in_bounds(t_ctrl *ctrl, t_raycast *ray);
-int					enemy_in_range(t_ctrl *ctrl, t_enemy *enemy);
-
-/* ************************************************************************** */
-/*              				player_hp_bar.c   								*/
+/*              				player_hp_bar.c   							  */
 /* ************************************************************************** */
 void				get_hit(t_game *game);
 void				draw_bar_frame(int width, int y, t_game *game);
@@ -549,58 +578,28 @@ void				draw_red_bar(int hp_width, int y, t_game *game);
 void				restore_hp(t_game *game, double delta_time);
 
 /* ************************************************************************** */
-/*              				player_hp_bar.c   								*/
+/*								gameplay_elements							  */
 /* ************************************************************************** */
 
-void				select_frame(t_ctrl *ctrl);
-
-int					mouse_move(int x, int y, t_ctrl *ctrl);
-// void				update_doors(t_door *door, t_map *map);
-void				update_doors(t_door *door, t_ctrl *ctrl, double delta_time);
-t_door				*get_door(int grid_x, int grid_y, t_map *map);
-void				door_open(int grid_x, int grid_y, t_map *map);
-
-
+// doors.c
 void				door_state(t_ctrl *ctrl);
-t_trig_tables		*init_trig_tables(void);
-void				free_trig_tables(t_trig_tables *tables);
+t_door				*get_door(int grid_x, int grid_y, t_map *map);
+void				update_doors(t_door *door, t_ctrl *ctrl, double delta_time);
 
-int					check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl);
-// void				enemy_attack(t_ctrl *ctrl);
+// enemy_attack.c
 void				enemy_attack(t_ctrl *ctrl, t_enemy *enemy);
-float				compute_distance(float x1, float y1, float x2, float y2);
-void				draw_skybox(t_game *gm);
-void				shoot(t_ctrl *ctrl);
-t_enemy				*get_enemy(size_t x, size_t y, t_map *map);
-float				calculate_distance(float x1, float y1, float x2, float y2);
-void				draw_floor(t_game *gm, t_raycast *rc, int col);
-void				draw_floor_with_colour(t_game *gm, t_raycast *rc, int col);
-void				draw_ceiling_with_colour(t_game *gm);
+int					check_enemy_visibility(t_enemy *enemy, t_ctrl *ctrl);
 
-//Raycaster
-//minimap_utils.c
-void				draw_circle(int center_x, int center_y, int radius,
-						t_game *game);
-void				draw_minimap_line(t_minimap_data *data, t_game *game);
-void				draw_minimap_edges(t_game *game, int end_x, int end_y);
-//minimap.c
-void				draw_minimap(t_ctrl *ctrl);
-//minimap_helper.c
-void				draw_map_tiles(t_ctrl *ctrl, t_minimap_data *data);
-//draw/draw_enemy.c
-void				draw_enemy(t_ctrl *ctrl, t_player *player, t_enemy *enemy);
-
-//gameplay_elements.c
+// enemy_states.c
 void				update_enemy_state(t_enemy *enemy, t_player *player,
 						t_ctrl *ctrl, double delta_time);
 
-void draw_controls_button (t_game *game);
-void draw_controls(t_game *game);
-void	draw_crosshair(t_game *game);
-void	clear_image(t_game *game);
-void	choose_weapon(t_game *game);
-void	animate(t_ctrl *ctrl);
-void	animate_doors(t_ctrl *ctrl, double delta_time);
-void	draw_door(t_ctrl *ctrl, t_raycast *rc, int col);
+// player_attack_utils.c
+int					enemy_in_range(t_ctrl *ctrl, t_enemy *enemy);
+int					is_ray_in_bounds(t_ctrl *ctrl, t_raycast *ray);
+void				cast_ray(t_ctrl *ctrl, t_raycast *ray, float angle);
+
+// player_attack.c
+void				shoot(t_ctrl *ctrl);
 
 #endif
