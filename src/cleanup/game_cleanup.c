@@ -6,12 +6,17 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/23 14:52:38 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 20:29:20 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+/**
+ * free_map - Frees the memory allocated for the map.
+ * @map: The map to be freed.
+ * @rows: The number of rows in the map.
+ */
 void	free_map(char **map, size_t rows)
 {
 	size_t	i;
@@ -28,6 +33,10 @@ void	free_map(char **map, size_t rows)
 	free(map);
 }
 
+/**
+ * game_cleanup - Frees the resources allocated for the game.
+ * @ctrl: The control structure holding game data.
+ */
 void	game_cleanup(t_ctrl *ctrl)
 {
 	if (ctrl->map.full_map)
@@ -48,6 +57,11 @@ void	game_cleanup(t_ctrl *ctrl)
 	ctrl = NULL;
 }
 
+/**
+ * clean_exit - Cleans up resources and exits the game.
+ * @str: Error message to be printed.
+ * @ctrl: The control structure holding game data.
+ */
 void	clean_exit(char *str, t_ctrl *ctrl)
 {
 	if (str != NULL)
@@ -58,6 +72,10 @@ void	clean_exit(char *str, t_ctrl *ctrl)
 	exit(1);
 }
 
+/**
+ * cleanup_textures - Destroys all the textures in the game.
+ * @game: The game structure holding textures.
+ */
 void	cleanup_textures(t_game *game)
 {
 	if (game->north_texture.img)
@@ -72,6 +90,12 @@ void	cleanup_textures(t_game *game)
 		mlx_destroy_image(game->mlx, game->img);
 }
 
+/**
+ * close_window - Closes the game window and frees resources.
+ * @ctrl: The control structure holding game data.
+ * 
+ * Returns: EXIT_SUCCESS on success.
+ */
 int	close_window(t_ctrl *ctrl)
 {
 	if (!ctrl)

@@ -6,12 +6,19 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 22:45:05 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/23 14:53:56 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 20:22:46 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+/**
+ * init_line_params - Initializes the parameters for drawing a line.
+ * @start: The starting coordinates of the line.
+ * @x_end: The x-coordinate of the line's endpoint.
+ * @y_end: The y-coordinate of the line's endpoint.
+ * @lp: The structure holding the line parameters.
+ */
 void	init_line_params(int start[], int x_end, int y_end, t_line_params *lp)
 {
 	int	x_start;
@@ -32,6 +39,13 @@ void	init_line_params(int start[], int x_end, int y_end, t_line_params *lp)
 	lp->error_val = lp->delta_x - lp->delta_y;
 }
 
+/**
+ * draw_line_coords - Draws a line on the map using given coordinates.
+ * @block_size: The size of each block in the grid.
+ * @x_end: The x-coordinate of the line's endpoint.
+ * @y_end: The y-coordinate of the line's endpoint.
+ * @game: The game structure for access to the drawing functions.
+ */
 void	draw_line_coords(int block_size, int x_end, int y_end, t_game *game)
 {
 	t_line_params	lp;
@@ -59,6 +73,11 @@ void	draw_line_coords(int block_size, int x_end, int y_end, t_game *game)
 	}
 }
 
+/**
+ * ray_step_loop - Steps through the raycasting process until a hit is found.
+ * @rc: The raycast debug structure holding ray data.
+ * @map: The map structure with the grid to be checked.
+ */
 void	ray_step_loop(t_raycast_debug *rc, t_map *map)
 {
 	while (!rc->hit && rc->grid_x < map->columns && rc->grid_y < map->rows)
@@ -84,6 +103,11 @@ void	ray_step_loop(t_raycast_debug *rc, t_map *map)
 	}
 }
 
+/**
+ * init_raycast_data_steps - Initializes the step calculations for raycasting.
+ * @rc: The raycast debug structure holding ray data.
+ * @game: The game structure for player information.
+ */
 static void	init_raycast_data_steps(t_raycast_debug *rc, t_game *game)
 {
 	float	px;
@@ -113,6 +137,11 @@ static void	init_raycast_data_steps(t_raycast_debug *rc, t_game *game)
 	}
 }
 
+/**
+ * init_raycast_data - Initializes the raycasting data for the current ray.
+ * @rc: The raycast debug structure to be initialized.
+ * @game: The game structure for access to player position.
+ */
 void	init_raycast_data(t_raycast_debug *rc, t_game *game)
 {
 	rc->hit = 0;

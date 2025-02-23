@@ -6,12 +6,18 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/23 14:52:48 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 20:15:43 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+/**
+ * init_hooks - Initializes the event hooks for the game.
+ * @ctrl: The control structure containing the game data.
+ * 
+ * Sets up hooks for the main loop, key press/release, and window close events.
+ */
 void	init_hooks(t_ctrl *ctrl)
 {
 	mlx_loop_hook(ctrl->game->mlx, draw_loop, ctrl);
@@ -20,6 +26,13 @@ void	init_hooks(t_ctrl *ctrl)
 	mlx_hook(ctrl->game->win, 17, 0, close_window, ctrl);
 }
 
+/**
+ * init_game_window - Initializes the game window and image.
+ * @ctrl: The control structure containing the game data.
+ * 
+ * Creates the MLX window, image, and retrieves image data. Exits if any
+ * initialization fails.
+ */
 void	init_game_window(t_ctrl *ctrl)
 {
 	ctrl->game->mlx = mlx_init();

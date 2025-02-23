@@ -6,12 +6,32 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 10:25:11 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/23 14:54:09 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 20:24:54 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+/**
+ * compute_wall_dimensions - Calculates the wall dimensions and draw range.
+ *  @rc: Pointer to the raycasting structure containing ray data.
+ *  @pl: Pointer to the player structure containing player position.
+ *
+ * This function computes the distance to the wall (both real and
+ * perpendicular), 
+ * the wall height, and the vertical screen range (start and end) to draw the
+ * wall 
+ * based on the ray's intersection with the wall.
+ * - `real_dist`: The true distance from the player to the wall.
+ * - `perp_dist`: The perpendicular distance, used to compute wall height and
+ * 	  avoid distortions.
+ * - `wall_height`: The height of the wall on the screen based on its distance
+ *    from the player.
+ * - `draw_start` and `draw_end`: The vertical screen coordinates where the wall
+ * 	  will be drawn.
+ * - `hit_x` and `hit_y`: The exact point where the ray hits the wall in world
+ *    coordinates.
+ */
 void	compute_wall_dimensions(t_raycast *rc, t_player *pl)
 {
 	if (rc->hit)
@@ -31,6 +51,18 @@ void	compute_wall_dimensions(t_raycast *rc, t_player *pl)
 	rc->hit_y = pl->y / TILE_SIZE + rc->real_dist * rc->ray_dir_y;
 }
 
+/**
+ * compute_wall_x - Computes the exact texture coordinates for the wall hit.
+ *  @rc: Pointer to the raycasting structure containing ray data.
+ *
+ * This function calculates the X coordinate of the point where the ray hits
+ * the wall, 
+ * which is used to select the appropriate texture from the texture atlas.
+ * It also 
+ * calculates the texture X coordinate (`tex_x`) for sampling.
+ * - `wall_x`: The precise X coordinate of the wall hit in world space.
+ * - `tex_x`: The X coordinate in the texture, based on the wall's X hit.
+ */
 void	compute_wall_x(t_raycast *rc)
 {
 	if (rc->side == 0)
@@ -45,6 +77,21 @@ void	compute_wall_x(t_raycast *rc)
 	rc->tex_x = clamp(rc->tex_x, 0, TEX_WIDTH - 1);
 }
 
+/**
+ * choose_texture - Selects the appropriate texture for the wall based on
+ * the ray's side.
+ *  @rc: Pointer to the raycasting structure containing ray data.
+ *  @gm: Pointer to the game structure containing the textures.
+ *
+ * This function selects the texture to use for the wall depending on the
+ * side the ray hit:
+ * - If the ray hit a vertical wall (`side == 0`), it uses the east or
+ * west texture.
+ * - If the ray hit a horizontal wall (`side == 1`), it uses the north
+ * or south texture.
+ * It also calculates the texture step size and initializes the texture
+ * position for the vertical slice.
+ */
 void	choose_texture(t_raycast *rc, t_game *gm)
 {
 	if (rc->side == 0)
@@ -66,6 +113,18 @@ void	choose_texture(t_raycast *rc, t_game *gm)
 		* rc->step;
 }
 
+/**
+ * draw_wall - Draws the wall slice on the screen for a given column.
+ *  @gm: Pointer to the game structure.
+ *  @rc: Pointer to the raycasting structure containing ray data.
+ *  @col: The column index on the screen where the wall is drawn.
+ *
+ * This function loops through the vertical range of the wall (`draw_start`
+ * to `draw_end`)
+ * and draws the texture on the screen for the current column. It fetches
+ * the pixel color 
+ * from the selected texture and places it at the appropriate screen coordinates.
+ */
 void	draw_wall(t_game *gm, t_raycast *rc, int col)
 {
 	rc->y = rc->draw_start;
@@ -80,6 +139,16 @@ void	draw_wall(t_game *gm, t_raycast *rc, int col)
 	}
 }
 
+/**
+ * draw_ceil_floor - Draws the ceiling and floor for a given column.
+ *  @gm: Pointer to the game structure.
+ *  @rc: Pointer to the raycasting structure containing ray data.
+ *  @col: The column index on the screen where the ceiling and floor are drawn.
+ *
+ * This function draws the ceiling above the wall and the floor below the wall 
+ * for the given column. The ceiling and floor colors are fetched from the
+ * game structure.
+ */
 void	draw_ceil_floor(t_game *gm, t_raycast *rc, int col)
 {
 	rc->y = 0;

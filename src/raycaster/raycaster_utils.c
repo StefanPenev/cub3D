@@ -6,12 +6,22 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 10:57:32 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/23 14:54:13 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 20:25:49 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+/**
+ * compute_delta_time - Calculates the time elapsed since the last function call.
+ *
+ * This function retrieves the current time using `gettimeofday`, then computes
+ * the difference between the current time and the last recorded time. This delta
+ * time is used for frame timing and movement calculations in the game.
+ *
+ * Returns:
+ * - The elapsed time in seconds as a double.
+ */
 double	compute_delta_time(void)
 {
 	struct timeval			current_time;
@@ -28,6 +38,18 @@ double	compute_delta_time(void)
 	return (delta_time);
 }
 
+/**
+ * get_texture_color - Retrieves the color of a specific pixel in a texture.
+ * 	@texture: Pointer to the texture structure.
+ * 	@tex_x: The x-coordinate of the pixel in the texture.
+ * 	@tex_y: The y-coordinate of the pixel in the texture.
+ *
+ * This function ensures that the requested pixel coordinates are within bounds
+ * and then extracts the color value from the texture data.
+ *
+ * Returns:
+ * - The integer color value of the specified texture pixel.
+ */
 int	get_texture_color(t_texture *texture, int tex_x, int tex_y)
 {
 	char	*pixel;
@@ -45,6 +67,18 @@ int	get_texture_color(t_texture *texture, int tex_x, int tex_y)
 	return (*(int *)pixel);
 }
 
+/**
+ * clamp - Restricts a value within a specified range.
+ * 	@value: The input value to be clamped.
+ * 	@min: The minimum allowed value.
+ * 	@max: The maximum allowed value.
+ *
+ * This function ensures that the given value does not go below the minimum or
+ * above the maximum limit.
+ *
+ * Returns:
+ * - The clamped value within the range [min, max].
+ */
 int	clamp(int value, int min, int max)
 {
 	if (value < min)
@@ -54,6 +88,18 @@ int	clamp(int value, int min, int max)
 	return (value);
 }
 
+/**
+ * touch - Checks if a grid cell contains a wall.
+ * 	@grid_x: The x-coordinate of the grid cell.
+ * 	@grid_y: The y-coordinate of the grid cell.
+ * 	@map: Pointer to the map structure containing the game world.
+ *
+ * This function verifies whether the specified grid cell is within the map's
+ * boundaries and checks if it contains a wall ('1').
+ *
+ * Returns:
+ * - true if the cell contains a wall, false otherwise.
+ */
 bool	touch(size_t grid_x, size_t grid_y, t_map *map)
 {
 	if (grid_x >= map->columns || grid_y >= map->rows)
@@ -61,6 +107,13 @@ bool	touch(size_t grid_x, size_t grid_y, t_map *map)
 	return (map->full_map[grid_y][grid_x] == '1');
 }
 
+/**
+ * normalize_angle - Adjusts an angle to be within the range [0, 2π].
+ * 	@angle: Pointer to the angle variable to be normalized.
+ *
+ * This function ensures that the given angle stays within a valid range by
+ * adding or subtracting multiples of 2π as necessary.
+ */
 void	normalize_angle(float *angle)
 {
 	while (*angle < 0)

@@ -6,12 +6,18 @@
 /*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:22:45 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/23 14:54:00 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/23 20:20:30 by stefan           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
+/**
+ * draw_map_debug - Draws the map in debug mode, coloring tiles.
+ * @game: The game structure.
+ * @map: The map structure.
+ * @block_size: The size of each map block.
+ */
 static void	draw_map_debug(t_game *game, t_map *map, int block_size)
 {
 	size_t	y;
@@ -36,6 +42,11 @@ static void	draw_map_debug(t_game *game, t_map *map, int block_size)
 	}
 }
 
+/**
+ * draw_player_debug - Draws the player's position in debug mode.
+ * @game: The game structure.
+ * @block_size: The size of each block for the player's representation.
+ */
 static void	draw_player_debug(t_game *game, int block_size)
 {
 	int	player_x;
@@ -47,6 +58,12 @@ static void	draw_player_debug(t_game *game, int block_size)
 			player_y - block_size / 8, block_size / 4, 0x00FF00), game);
 }
 
+/**
+ * draw_hit_line - Draws a line representing the raycast hit position.
+ * @game: The game structure.
+ * @rc: The raycast debug data.
+ * @block_size: The size of each block in the map.
+ */
 static void	draw_hit_line(t_game *game, t_raycast_debug rc, int block_size)
 {
 	float	hit_pos_x;
@@ -61,6 +78,11 @@ static void	draw_hit_line(t_game *game, t_raycast_debug rc, int block_size)
 	draw_line_coords(block_size, hit_x, hit_y, game);
 }
 
+/**
+ * cast_rays_debug - Casts rays and draws the hit lines in debug mode.
+ * @ctrl: The control structure.
+ * @block_size: The size of each map block.
+ */
 static void	cast_rays_debug(t_ctrl *ctrl, int block_size)
 {
 	t_raycast_debug	rc;
@@ -87,6 +109,11 @@ static void	cast_rays_debug(t_ctrl *ctrl, int block_size)
 	}
 }
 
+/**
+ * draw_debug - Draws all the debug information including the map, player,
+ * and rays.
+ * @ctrl: The control structure.
+ */
 void	draw_debug(t_ctrl *ctrl)
 {
 	t_game	*game;
