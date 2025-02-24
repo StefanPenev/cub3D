@@ -16,6 +16,11 @@ def test_maps(executable, directory):
         print(YELLOW + "No .cub files found in the directory." + RESET)
         return
 
+    passed_tests = []
+    failed_tests = []
+    passed_count = 0
+    failed_count = 0
+
     for map_file in map_files:
         map_path = os.path.join(directory, map_file)
         print(BLUE + f"Testing map: {map_file}" + RESET)
@@ -25,8 +30,12 @@ def test_maps(executable, directory):
             result = subprocess.run([executable, map_path], capture_output=True, text=True)
             if result.returncode != 0:
                 print(GREEN + f"[PASSED] {map_file} (Invalid map correctly rejected)" + RESET)
+                passed_tests.append(map_file)
+                passed_count += 1
             else:
                 print(RED + f"[FAILED] {map_file} (Invalid map was accepted!)" + RESET)
+                failed_tests.append(map_file)
+                failed_count += 1
             print(YELLOW + "Output:" + RED + f" {result.stdout}" + RESET)
             if result.stderr:
                 print(RED + "Errors:" + RESET, result.stderr)
@@ -61,5 +70,15 @@ def test_maps(executable, directory):
 
         print("-" * 50)  # Separator for readability
 
+    # Final summary
+    print(BLUE + "========== TEST SUMMARY ==========" + RESET)
+    print(GREEN + f"✅ Passed tests: {passed_count}" + RESET)
+    if passed_tests:
+        print(GREEN + "Passed: " + ", ".join(passed_tests) + RESET)
+    print(RED + f"❌ Failed tests: {failed_count}" + RESET)
+    if failed_tests:
+        print(RED + "Failed: " + ", ".join(failed_tests) + RESET)
+    print(BLUE + "==================================" + RESET)
+
 if __name__ == "__main__":
-    test_maps("./cub3D", "maps/not_valid")
+    test_maps("./cub3D_bonus", "maps/not_valid")

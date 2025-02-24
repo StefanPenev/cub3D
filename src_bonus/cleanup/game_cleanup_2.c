@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_cleanup_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/10 16:50:43 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 18:08:20 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 13:57:54 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,34 @@ void	free_map(char **map, size_t rows)
 // and sets its pointer to NULL.
 // Frees the corresponding file path string if it exists and sets it to NULL.
 
-void	free_frame(t_game *game, t_texture *texture, int i)
+void	free_frames(t_game *game, t_texture *texture)
 {
-	if (texture->frames[i])
+	int	i;
+
+	i = 0;
+	while (texture->frames[i] != NULL)
 	{
 		mlx_destroy_image(game->mlx, texture->frames[i]);
 		texture->frames[i] = NULL;
+		i++;
 	}
-	if (texture->paths && texture->paths[i])
+	free(texture->frames);
+	texture->frames = NULL;
+}
+
+void	free_paths(t_texture *texture)
+{
+	int	i;
+
+	i = 0;
+	while (texture->paths[i] != NULL)
 	{
 		free(texture->paths[i]);
 		texture->paths[i] = NULL;
+		i++;
 	}
+	free(texture->paths);
+	texture->paths = NULL;
 }
 
 // Frees all resources associated with a framed texture.
@@ -59,25 +75,15 @@ void	free_frame(t_game *game, t_texture *texture, int i)
 
 void	free_framed_texture(t_game *game, t_texture *texture)
 {
-	int	i;
-
 	if (!texture)
 		return ;
 	if (texture->frames)
 	{
-		i = 0;
-		while (texture->frames[i] != NULL)
-		{
-			free_frame(game, texture, i);
-			i++;
-		}
-		free(texture->frames);
-		texture->frames = NULL;
+		free_frames(game, texture);
 	}
 	if (texture->paths)
 	{
-		free(texture->paths);
-		texture->paths = NULL;
+		free_paths(texture);
 	}
 	if (texture->frames_addr)
 	{

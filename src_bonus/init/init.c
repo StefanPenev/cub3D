@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/24 10:43:33 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/24 14:05:47 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 void	init_player(t_ctrl *ctrl)
 {
-	int		index;
+	int	index;
 
 	index = get_table_index(ctrl->game->player.angle);
 	ctrl->game->player.x = ctrl->map.player_position.x;
@@ -116,6 +116,7 @@ void	init_map(t_map *map)
 	map->doors_counter = 0;
 	map->enemies_counter = 0;
 	map->doors = NULL;
+	map->enemies = NULL;
 }
 
 // Initializes the main control structure (t_ctrl).

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_textures.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:09:47 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 18:09:52 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 13:08:02 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	assign_path(t_texture *tex, char *path, char *line, t_ctrl *ctrl)
 	char	*base_path;
 	size_t	len;
 
-	if (tex->path != NULL)
+	if (tex->paths[0] != NULL)
 	{
 		free(line);
 		free_and_exit("Wrong input:\nTexture is duplicated\n", path, NULL,
