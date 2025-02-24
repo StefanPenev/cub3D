@@ -3,15 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/30 15:39:50 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/22 15:46:24 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 12:09:10 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
 
+/**
+ * compute_delta_time - Calculates the time elapsed since the last function call.
+ *
+ * This function retrieves the current time using `gettimeofday`, then computes
+ * the difference between the current time and the last recorded time. This delta
+ * time is used for frame timing and movement calculations in the game.
+ *
+ * Returns:
+ * - The elapsed time in seconds as a double.
+ */
 double	compute_delta_time(void)
 {
 	struct timeval			current_time;
@@ -28,6 +38,26 @@ double	compute_delta_time(void)
 	return (delta_time);
 }
 
+/**
+ * compute_wall_dimensions - Calculates the wall dimensions and draw range.
+ *  @rc: Pointer to the raycasting structure containing ray data.
+ *  @pl: Pointer to the player structure containing player position.
+ *
+ * This function computes the distance to the wall (both real and
+ * perpendicular), 
+ * the wall height, and the vertical screen range (start and end) to draw the
+ * wall 
+ * based on the ray's intersection with the wall.
+ * - `real_dist`: The true distance from the player to the wall.
+ * - `perp_dist`: The perpendicular distance, used to compute wall height and
+ * 	  avoid distortions.
+ * - `wall_height`: The height of the wall on the screen based on its distance
+ *    from the player.
+ * - `draw_start` and `draw_end`: The vertical screen coordinates where the wall
+ * 	  will be drawn.
+ * - `hit_x` and `hit_y`: The exact point where the ray hits the wall in world
+ *    coordinates.
+ */
 void	compute_wall_dimensions(t_raycast *rc, t_player *pl)
 {
 	if (rc->hit)
@@ -47,6 +77,18 @@ void	compute_wall_dimensions(t_raycast *rc, t_player *pl)
 	rc->hit_y = pl->y / TILE_SIZE + rc->real_dist * rc->ray_dir_y;
 }
 
+/**
+ * compute_wall_x - Computes the exact texture coordinates for the wall hit.
+ *  @rc: Pointer to the raycasting structure containing ray data.
+ *
+ * This function calculates the X coordinate of the point where the ray hits
+ * the wall, 
+ * which is used to select the appropriate texture from the texture atlas.
+ * It also 
+ * calculates the texture X coordinate (`tex_x`) for sampling.
+ * - `wall_x`: The precise X coordinate of the wall hit in world space.
+ * - `tex_x`: The X coordinate in the texture, based on the wall's X hit.
+ */
 void	compute_wall_x(t_raycast *rc)
 {
 	if (rc->side == 0)
@@ -61,6 +103,17 @@ void	compute_wall_x(t_raycast *rc)
 	rc->tex_x = clamp(rc->tex_x, 0, TEX_WIDTH - 1);
 }
 
+/**
+ * select_wall_texture - Selects the appropriate wall texture based on the ray's
+ * side and direction.
+ * @rc: Pointer to the raycasting structure, which holds ray information.
+ * @ctrl: Pointer to the control structure, which contains game-related settings.
+ *
+ * This function determines which texture to use for the wall, based on which
+ * side of the map the
+ * ray intersects and its direction. It returns a pointer to the corresponding
+ * texture.
+ */
 static t_texture	*select_wall_texture(t_raycast *rc, t_ctrl *ctrl)
 {
 	if (rc->side == 0)
@@ -79,6 +132,19 @@ static t_texture	*select_wall_texture(t_raycast *rc, t_ctrl *ctrl)
 	}
 }
 
+/**
+ * choose_texture - Chooses the correct texture for the wall and applies any
+ * animation if present.
+ * @rc: Pointer to the raycasting structure, which holds ray information and
+ * the selected texture.
+ * @ctrl: Pointer to the control structure, which contains the game's
+ * animation data.
+ *
+ * This function selects the correct wall texture based on the ray's side and
+ * direction, then checks
+ * if the texture has frames for animation. It applies the correct animation
+ * frame if available.
+ */
 void	choose_texture(t_raycast *rc, t_ctrl *ctrl)
 {
 	size_t		frame_index;
