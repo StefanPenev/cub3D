@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_cleanup.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 13:40:22 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/23 17:15:16 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 14:14:24 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	clean_exit(char *str, t_ctrl *ctrl)
 	{
 		printf("%s", str);
 	}
-	close_window(ctrl);
+	close_window(ctrl, 1);
 }
 
 // Frees all textures associated with the game.
@@ -85,7 +85,7 @@ void	cleanup_textures(t_game *game)
 // - Ends the MLX loop and destroys the window.
 // - Cleans up the MLX display and exits the program successfully.
 
-int	close_window(t_ctrl *ctrl)
+int	close_window(t_ctrl *ctrl, int error_flag)
 {
 	if (!ctrl)
 		exit(EXIT_FAILURE);
@@ -104,5 +104,8 @@ int	close_window(t_ctrl *ctrl)
 		ctrl->game->mlx = NULL;
 	}
 	game_cleanup(ctrl);
-	exit(EXIT_SUCCESS);
+	if (error_flag)
+		exit(EXIT_FAILURE);
+	else
+		exit(EXIT_SUCCESS);
 }

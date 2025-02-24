@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/24 11:12:22 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/24 14:14:47 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -354,7 +354,7 @@ void				free_single_texture(t_game *game);
 void				free_framed_texture(t_game *game, t_texture *texture);
 void				game_cleanup(t_ctrl *ctrl);
 void				clean_exit(char *str, t_ctrl *ctrl);
-int					close_window(t_ctrl *ctrl);
+int					close_window(t_ctrl *ctrl, int error_flag);
 
 /* ************************************************************************** */
 /*              				handle_colors.c                               */
@@ -393,7 +393,7 @@ void				assign_enemy(t_enemy *enemy, int y, int x, int id);
 char				*read_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									utils.c									  */
+/*									utils.c										*/
 /* ************************************************************************** */
 
 int					ft_strcmp(const char *s1, const char *s2);
@@ -403,7 +403,7 @@ void				create_frame_paths(t_texture *tex, char *base_path,
 						t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									player.c								  */
+/*									player.c									*/
 /* ************************************************************************** */
 
 int					key_release(int keycode, t_ctrl *ctrl);
@@ -412,31 +412,31 @@ bool				in_map_bounds(float x, float y, t_map *map);
 void				draw_hp_bar(t_game *game, double delta_time);
 
 /* ************************************************************************** */
-/*								player_movement.c  							  */
+/*								player_movement.c  								*/
 /* ************************************************************************** */
 
 void				move_player(t_ctrl *ctrl, double delta_time);
 
 /* ************************************************************************** */
-/*								mouse_controls.c  							  */
+/*								mouse_controls.c  								*/
 /* ************************************************************************** */
 
 int					mouse_move(int x, int y, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									parse_map.c  							  */
+/*									parse_map.c  								*/
 /* ************************************************************************** */
 
 void				parse_map(char *filename, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*										gnl.c  								  */
+/*										gnl.c  									*/
 /* ************************************************************************** */
 
 char				*gnl(int fd, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*								error_checks.c  							  */
+/*								error_checks.c  								*/
 /* ************************************************************************** */
 
 void				check_args(int argc, char *argv[], t_ctrl *ctrl);
@@ -444,13 +444,13 @@ void				check_valid_characters(t_ctrl *ctrl);
 void				check_map_closed(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*									flood_fill.c  							  */
+/*									flood_fill.c  								*/
 /* ************************************************************************** */
 
 void				check_map_valid(t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*              				  Raycaster                                   */
+/*              					Raycaster                                   */
 /* ************************************************************************** */
 
 // draw/draw_ceiling.c
@@ -559,7 +559,7 @@ void				init_game_window(t_ctrl *ctrl);
 int					space_press(int keycode, t_ctrl *ctrl);
 
 /* ************************************************************************** */
-/*              				player_hp_bar.c   							  */
+/*              				player_hp_bar.c   								*/
 /* ************************************************************************** */
 void				get_hit(t_game *game);
 void				draw_bar_frame(int width, int y, t_game *game);
@@ -568,7 +568,7 @@ void				draw_red_bar(int hp_width, int y, t_game *game);
 void				restore_hp(t_game *game, double delta_time);
 
 /* ************************************************************************** */
-/*								gameplay_elements							  */
+/*								gameplay_elements								*/
 /* ************************************************************************** */
 
 // doors.c

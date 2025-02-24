@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:59 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 18:10:16 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 14:14:54 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	key_press(int keycode, t_ctrl *ctrl)
 	if (keycode == KEY_RIGHT)
 		player->right_rotate = true;
 	if (keycode == KEY_ESC)
-		close_window(ctrl);
+		close_window(ctrl, 0);
 	else
 		game_activities(keycode, ctrl);
 	return (0);

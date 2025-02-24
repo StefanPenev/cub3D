@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   init_hooks.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
+/*   By: anilchen <anilchen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/24 11:11:20 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/24 14:19:39 by anilchen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d_bonus.h"
+
+// Uses only for closing window by mouse click and choose correct exit code
+
+int	close_window_no_error(t_ctrl *ctrl)
+{
+	close_window(ctrl, 0);
+	return (0);
+}
 
 // Handles the event when the spacebar key is pressed.
 // If the spacebar (SPACE) is detected, sets the shooting flag to 1
@@ -64,7 +72,7 @@ void	init_hooks(t_ctrl *ctrl)
 	mlx_hook(ctrl->game->win, 2, 1L << 0, key_press, ctrl);
 	mlx_hook(ctrl->game->win, 3, 1L << 1, key_release, ctrl);
 	mlx_mouse_hook(ctrl->game->win, mouse_click, ctrl);
-	mlx_hook(ctrl->game->win, 17, 0, close_window, ctrl);
+	mlx_hook(ctrl->game->win, 17, 0, close_window_no_error, ctrl);
 }
 
 // Initializes the main game window and rendering image buffer.
