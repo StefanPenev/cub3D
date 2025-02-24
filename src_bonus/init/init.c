@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 18:23:10 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 18:09:09 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 10:43:33 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,25 @@
 // Sets default movement flags to false, player HP, direction vector,
 // and camera plane for rendering.
 
-void	init_player(t_player *player, float start_x, float start_y,
-		float orientation)
+void	init_player(t_ctrl *ctrl)
 {
-	player->x = start_x;
-	player->y = start_y;
-	player->angle = orientation;
-	player->key_up = false;
-	player->key_down = false;
-	player->key_right = false;
-	player->key_left = false;
-	player->left_rotate = false;
-	player->right_rotate = false;
-	player->hp = PLAYER_HP;
-	player->dir_x = cos(player->angle);
-	player->dir_y = sin(player->angle);
-	player->plane_x = -player->dir_y * 0.66;
-	player->plane_y = player->dir_x * 0.66;
+	int		index;
+
+	index = get_table_index(ctrl->game->player.angle);
+	ctrl->game->player.x = ctrl->map.player_position.x;
+	ctrl->game->player.y = ctrl->map.player_position.y;
+	ctrl->game->player.angle = ctrl->map.player_position.orientation;
+	ctrl->game->player.key_up = false;
+	ctrl->game->player.key_down = false;
+	ctrl->game->player.key_right = false;
+	ctrl->game->player.key_left = false;
+	ctrl->game->player.left_rotate = false;
+	ctrl->game->player.right_rotate = false;
+	ctrl->game->player.hp = PLAYER_HP;
+	ctrl->game->player.dir_x = ctrl->trig_tables->cos_table[index];
+	ctrl->game->player.dir_y = ctrl->trig_tables->sin_table[index];
+	ctrl->game->player.plane_x = -ctrl->game->player.dir_y * 0.66;
+	ctrl->game->player.plane_y = ctrl->game->player.dir_x * 0.66;
 }
 
 // Initializes the texture structure and allocates memory for frame data.

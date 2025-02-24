@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 22:45:05 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/23 11:49:55 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 10:14:40 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,14 +119,17 @@ static void	init_raycast_data_steps(t_raycast_debug *rc, t_game *game)
 }
 
 // Initializes raycasting data including direction, grid position, and distances
-void	init_raycast_data(t_raycast_debug *rc, t_game *game)
+void	init_raycast_data(t_raycast_debug *rc, t_ctrl *ctrl)
 {
+	int		index;
+
 	rc->hit = 0;
 	rc->distance = 0.0f;
-	rc->grid_x = (size_t)(game->player.x / TILE_SIZE);
-	rc->grid_y = (size_t)(game->player.y / TILE_SIZE);
-	rc->ray_dir_x = cosf(rc->ray_angle);
-	rc->ray_dir_y = sinf(rc->ray_angle);
+	rc->grid_x = (size_t)(ctrl->game->player.x / TILE_SIZE);
+	rc->grid_y = (size_t)(ctrl->game->player.y / TILE_SIZE);
+	index = get_table_index(rc->ray_angle);
+	rc->ray_dir_x = ctrl->trig_tables->cos_table[index];
+	rc->ray_dir_y = ctrl->trig_tables->sin_table[index];
 	if (rc->ray_dir_x != 0.0f)
 		rc->delta_dist_x = fabsf(1.0f / rc->ray_dir_x);
 	else
@@ -135,5 +138,5 @@ void	init_raycast_data(t_raycast_debug *rc, t_game *game)
 		rc->delta_dist_y = fabsf(1.0f / rc->ray_dir_y);
 	else
 		rc->delta_dist_y = 1e30f;
-	init_raycast_data_steps(rc, game);
+	init_raycast_data_steps(rc, ctrl->game);
 }

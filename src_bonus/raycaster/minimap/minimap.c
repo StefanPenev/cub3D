@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 08:23:44 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 18:10:45 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 10:44:14 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,19 +31,25 @@ static void	compute_minimap_data(t_map *map, t_game *game, t_minimap_data *data)
 		data->start_y = (int)map->rows - data->minimap_tiles;
 }
 
-static void	draw_player_marker(t_game *game, t_minimap_data *data)
+static void	draw_player_marker(t_ctrl *ctrl, t_minimap_data *data)
 {
-	int	radius;
+	int		radius;
+	int		index;
+	float	cos_angle;
+	float	sin_angle;
 
 	data->x0 = MINIMAP_OFFSET_X + (data->player_tile_x - data->start_x)
 		* data->block_size + data->block_size / 2;
 	data->y0 = MINIMAP_OFFSET_Y + (data->player_tile_y - data->start_y)
 		* data->block_size + data->block_size / 2;
 	radius = data->block_size / 4;
-	draw_circle(data->x0, data->y0, radius, game);
-	data->x1 = data->x0 + cosf(game->player.angle) * (data->block_size / 1.2);
-	data->y1 = data->y0 + sinf(game->player.angle) * (data->block_size / 1.2);
-	draw_minimap_line(data, game);
+	draw_circle(data->x0, data->y0, radius, ctrl->game);
+	index = get_table_index(ctrl->game->player.angle);
+	cos_angle = (float)ctrl->trig_tables->cos_table[index];
+	sin_angle = (float)ctrl->trig_tables->sin_table[index];
+	data->x1 = data->x0 + cos_angle * (data->block_size / 1.2);
+	data->y1 = data->y0 + sin_angle * (data->block_size / 1.2);
+	draw_minimap_line(data, ctrl->game);
 }
 
 static	void	draw_minimap_frame(t_game *game, t_minimap_data *data)
@@ -66,6 +72,6 @@ void	draw_minimap(t_ctrl *ctrl)
 
 	compute_minimap_data(&ctrl->map, ctrl->game, &data);
 	draw_map_tiles(ctrl, &data);
-	draw_player_marker(ctrl->game, &data);
+	draw_player_marker(ctrl, &data);
 	draw_minimap_frame(ctrl->game, &data);
 }

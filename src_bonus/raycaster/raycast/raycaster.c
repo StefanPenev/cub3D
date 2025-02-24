@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycaster.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 10:43:51 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/23 12:38:57 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 09:45:39 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ static void	initialize_raycast(t_raycast *rc, t_player *pl, t_ctrl *ctrl,
 
 	rc->ray_angle = angle;
 	normalize_angle(&rc->ray_angle);
-	index = (int)(rc->ray_angle * (ANGLE_TABLE_SIZE / (2 * M_PI)))
-		% ANGLE_TABLE_SIZE;
-	if (index < 0)
-		index += ANGLE_TABLE_SIZE;
+	index = get_table_index(rc->ray_angle);
 	rc->ray_dir_x = ctrl->trig_tables->cos_table[index];
 	rc->ray_dir_y = ctrl->trig_tables->sin_table[index];
 	rc->map_x = (int)(pl->x / TILE_SIZE);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   trig_tables.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 14:01:17 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 18:11:20 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 09:44:25 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,14 @@ void	free_trig_tables(t_trig_tables *tables)
 		free(tables->cos_table);
 		free(tables);
 	}
+}
+
+int	get_table_index(float angle)
+{
+	int	index;
+
+	index = (int)(angle * (ANGLE_TABLE_SIZE / (2 * M_PI))) % ANGLE_TABLE_SIZE;
+	if (index < 0)
+		index += ANGLE_TABLE_SIZE;
+	return (index);
 }

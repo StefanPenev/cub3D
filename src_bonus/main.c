@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:44:36 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 18:12:00 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 10:36:57 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@ int	main(int argc, char **argv)
 	parse_map(argv[1], ctrl);
 	init_game_window(ctrl);
 	load_all_textures(ctrl->game, ctrl);
-	init_player(&ctrl->game->player, ctrl->map.player_position.x,
-		ctrl->map.player_position.y, ctrl->map.player_position.orientation);
+	init_player(ctrl);
 	init_hooks(ctrl);
 	mlx_loop(ctrl->game->mlx);
 	game_cleanup(ctrl);

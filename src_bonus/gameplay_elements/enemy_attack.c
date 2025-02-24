@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   enemy_attack.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 15:16:47 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/23 13:01:33 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 09:53:11 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,13 +79,15 @@ static int	is_path_clear(t_enemy *enemy, t_ctrl *ctrl, double ray_angle,
 	double	cur_dist;
 	double	cur_x;
 	double	cur_y;
+	int		index;
 
 	cur_dist = 0;
 	step = TILE_SIZE / 8.0;
+	index = get_table_index(ray_angle);
 	while (cur_dist < distance)
 	{
-		cur_x = enemy->x + cur_dist * cos(ray_angle);
-		cur_y = enemy->y + cur_dist * sin(ray_angle);
+		cur_x = enemy->x + cur_dist * ctrl->trig_tables->cos_table[index];
+		cur_y = enemy->y + cur_dist * ctrl->trig_tables->sin_table[index];
 		if (!check_line_of_sight(ctrl, cur_x, cur_y))
 			return (0);
 		cur_dist += step;

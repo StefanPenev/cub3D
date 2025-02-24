@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   debug.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 11:22:45 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/21 18:10:28 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 10:13:56 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ static void	cast_rays_debug(t_ctrl *ctrl, int block_size)
 	{
 		rc.ray_angle = start_angle + i * angle_step;
 		normalize_angle(&rc.ray_angle);
-		init_raycast_data(&rc, ctrl->game);
+		init_raycast_data(&rc, ctrl);
 		while (!rc.hit && rc.grid_x < ctrl->map.columns
 			&& rc.grid_y < ctrl->map.rows)
 			ray_step_loop(&rc, &ctrl->map);

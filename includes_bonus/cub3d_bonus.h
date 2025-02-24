@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/23 13:15:15 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 10:35:14 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -459,7 +459,7 @@ void				draw_debug(t_ctrl *ctrl);
 
 // debug/debug_utils.c
 void				ray_step_loop(t_raycast_debug *rc, t_map *map);
-void				init_raycast_data(t_raycast_debug *rc, t_game *game);
+void				init_raycast_data(t_raycast_debug *rc, t_ctrl *ctrl);
 void				draw_line_coords(int block_size, int x_end, int y_end,
 						t_game *game);
 
@@ -530,6 +530,7 @@ void				handle_rays(t_ctrl *ctrl, float start_angle,
 
 // raycaster/trig_tables.c
 t_trig_tables		*init_trig_tables(void);
+int					get_table_index(float angle);
 void				free_trig_tables(t_trig_tables *tables);
 
 /* ************************************************************************** */
@@ -537,8 +538,7 @@ void				free_trig_tables(t_trig_tables *tables);
 /* ************************************************************************** */
 
 int					init_ctrl(t_ctrl *ctrl);
-void				init_player(t_player *player, float start_x, float start_y,
-						float orientation);
+void				init_player(t_ctrl *ctrl);
 t_square			init_square(int x, int y, int size, int color);
 
 /* ************************************************************************** */

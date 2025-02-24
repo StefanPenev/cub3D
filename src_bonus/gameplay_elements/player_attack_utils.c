@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_attack_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:18:02 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/21 18:08:48 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 09:56:38 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,11 @@ int	enemy_in_range(t_ctrl *ctrl, t_enemy *enemy)
 void	cast_ray(t_ctrl *ctrl, t_raycast *ray, float angle)
 {
 	char	hit_object;
+	int		index;
 
-	ray->ray_dir_x = cos(angle);
-	ray->ray_dir_y = sin(angle);
+	index = get_table_index(angle);
+	ray->ray_dir_x = ctrl->trig_tables->cos_table[index];
+	ray->ray_dir_y = ctrl->trig_tables->sin_table[index];
 	ray->map_x = (int)(ctrl->game->player.x / TILE_SIZE);
 	ray->map_y = (int)(ctrl->game->player.y / TILE_SIZE);
 	ray->hit = 0;
