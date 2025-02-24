@@ -6,7 +6,7 @@
 /*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 08:23:44 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/24 10:44:14 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/24 11:32:16 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,10 @@ static void	compute_minimap_data(t_map *map, t_game *game, t_minimap_data *data)
 {
 	data->block_size = TILE_SIZE / MINIMAP_SCALE;
 	data->minimap_tiles = MINIMAP_SIZE / data->block_size;
-	data->player_tile_x = game->player.x / TILE_SIZE;
-	data->player_tile_y = game->player.y / TILE_SIZE;
-	data->start_x = data->player_tile_x - data->minimap_tiles / 2.0f;
-	data->start_y = data->player_tile_y - data->minimap_tiles / 2.0f;
-	if (data->start_x < 0)
-		data->start_x = 0;
-	if (data->start_y < 0)
-		data->start_y = 0;
+	data->player_tile_x = (int)(game->player.x / TILE_SIZE);
+	data->player_tile_y = (int)(game->player.y / TILE_SIZE);
+	data->start_x = fmaxf(0, data->player_tile_x - data->minimap_tiles / 2.0f);
+	data->start_y = fmaxf(0, data->player_tile_y - data->minimap_tiles / 2.0f);
 	if (data->start_x + data->minimap_tiles > (int)map->columns)
 		data->start_x = (int)map->columns - data->minimap_tiles;
 	if (data->start_y + data->minimap_tiles > (int)map->rows)
@@ -38,10 +34,10 @@ static void	draw_player_marker(t_ctrl *ctrl, t_minimap_data *data)
 	float	cos_angle;
 	float	sin_angle;
 
-	data->x0 = MINIMAP_OFFSET_X + (data->player_tile_x - data->start_x)
-		* data->block_size + data->block_size / 2;
-	data->y0 = MINIMAP_OFFSET_Y + (data->player_tile_y - data->start_y)
-		* data->block_size + data->block_size / 2;
+	data->x0 = MINIMAP_OFFSET_X + ((ctrl->game->player.x / TILE_SIZE)
+			- data->start_x) * data->block_size;
+	data->y0 = MINIMAP_OFFSET_Y + ((ctrl->game->player.y / TILE_SIZE)
+			- data->start_y) * data->block_size;
 	radius = data->block_size / 4;
 	draw_circle(data->x0, data->y0, radius, ctrl->game);
 	index = get_table_index(ctrl->game->player.angle);
