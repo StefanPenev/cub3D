@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: stefan <stefan@student.42.fr>              +#+  +:+       +#+        */
+/*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/27 11:07:15 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/22 14:22:11 by stefan           ###   ########.fr       */
+/*   Updated: 2025/02/24 11:14:13 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,11 @@ static void	draw_view(t_ctrl *ctrl, double dt)
 	float	start;
 	float	step;
 
-	if (ctrl->game->debug)
-		draw_debug(ctrl);
-	else
-	{
-		fov = M_PI / 3.0f;
-		start = ctrl->game->player.angle - (fov / 2.0f);
-		step = fov / WIDTH;
-		handle_rays(ctrl, start, step);
-		manage_enemies(ctrl, dt);
-	}
+	fov = M_PI / 3.0f;
+	start = ctrl->game->player.angle - (fov / 2.0f);
+	step = fov / WIDTH;
+	handle_rays(ctrl, start, step);
+	manage_enemies(ctrl, dt);
 }
 
 static void	draw_interface(t_ctrl *ctrl, double dt)

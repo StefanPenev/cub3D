@@ -103,9 +103,7 @@ SRCS_BONUS += $(SRC_BONUS_DIR)/player/player.c \
 			$(SRC_BONUS_DIR)/player/player_hp_bar.c \
 
 # Raycaster
-SRCS_BONUS += $(SRC_BONUS_DIR)/raycaster/debug/debug.c \
-			$(SRC_BONUS_DIR)/raycaster/debug/debug_utils.c \
-			$(SRC_BONUS_DIR)/raycaster/raycast/raycaster.c \
+SRCS_BONUS += $(SRC_BONUS_DIR)/raycaster/raycast/raycaster.c \
 			$(SRC_BONUS_DIR)/raycaster/raycast/raycaster_utils.c \
 			$(SRC_BONUS_DIR)/raycaster/raycast/raycast_utils.c \
 			$(SRC_BONUS_DIR)/raycaster/draw/draw.c \

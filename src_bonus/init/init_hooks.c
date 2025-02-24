@@ -6,7 +6,7 @@
 /*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 20:19:57 by stefan            #+#    #+#             */
-/*   Updated: 2025/02/24 10:18:42 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/24 11:11:20 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ void	init_game_window(t_ctrl *ctrl)
 		clean_exit("Error: Image data not initialized.\n", ctrl);
 	}
 	ctrl->game->fight.alive_enemies = ctrl->map.enemies_counter;
-	ctrl->game->debug = 0;
 	mlx_put_image_to_window(ctrl->game->mlx, ctrl->game->win, ctrl->game->img,
 		0, 0);
 }

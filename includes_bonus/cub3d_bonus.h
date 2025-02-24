@@ -6,7 +6,7 @@
 /*   By: spenev <spenev@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/13 13:11:29 by anilchen          #+#    #+#             */
-/*   Updated: 2025/02/24 10:35:14 by spenev           ###   ########.fr       */
+/*   Updated: 2025/02/24 11:12:22 by spenev           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,6 @@ typedef struct s_game
 	int				endian;
 	unsigned int	ceiling_color;
 	unsigned int	floor_color;
-	int				debug;
 	int				is_shooting;
 	int				shoot_ac;
 	t_player		player;
@@ -453,15 +452,6 @@ void				check_map_valid(t_ctrl *ctrl);
 /* ************************************************************************** */
 /*              				  Raycaster                                   */
 /* ************************************************************************** */
-
-// debug/debug.c
-void				draw_debug(t_ctrl *ctrl);
-
-// debug/debug_utils.c
-void				ray_step_loop(t_raycast_debug *rc, t_map *map);
-void				init_raycast_data(t_raycast_debug *rc, t_ctrl *ctrl);
-void				draw_line_coords(int block_size, int x_end, int y_end,
-						t_game *game);
 
 // draw/draw_ceiling.c
 void				draw_skybox(t_game *gm);
